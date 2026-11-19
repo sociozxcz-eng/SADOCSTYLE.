@@ -318,7 +318,7 @@ header.ref-header{align-items:center!important}
   display: flex; align-items: center; gap: 6px; min-width: 0;
   color: #0b1531; font: 700 15px/1.2 Georgia, serif;
 }
-#seller-header strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#seller-header strong { min-width: 0; line-height: 1.4; overflow-wrap: anywhere; }
 .seller-avatar {
   width: 32px; height: 32px; display: grid; place-items: center; flex: none;
   background: #0b1531; color: white; border-radius: 50%; overflow: hidden;
@@ -333,7 +333,27 @@ header.ref-header{align-items:center!important}
   #seller-header { grid-column: 1; grid-row: 1; align-self: start; margin-top: 12px; }
 }
 @media (max-width: 767px) {
-  #seller-header:not([hidden]) { grid-column: 1 / -1; grid-row: 2; margin: 4px 6px 0; }
+  header.ref-header:has(#seller-header:not([hidden])) {
+    grid-template-rows: auto auto !important;
+  }
+  header.ref-header:has(#seller-header:not([hidden])) .ref-menu { grid-area: 1 / 1; }
+  header.ref-header:has(#seller-header:not([hidden])) .sadoc-real-logo { grid-area: 1 / 2; }
+  header.ref-header:has(#seller-header:not([hidden])) .ref-right { grid-area: 1 / 3; }
+  #seller-header:not([hidden]) {
+    position: relative;
+    z-index: 1;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: start;
+    gap: 9px;
+    margin: 4px 6px 0;
+    padding: 6px 12px 6px 6px;
+    max-width: calc(100% - 12px);
+    min-height: 44px;
+    border: 1px solid #e9edf3;
+    border-radius: 14px;
+    background: #f6f8fb;
+  }
 }
 </style>
 <script type="module" src="seller-account.js"></script>
