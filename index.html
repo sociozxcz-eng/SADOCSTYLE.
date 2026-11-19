@@ -349,9 +349,10 @@ header.ref-header{align-items:center!important}
 .seller-welcome details { margin-top: 14px; }
 .purchase-gift { margin: 14px 0; padding: 14px 16px; border-radius: 12px; }
 .purchase-gift summary { list-style-position: inside; }
+.purchase-gift summary span { text-decoration: underline; text-underline-offset: 3px; }
 .purchase-gift > p { margin-bottom: 0; }
 .seller-welcome .gift-photo {
-  display: block; width: min(100%, 270px); height: auto;
+  display: block; width: min(100%, 92px); height: auto;
   margin-top: 12px; border: 1px solid #dbb66b; border-radius: 10px;
 }
 .seller-welcome .gift-catalog { display: inline-block; margin-top: 12px; text-decoration: underline; color: #ffdf99; }
@@ -414,9 +415,9 @@ header.ref-header{align-items:center!important}
 <section id="carrito" class="screen"><h2>Mi carrito 🛒</h2><div id="cartlist"></div><div id="cart-gift" data-purchase-gift hidden></div><div class="summary" id="carttotal"></div><button class="redbutton" type="button" onclick="view('checkout')">🛍️ Comprar</button></section>
 <template id="purchase-gift-template">
   <details class="seller-welcome purchase-gift">
-    <summary>🎁 Regalo con tu primera compra · Ver</summary>
-    <p>Recibe un set de velitas navideñas con tu primera compra confirmada en SADOCSTYLE.</p>
-    <img class="gift-photo" src="assets/velitas-primera-compra.jpg" alt="Set de velitas navideñas de colores con mensajes" loading="lazy" width="1358" height="1536">
+    <summary>🎁 Regalo con tu primera compra · <span>Ver</span></summary>
+    <p><strong>Caja de 10 velas navideñas.</strong> Gratis con tu primera compra confirmada.</p>
+    <img class="gift-photo" src="assets/velitas-primera-compra.jpg" alt="Caja de 10 velas navideñas de colores" loading="lazy" width="1358" height="1536">
   </details>
 </template>
 <section id="checkout" class="screen"><button class="outline" onclick="view('carrito')">← Volver al carrito</button><h2>Finalizar compra 🛍️</h2><div id="checksummary" class="summary" style="white-space:pre-line"></div><div class="frame" style="margin:12px 0;padding:14px"><strong>¿Cómo quieres recibir el producto?</strong><label style="display:block;margin:12px 0"><input type="radio" name="sadoc-delivery" value="envio" checked onchange="sadocDeliveryChanged()"> 🚚 Envío a domicilio (tiene costo adicional)</label><label style="display:block;margin:12px 0"><input type="radio" name="sadoc-delivery" value="presencial" onchange="sadocDeliveryChanged()"> 🤝 Consultar para ver el producto presencialmente</label><p class="smallnote" id="sadoc-delivery-note">El valor del envío se cotiza según la dirección. No pagues hasta recibir el total confirmado por WhatsApp.</p></div><form id="sadoc-order-form" class="form" onsubmit="sadocOrderDetails(event)"><h3>1. Tus datos</h3><label>Nombre completo<input id="sadoc-buyer-name" type="text" autocomplete="name" maxlength="90" required placeholder="Tu nombre"></label><label>Número de teléfono<input id="sadoc-buyer-phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" required pattern="[0-9+ ]{7,20}" placeholder="Tu celular"></label><div id="sadoc-address-fields"><label>País<input id="sadoc-buyer-country" type="text" value="Colombia" readonly></label><label>Departamento<input id="sadoc-buyer-department" type="text" maxlength="80" autocomplete="address-level1" required placeholder="Ej.: Tolima"></label><label>Ciudad o municipio<input id="sadoc-buyer-city" type="text" maxlength="80" autocomplete="address-level2" required placeholder="Ej.: Ibagué"></label><label>Dirección de entrega<input id="sadoc-buyer-address" type="text" maxlength="180" autocomplete="street-address" required placeholder="Carrera, calle, número y barrio"></label><label>Indicaciones adicionales (opcional)<input id="sadoc-buyer-notes" type="text" maxlength="180" placeholder="Apartamento, torre o referencia"></label></div><p class="smallnote">Estos datos se preparan para enviarlos por WhatsApp a SADOCSTYLE. No se guardan en un servidor; el pedido solo se recibe cuando envías el mensaje.</p><button class="redbutton" type="submit">Confirmar datos y continuar</button></form><div id="sadoc-payment-step" hidden><h3>2. Elige cómo pagar</h3><div class="sadoc-payment-method">💜 <strong>Nequi</strong> <span>Único método disponible</span></div><p class="smallnote">Bre-B y otros métodos: próximamente.</p><div class="frame sadoc-nequi-pay"><h3>3. Pagar con Nequi</h3><p>Número Nequi para pagar después de confirmar el costo total del pedido:</p><div class="sadoc-nequi-number" id="sadoc-nequi-number">310 582 5606</div><button class="redbutton" type="button" onclick="sadocPaymentConfirm()">Consultar total y enviar pedido por WhatsApp</button><p class="notice" id="sadoc-payment-message">El pedido no se marcará como pagado hasta que SADOCSTYLE verifique el ingreso en Nequi. Nunca envíes claves ni códigos.</p></div></div></section>
@@ -445,8 +446,8 @@ header.ref-header{align-items:center!important}
       <p>Gracias por acompañarnos desde el lanzamiento y crear tu cuenta.</p>
       <details>
         <summary>🎁 Regalo con tu primera compra</summary>
-        <p>Te regalamos un set de velitas navideñas con tu primera compra confirmada en SADOCSTYLE.</p>
-        <img class="gift-photo" src="assets/velitas-primera-compra.jpg" alt="Set de velitas navideñas de colores con mensajes" loading="lazy" width="1358" height="1536">
+        <p><strong>Caja de 10 velas navideñas.</strong> Gratis con tu primera compra confirmada.</p>
+        <img class="gift-photo" src="assets/velitas-primera-compra.jpg" alt="Caja de 10 velas navideñas de colores" loading="lazy" width="1358" height="1536">
         <a class="gift-catalog" href="#productos" onclick="return navigate(event, 'productos')">Ver productos</a>
       </details>
     </section>
