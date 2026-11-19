@@ -1,3 +1,5 @@
+import { connectClothingReview } from './clothing-review.js';
+
 const projectUrl = 'https://ozgpmnmmaxwuyedioetw.supabase.co';
 const publishableKey = 'sb_publishable_hEIsnV1e2CYehJ11flIawQ_HD_EnYEL';
 const storeUrl = 'https://sociozxcz-eng.github.io/SADOCSTYLE./';
@@ -160,7 +162,11 @@ try {
   });
   signout.disabled = false;
 
+  const refreshClothing = connectClothingReview(client);
   client.auth.onAuthStateChange((event, session) => {
+    if (['INITIAL_SESSION', 'SIGNED_IN', 'SIGNED_OUT'].includes(event)) {
+      setTimeout(() => refreshClothing(session?.user).catch(console.error), 0);
+    }
     renderAccount(session?.user);
     if (event === 'INITIAL_SESSION') message.textContent = '';
   });
