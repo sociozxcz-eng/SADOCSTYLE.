@@ -347,6 +347,11 @@ header.ref-header{align-items:center!important}
 .seller-welcome h3, .seller-welcome summary { color: #ffdf99; }
 .seller-welcome p { margin: 8px 0; line-height: 1.55; }
 .seller-welcome details { margin-top: 14px; }
+.seller-welcome .gift-photo {
+  display: block; width: min(100%, 270px); height: auto;
+  margin-top: 12px; border: 1px solid #dbb66b; border-radius: 10px;
+}
+.seller-welcome .gift-catalog { display: inline-block; margin-top: 12px; text-decoration: underline; color: #ffdf99; }
 .seller-welcome summary { width: fit-content; cursor: pointer; font-weight: 700; }
 .seller-history { margin-bottom: 18px; }
 .seller-history article { border: 1px solid #ece6e1; }
@@ -429,8 +434,10 @@ header.ref-header{align-items:center!important}
       <h3 id="seller-welcome-title">¡Te damos la bienvenida a SADOCSTYLE!</h3>
       <p>Gracias por acompañarnos desde el lanzamiento y crear tu cuenta.</p>
       <details>
-        <summary>🎁 Ver regalo de bienvenida</summary>
-        <p>Pronto anunciaremos cuál será el regalo y cómo podrás reclamarlo.</p>
+        <summary>🎁 Regalo con tu primera compra</summary>
+        <p>Te regalamos un set de velitas navideñas con tu primera compra confirmada en SADOCSTYLE.</p>
+        <img class="gift-photo" src="assets/velitas-primera-compra.jpg" alt="Set de velitas navideñas de colores con mensajes" loading="lazy" width="1358" height="1536">
+        <a class="gift-catalog" href="#productos" onclick="return navigate(event, 'productos')">Ver productos</a>
       </details>
     </section>
     <div class="seller-auth-grid seller-history">
