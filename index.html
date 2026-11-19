@@ -29,6 +29,23 @@ header .santa-hat{position:absolute;top:-23px;right:calc(50% - 78px);font-size:2
 header .headright{gap:5px;align-items:center}
 header .cartnum{background:#111!important;color:#fff}
 @media(max-width:390px){header{height:102px!important}header .brand{font-size:20px!important}header .santa-hat{right:calc(50% - 61px);font-size:23px;top:-20px}header .brand-mark{font-size:21px}header .headright{gap:1px}}
+</style><style id="sadoc-ninja-header-v3">
+.topline{display:none!important}.shipping{display:none!important}
+header{height:auto!important;min-height:130px!important;display:grid!important;grid-template-columns:55px minmax(0,1fr) 95px;grid-template-rows:106px auto;align-items:center!important;padding:8px 12px 12px!important;position:relative!important;top:auto!important;border-bottom:2px solid #0e1524!important;background:#fff!important;gap:0!important}
+header .brand{grid-column:2;grid-row:1;display:flex!important;align-items:center;justify-content:center;gap:3px;min-width:0;text-align:center!important;font-family:Georgia,serif!important;color:#050505!important;letter-spacing:-1px!important;line-height:1!important}
+header .brand-words{display:block!important;transform:none!important;text-shadow:none!important}
+header .brand-top{font-family:Georgia,'Times New Roman',serif!important;font-weight:900!important;font-size:clamp(19px,4.7vw,44px)!important;letter-spacing:-1.3px!important;display:block;white-space:nowrap}
+header .brand-bottom{display:none!important}
+header .brand-mark{display:none!important}
+header .brand:before,header .brand:after{content:'🥷';font-size:clamp(22px,5vw,47px);filter:grayscale(1) contrast(1.7);line-height:1}
+header .brand:after{transform:scaleX(-1)}
+header .santa-hat{top:-25px!important;right:18%!important;font-size:clamp(23px,4vw,37px)!important;transform:rotate(16deg)}
+header .headbtn{color:#000!important;font-size:clamp(24px,4vw,36px)!important}
+header>.headbtn{grid-column:1;grid-row:1}
+header .headright{grid-column:3;grid-row:1;justify-content:flex-end;gap:7px!important}
+header .cartnum{background:#111!important;top:15px!important;right:5px!important}
+header:after{content:'🚚  Haz tu compra hoy, envíos inmediatos a toda Colombia. 🎅 🎁';grid-column:1/-1;grid-row:2;display:block;text-align:center;padding:18px 4px 4px;margin-top:10px;border-top:2px solid transparent;border-image:linear-gradient(to right,transparent,#111,transparent) 1;font:clamp(13px,2.5vw,24px)/1.5 Georgia,serif;letter-spacing:.4px;color:#111}
+@media(max-width:480px){header{grid-template-columns:36px minmax(0,1fr) 78px;grid-template-rows:78px auto;min-height:125px!important;padding:7px 7px 12px!important}header .brand-top{font-size:clamp(16px,5.1vw,25px)!important;letter-spacing:-1px!important}header .brand:before,header .brand:after{font-size:22px}header .santa-hat{top:-17px!important;right:16%!important;font-size:21px!important}header .headright{gap:0!important}header .headbtn{min-width:27px!important;font-size:24px!important}header:after{font-size:13px}}
 </style></head><body>
 <div class="topline">🔒 SADOCSTYLE · Catálogo de ropa · Pagos próximamente.</div><div class="coming" role="status">🔒 SADOCSTYLE está en exhibición pública · 🛍️ Compras y pagos: PRÓXIMAMENTE · No envíes dinero ni datos bancarios</div><div class="shipping">🚚 Envía y recibe pedidos en Colombia 🇨🇴 🎅 🎁</div>
 <header><button class="headbtn" onclick="menu(true)" aria-label="Abrir menú">☰</button><a href="#inicio" class="brand" onclick="view('inicio')" aria-label="SADOCSTYLE, inicio"><span class="brand-mark">🥷</span><span class="brand-words"><span class="brand-top">SADOC</span><span class="brand-bottom">STYLE</span></span><span class="santa-hat" aria-hidden="true">🎅</span></a><div class="headright"><button class="headbtn searchbtn" onclick="view('productos')" aria-label="Buscar productos">⌕</button><button class="headbtn" onclick="view('carrito')" aria-label="Carrito">🛒<span class="cartnum" id="cartnum">0</span></button></div></header>
