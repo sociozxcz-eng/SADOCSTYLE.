@@ -351,6 +351,22 @@ header.ref-header{align-items:center!important}
 .purchase-gift summary { list-style-position: inside; }
 .purchase-gift summary span { text-decoration: underline; text-underline-offset: 3px; }
 .purchase-gift > p { margin-bottom: 0; }
+.detail-product-photo { position: relative; }
+.detail-gift { position: absolute; top: 10px; right: 10px; z-index: 1; }
+.detail-gift > summary {
+  display: grid; place-items: center; width: 46px; height: 46px;
+  margin-left: auto; border: 2px solid #dbb66b; border-radius: 50%;
+  background: #701d32; font-size: 23px; cursor: pointer; list-style: none;
+}
+.detail-gift > summary::-webkit-details-marker { display: none; }
+.detail-gift .gift-overlay {
+  position: absolute; top: 54px; right: 0;
+  box-sizing: border-box; width: min(265px, calc(100vw - 60px));
+  margin: 0; padding: 14px;
+}
+.gift-overlay h3 { margin: 0; font-size: 16px; }
+.gift-overlay details { margin-top: 8px; }
+.gift-overlay summary { text-decoration: underline; }
 .seller-welcome .gift-photo {
   display: block; width: min(100%, 92px); height: auto;
   margin-top: 12px; border: 1px solid #dbb66b; border-radius: 10px;
@@ -411,7 +427,19 @@ header.ref-header{align-items:center!important}
 </nav>
 <section id="inicio" class="page"><div class="hero" role="img" aria-label="Banner navideño original SADOCSTYLE: ninja con espada, árbol de Navidad y regalos"></div><a class="promo" href="#productos" onclick="return navigate(event, 'productos')"><span class="promo-mobile">🎄 COLECCIÓN NAVIDEÑA · VER COLECCIÓN 🎁</span><span class="promo-desktop">Ver colección navideña →</span></a><div class="wave"></div><main><div class="products" id="homeproducts"></div></main></section>
 <section id="productos" class="screen"><h2 class="section-title">TODOS LOS PRODUCTOS</h2><div class="products-mini" id="allproducts"></div></section>
-<section id="detalle" class="screen"><button class="outline" onclick="view('inicio')">← Volver</button><div class="columns" style="margin-top:20px"><div><img src="assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12" class="detail-pic" id="detailimage" alt="Buzo estampado"><div class="sizes"><button class="outline" onclick="switchImage('assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12')">Vista frontal</button><button class="outline" onclick="switchImage('assets/file_000000004e0c81f7886b1030db71e95b.jpg')">Vista trasera</button></div></div><div><h1 id="detailname">DENIM TEARS</h1><div class="price" id="detailprice">$50.000 COP</div><p class="message">Buzo blanco con capucha, estampados negros y bolsillo delantero. Fotografías del producto.</p><p><strong>Talla</strong></p><div class="sizes" id="sizeoptions"></div><div class="frame" style="margin:12px 0;padding:14px"><strong>📍 Ubicación del vendedor: Ibagué, Tolima, Colombia</strong></div><div class="sadoc-seller-label"><strong>SADOCSTYLE</strong></div><div data-purchase-gift></div><button class="redbutton" type="button" onclick="addCart(true)">🛒 Agregar al carrito</button><button class="blackbutton sadoc-buy-now" type="button" onclick="buyNow()">🛍️ Comprar ahora</button><button class="outline" type="button" onclick="addCart(false);alert('Producto agregado al carrito 🛒')">+ Añadir y seguir mirando</button><div id="sadoc-seller-rating"></div><p class="notice">💜 Compra con Nequi o consulta tu pedido por WhatsApp. El pago y la entrega se confirman directamente con SADOCSTYLE.</p></div></div></section>
+<section id="detalle" class="screen"><button class="outline" onclick="view('inicio')">← Volver</button><div class="columns" style="margin-top:20px"><div><div class="detail-product-photo"><img src="assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12" class="detail-pic" id="detailimage" alt="Buzo estampado">
+  <details class="detail-gift">
+    <summary aria-label="Abrir promoción de regalo">🎁</summary>
+    <div class="seller-welcome gift-overlay">
+      <h3>Regalo por la compra</h3>
+      <details>
+        <summary>Ver</summary>
+        <p><strong>Caja de 10 velas navideñas.</strong> Gratis con tu primera compra confirmada.</p>
+        <img class="gift-photo" src="assets/velitas-primera-compra.jpg" alt="Caja de 10 velas navideñas" loading="lazy" width="1358" height="1536">
+      </details>
+    </div>
+  </details>
+</div><div class="sizes"><button class="outline" onclick="switchImage('assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12')">Vista frontal</button><button class="outline" onclick="switchImage('assets/file_000000004e0c81f7886b1030db71e95b.jpg')">Vista trasera</button></div></div><div><h1 id="detailname">DENIM TEARS</h1><div class="price" id="detailprice">$50.000 COP</div><p class="message">Buzo blanco con capucha, estampados negros y bolsillo delantero. Fotografías del producto.</p><p><strong>Talla</strong></p><div class="sizes" id="sizeoptions"></div><div class="frame" style="margin:12px 0;padding:14px"><strong>📍 Ubicación del vendedor: Ibagué, Tolima, Colombia</strong></div><div class="sadoc-seller-label"><strong>SADOCSTYLE</strong></div><button class="redbutton" type="button" onclick="addCart(true)">🛒 Agregar al carrito</button><button class="blackbutton sadoc-buy-now" type="button" onclick="buyNow()">🛍️ Comprar ahora</button><button class="outline" type="button" onclick="addCart(false);alert('Producto agregado al carrito 🛒')">+ Añadir y seguir mirando</button><div id="sadoc-seller-rating"></div><p class="notice">💜 Compra con Nequi o consulta tu pedido por WhatsApp. El pago y la entrega se confirman directamente con SADOCSTYLE.</p></div></div></section>
 <section id="carrito" class="screen"><h2>Mi carrito 🛒</h2><div id="cartlist"></div><div id="cart-gift" data-purchase-gift hidden></div><div class="summary" id="carttotal"></div><button class="redbutton" type="button" onclick="view('checkout')">🛍️ Comprar</button></section>
 <template id="purchase-gift-template">
   <details class="seller-welcome purchase-gift">
