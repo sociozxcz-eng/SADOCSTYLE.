@@ -312,6 +312,42 @@ header.ref-header{align-items:center!important}
   #inicio .wave {height: 12px !important;}
 }
 </style>
+
+<style id="sadoc-desktop-visibility-v47">
+/* Laptop y escritorio: logo protagonista, banner mas visible sin ampliar artificialmente. */
+@media screen and (min-width: 768px) {
+  header.ref-header {
+    grid-template-columns: 68px minmax(0, 1fr) 140px !important;
+    min-height: 155px !important;
+    padding: 14px clamp(20px, 4vw, 60px) !important;
+  }
+  header.ref-header a.sadoc-real-logo,
+  header.ref-header .ref-logo-final {
+    width: min(100%, 680px) !important;
+    max-width: 680px !important;
+    justify-self: center !important;
+  }
+  header.ref-header a.sadoc-real-logo img {
+    width: 100% !important;
+    max-width: 680px !important;
+    max-height: 150px !important;
+    object-fit: contain !important;
+  }
+  header.ref-header .ref-action {width: 52px !important;height:52px !important;}
+  .ref-shipping {padding: 6px 20px 12px !important;}
+  section#inicio .hero {
+    height: clamp(400px, 36vw, 510px) !important;
+    max-height: 510px !important;
+    aspect-ratio: auto !important;
+    background-image: url('assets/navidad.png') !important;
+    background-size: cover !important;
+    background-position: center 62% !important;
+    background-repeat: no-repeat !important;
+    background-color: #101b34 !important;
+    image-rendering: auto !important;
+  }
+}
+</style>
 </head><body>
 <div class="topline">🔒 SADOCSTYLE · Catálogo de ropa · Pagos próximamente.</div><header class="ref-header"><button class="ref-action ref-menu" onclick="menu(true)" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M3 12h18M3 19h18"/></svg></button><a class="ref-logo ref-logo-final sadoc-real-logo" href="#inicio" onclick="view('inicio')" aria-label="SADOCSTYLE inicio"><img src="assets/file_00000000c53c82129a1fae8b1a7595f4~2.jpg" alt="SADOCSTYLE: logo original con samuráis, espadas y gorro navideño" loading="eager" decoding="async"></a><div class="ref-right"><button class="ref-action" onclick="view('productos')" aria-label="Buscar productos"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.2"/><path d="m16 16 5 5"/></svg></button><button class="ref-action ref-cart" onclick="view('carrito')" aria-label="Carrito"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2 3h3l2.5 13h12l2.5-10H6"/></svg><span class="cartnum" id="cartnum">0</span></button></div></header><div class="ref-shipping"><div class="ref-shipping-line"></div><p>🚚 Haz tu compra hoy, envíos inmediatos a toda Colombia. 🎅 🎁</p></div>
 <div id="overlay" class="overlay" onclick="menu(false)"></div><aside id="drawer" class="drawer"><button class="close" onclick="menu(false)">×</button><h2>SADOC<span style="color:#96081c">STYLE</span> 🥷</h2><button class="nav" onclick="view('inicio')">Inicio</button><button class="nav" onclick="view('productos')">Todos los productos</button><button class="nav" onclick="view('vender')">Vender ropa</button><button class="nav" onclick="view('registro')">Registro de vendedores (próximamente)</button><button class="nav" onclick="view('publicar')">Publicar producto (próximamente)</button><button class="nav" onclick="view('pedidos')">Mis pedidos</button><button class="nav" onclick="view('comisiones')">Comisiones</button><button class="nav" onclick="view('tallas')">Guía de tallas</button><button class="nav" onclick="view('administrar')">✏️ Editar mis productos (demo)</button><div class="bottom">Colombia | COP $<p class="message">Tienda en exhibición. Pagos próximamente.</p></div></aside>
