@@ -7,6 +7,12 @@ const remove = document.querySelector('#photo-remove');
 
 let revision = 0;
 let worker;
+let originalUrl;
+
+function releaseOriginal() {
+  if (originalUrl) URL.revokeObjectURL(originalUrl);
+  originalUrl = undefined;
+}
 
 function preparePhoto(file) {
   return new Promise((resolve, reject) => {
@@ -42,6 +48,7 @@ function preparePhoto(file) {
 
 function clearPreview() {
   revision++;
+  releaseOriginal();
   preview.hidden = true;
   preview.removeAttribute('src');
   download.hidden = true;
@@ -74,12 +81,16 @@ input.addEventListener('change', async () => {
     return;
   }
 
+  originalUrl = URL.createObjectURL(file);
+  preview.src = originalUrl;
+  preview.hidden = false;
   input.disabled = true;
   remove.hidden = false;
-  status.textContent = 'Quitando el fondo… La primera vez se descarga el modelo y puede tardar.';
+  status.textContent = 'Foto original. Estamos quitando el fondo; la primera vez puede tardar.';
   try {
     const image = await preparePhoto(file);
     if (request !== revision) return;
+    releaseOriginal();
     preview.src = image;
     preview.hidden = false;
     download.href = image;
@@ -90,8 +101,7 @@ input.addEventListener('change', async () => {
     if (request !== revision) return;
     console.error('No se pudo preparar la foto', error);
     input.value = '';
-    remove.hidden = true;
-    status.textContent = 'No se pudo quitar el fondo. Revisa tu conexión y vuelve a elegir la foto.';
+    status.textContent = 'No se pudo quitar el fondo. Sigue visible la foto original. Vuelve a elegirla para reintentar.';
   } finally {
     input.disabled = false;
   }
