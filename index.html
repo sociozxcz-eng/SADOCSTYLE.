@@ -352,21 +352,32 @@ header.ref-header{align-items:center!important}
 .purchase-gift summary span { text-decoration: underline; text-underline-offset: 3px; }
 .purchase-gift > p { margin-bottom: 0; }
 .detail-product-photo { position: relative; }
-.detail-gift { position: absolute; top: 10px; right: 10px; z-index: 1; }
+.detail-gift { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
 .detail-gift > summary {
-  display: grid; place-items: center; width: 46px; height: 46px;
-  margin-left: auto; border: 2px solid #dbb66b; border-radius: 50%;
-  background: #701d32; font-size: 23px; cursor: pointer; list-style: none;
+  display: grid; place-items: center; width: 52px; height: 52px;
+  margin: 10px 10px 0 auto; color: #eccb78; cursor: pointer; list-style: none;
+  pointer-events: auto; filter: drop-shadow(0 2px 4px #162b26aa);
 }
-.detail-gift > summary::-webkit-details-marker { display: none; }
+.detail-gift > summary::-webkit-details-marker, .gift-overlay summary::-webkit-details-marker { display: none; }
+.detail-gift > summary svg { width: 42px; height: 42px; }
 .detail-gift .gift-overlay {
-  position: absolute; top: 54px; right: 0;
-  box-sizing: border-box; width: min(265px, calc(100vw - 60px));
-  margin: 0; padding: 14px;
+  position: absolute; top: 43%; right: 2%;
+  box-sizing: border-box; width: 76%; max-width: 380px;
+  margin: 0; padding: 14px clamp(12px, 2vw, 22px); border-radius: 20px;
+  background: #701d2c; box-shadow: 0 4px 15px #2010102b; pointer-events: auto;
 }
-.gift-overlay h3 { margin: 0; font-size: 16px; }
-.gift-overlay details { margin-top: 8px; }
-.gift-overlay summary { text-decoration: underline; }
+.gift-overlay h3 {
+  margin: 0 0 0 56px;
+  font-size: clamp(12px, 1.5vw, 18px); letter-spacing: .055em; text-transform: uppercase;
+}
+.gift-overlay details { margin-top: 6px; }
+.gift-overlay summary { display: flex; align-items: center; gap: 14px; }
+.gift-overlay summary span:last-child { text-decoration: underline; text-underline-offset: 4px; font-size: 17px; }
+.gift-samurai {
+  width: 42px; height: 42px; flex: none;
+  background: #000 url('assets/logo-escritorio.webp') -1px -32px / 246px auto no-repeat;
+  filter: grayscale(1) invert(1) contrast(1.25);
+}
 .seller-welcome .gift-photo {
   display: block; width: min(100%, 92px); height: auto;
   margin-top: 12px; border: 1px solid #dbb66b; border-radius: 10px;
@@ -429,11 +440,15 @@ header.ref-header{align-items:center!important}
 <section id="productos" class="screen"><h2 class="section-title">TODOS LOS PRODUCTOS</h2><div class="products-mini" id="allproducts"></div></section>
 <section id="detalle" class="screen"><button class="outline" onclick="view('inicio')">← Volver</button><div class="columns" style="margin-top:20px"><div><div class="detail-product-photo"><img src="assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12" class="detail-pic" id="detailimage" alt="Buzo estampado">
   <details class="detail-gift">
-    <summary aria-label="Abrir promoción de regalo">🎁</summary>
+    <summary aria-label="Abrir promoción de regalo">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9 22h30v20H9zM6 15h36v8H6zM24 15v27M24 15c-8 0-13-2-13-7a5 5 0 0 1 9-3c2 2 4 7 4 10Zm0 0c8 0 13-2 13-7a5 5 0 0 0-9-3c-2 2-4 7-4 10Z"/>
+      </svg>
+    </summary>
     <div class="seller-welcome gift-overlay">
       <h3>Regalo por la compra</h3>
       <details>
-        <summary>Ver</summary>
+        <summary><span class="gift-samurai" aria-hidden="true"></span><span>VER</span></summary>
         <p><strong>Caja de 10 velas navideñas.</strong> Gratis con tu primera compra confirmada.</p>
         <img class="gift-photo" src="assets/velitas-primera-compra.jpg" alt="Caja de 10 velas navideñas" loading="lazy" width="1358" height="1536">
       </details>
