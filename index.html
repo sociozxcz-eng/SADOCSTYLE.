@@ -226,38 +226,28 @@ header.ref-header{align-items:center!important}
   .ref-shipping { padding: 0 20px 15px; }
   .ref-shipping-line { width: min(360px, 55%); height: 2px; margin-bottom: 10px; }
   .ref-shipping p { font: 16px/1.45 Arial, sans-serif; letter-spacing: normal; }
-  #inicio { background: #f6f5f4; padding-bottom: 34px; }
+  #inicio {
+    --holiday-width: clamp(700px, calc((100svh - 280px) * 1536 / 959), 1120px);
+    background: #fff;
+    padding: 0 clamp(16px, 3vw, 48px) 34px;
+  }
   #inicio .hero {
-    --holiday-art: url('assets/navidad-escritorio.webp');
-    isolation: isolate;
-    overflow: hidden;
-    height: clamp(460px, calc(100svh - 290px), 720px) !important;
-    aspect-ratio: auto !important;
-    background: #0b1531 !important;
-  }
-  #inicio .hero::before,
-  #inicio .hero::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
-  #inicio .hero::before {
-    background: var(--holiday-art) center / 100% 100% no-repeat;
-    filter: blur(32px) saturate(.8);
-    transform: scale(1.04);
-  }
-  #inicio .hero::after {
-    width: min(100%, calc(clamp(460px, calc(100svh - 290px), 720px) * 1536 / 959));
+    max-width: var(--holiday-width);
     margin-inline: auto;
-    background: var(--holiday-art) center / contain no-repeat;
-    mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent);
+    aspect-ratio: 1536 / 959 !important;
+    background: #0b1531 url('assets/navidad-escritorio.webp') center / contain no-repeat !important;
   }
   #inicio .promo {
-    padding: 14px 18px;
-    font-size: 19px;
+    max-width: var(--holiday-width);
+    margin-inline: auto;
+    padding: 15px 18px;
+    border-top: 0;
+    background: #0b1531;
+    color: #fff;
+    font: 700 16px/1.3 Arial, sans-serif;
+    letter-spacing: .04em;
   }
-  #inicio .promo:hover { background: #750819; }
+  #inicio .promo:hover { background: #1b2c52; }
   #inicio .wave { display: none; }
   #homeproducts.products, #allproducts.products-mini {
     grid-template-columns: repeat(auto-fit, minmax(250px, 340px)) !important;
@@ -282,6 +272,11 @@ header.ref-header{align-items:center!important}
 }
 .sadoc-real-logo picture { display: block; width: 100%; min-width: 0; }
 #inicio .promo { display: block; }
+.promo-desktop { display: none; }
+@media (min-width: 768px) {
+  .promo-mobile { display: none; }
+  .promo-desktop { display: inline; }
+}
 #inicio .promo:focus-visible, .ref-header :is(button, a):focus-visible {
   outline: 3px solid #ad142d;
   outline-offset: 3px;
@@ -290,7 +285,7 @@ header.ref-header{align-items:center!important}
 </head><body>
 <div class="topline">🔒 SADOCSTYLE · Catálogo de ropa · Pagos próximamente.</div><header class="ref-header"><button class="ref-action ref-menu" onclick="menu(true)" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M3 12h18M3 19h18"/></svg></button><a class="ref-logo ref-logo-final sadoc-real-logo" href="#inicio" onclick="return navigate(event, 'inicio')" aria-label="SADOCSTYLE inicio"><picture><source media="(min-width: 768px)" srcset="assets/logo-escritorio.webp"><img src="assets/file_00000000c53c82129a1fae8b1a7595f4~2.jpg" alt="SADOCSTYLE: logo original con samuráis, espadas y gorro navideño" loading="eager" decoding="async"></picture></a><div class="ref-right"><button class="ref-action" onclick="view('productos')" aria-label="Buscar productos"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.2"/><path d="m16 16 5 5"/></svg></button><button class="ref-action ref-cart" onclick="view('carrito')" aria-label="Carrito"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2 3h3l2.5 13h12l2.5-10H6"/></svg><span class="cartnum" id="cartnum">0</span></button></div></header><div class="ref-shipping"><div class="ref-shipping-line"></div><p>🚚 Haz tu compra hoy, envíos inmediatos a toda Colombia. 🎅 🎁</p></div>
 <div id="overlay" class="overlay" onclick="menu(false)"></div><aside id="drawer" class="drawer"><button class="close" onclick="menu(false)">×</button><h2>SADOC<span style="color:#96081c">STYLE</span> 🥷</h2><button class="nav" onclick="view('inicio')">Inicio</button><button class="nav" onclick="view('productos')">Todos los productos</button><button class="nav" onclick="view('vender')">Vender ropa</button><button class="nav" onclick="view('registro')">Registro de vendedores (próximamente)</button><button class="nav" onclick="view('publicar')">Publicar producto (próximamente)</button><button class="nav" onclick="view('pedidos')">Mis pedidos</button><button class="nav" onclick="view('comisiones')">Comisiones</button><button class="nav" onclick="view('tallas')">Guía de tallas</button><button class="nav" onclick="view('administrar')">✏️ Editar mis productos (demo)</button><div class="bottom">Colombia | COP $<p class="message">Tienda en exhibición. Pagos próximamente.</p></div></aside>
-<section id="inicio" class="page"><div class="hero" role="img" aria-label="Banner navideño original SADOCSTYLE: ninja con espada, árbol de Navidad y regalos"></div><a class="promo" href="#productos" onclick="return navigate(event, 'productos')">🎄 COLECCIÓN NAVIDEÑA · VER COLECCIÓN 🎁</a><div class="wave"></div><main><div class="products" id="homeproducts"></div></main></section>
+<section id="inicio" class="page"><div class="hero" role="img" aria-label="Banner navideño original SADOCSTYLE: ninja con espada, árbol de Navidad y regalos"></div><a class="promo" href="#productos" onclick="return navigate(event, 'productos')"><span class="promo-mobile">🎄 COLECCIÓN NAVIDEÑA · VER COLECCIÓN 🎁</span><span class="promo-desktop">Ver colección navideña →</span></a><div class="wave"></div><main><div class="products" id="homeproducts"></div></main></section>
 <section id="productos" class="screen"><h2 class="section-title">TODOS LOS PRODUCTOS</h2><div class="products-mini" id="allproducts"></div></section>
 <section id="detalle" class="screen"><button class="outline" onclick="view('inicio')">← Volver</button><div class="columns" style="margin-top:20px"><div><img src="assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12" class="detail-pic" id="detailimage" alt="Buzo estampado"><div class="sizes"><button class="outline" onclick="switchImage('assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12')">Vista frontal</button><button class="outline" onclick="switchImage('assets/file_000000004e0c81f7886b1030db71e95b.jpg')">Vista trasera</button></div></div><div><h1 id="detailname">DENIM TEARS</h1><div class="price" id="detailprice">$50.000 COP</div><p class="message">Buzo blanco con capucha, estampados negros y bolsillo delantero. Fotografías del producto.</p><p><strong>Talla</strong></p><div class="sizes" id="sizeoptions"></div><div class="frame" style="margin:12px 0;padding:14px"><strong>📍 Ubicación del vendedor: Ibagué, Tolima, Colombia</strong></div><div class="sadoc-seller-label"><strong>SADOC 777X</strong> <span class="sadoc-purple-check" title="Verificado en SADOCSTYLE" aria-label="Verificado en SADOCSTYLE">✓</span><span class="sadoc-verified-caption">Verificado</span></div><button class="redbutton" type="button" onclick="addCart(true)">🛒 Agregar al carrito</button><button class="blackbutton sadoc-buy-now" type="button" onclick="buyNow()">🛍️ Comprar ahora</button><button class="outline" type="button" onclick="addCart(false);alert('Producto agregado al carrito 🛒')">+ Añadir y seguir mirando</button><div id="sadoc-seller-rating"></div><p class="notice">💜 Compra con Nequi o consulta tu pedido por WhatsApp. El pago y la entrega se confirman directamente con SADOCSTYLE.</p></div></div></section>
 <section id="carrito" class="screen"><h2>Mi carrito 🛒</h2><div id="cartlist"></div><div class="summary" id="carttotal"></div><button class="redbutton" type="button" onclick="view('checkout')">🛍️ Comprar</button></section>
