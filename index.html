@@ -593,6 +593,18 @@ function showLocation() {
   const target = document.getElementById(location.hash.slice(1));
   view(target?.matches('section.page, section.screen') ? target.id : 'inicio', false);
 }
+const detailGift = document.querySelector('.detail-gift');
+document.addEventListener('click', event => {
+  if (detailGift.open && !event.target.closest('.detail-gift > summary, .gift-overlay')) {
+    detailGift.open = false;
+  }
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && detailGift.open && detailGift.getClientRects().length) {
+    detailGift.open = false;
+    detailGift.querySelector('summary').focus();
+  }
+});
 const giftTemplate = document.getElementById('purchase-gift-template');
 for (const slot of document.querySelectorAll('[data-purchase-gift]')) {
   slot.append(giftTemplate.content.cloneNode(true));
