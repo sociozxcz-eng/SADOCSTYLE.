@@ -1,0 +1,158 @@
+const projectUrl = 'https://ozgpmnmmaxwuyedioetw.supabase.co';
+const publishableKey = 'sb_publishable_hEIsnV1e2CYehJ11flIawQ_HD_EnYEL';
+const storeUrl = 'https://sociozxcz-eng.github.io/SADOCSTYLE./';
+
+const login = document.querySelector('#seller-login');
+const signup = document.querySelector('#seller-signup');
+const edit = document.querySelector('#seller-edit');
+const signout = document.querySelector('#seller-signout');
+const message = document.querySelector('#seller-message');
+const guest = document.querySelector('#seller-guest');
+const profile = document.querySelector('#seller-profile');
+const sellerHeader = document.querySelector('#seller-header');
+const ownerHeader = document.querySelector('#store-owner');
+
+function username(value) {
+  const name = String(value ?? '').normalize('NFKC').trim();
+  if (!/^[\p{L}\p{N} ._-]{3,24}$/u.test(name) || !/[\p{L}\p{N}]/u.test(name)) return '';
+  const compact = name.toLowerCase().replace(/[ ._-]/g, '');
+  return compact === 'sadoc777x' || compact === 'sadocstyle' ? '' : name;
+}
+
+function renderAccount(user) {
+  guest.hidden = Boolean(user);
+  profile.hidden = !user;
+  ownerHeader.hidden = Boolean(user);
+  sellerHeader.hidden = !user;
+  if (!user) return;
+
+  const name = username(user.user_metadata?.username) || 'Mi cuenta';
+  const avatar = sellerHeader.querySelector('.seller-avatar');
+  const source = user.user_metadata?.avatar;
+  sellerHeader.querySelector('strong').textContent = name;
+  edit.elements.username.value = name;
+  avatar.textContent = Array.from(name)[0].toUpperCase();
+  if (typeof source === 'string' && source.length <= 6000 &&
+      /^data:image\/jpeg;base64,[A-Za-z0-9+/]+=*$/.test(source)) {
+    const image = document.createElement('img');
+    image.alt = '';
+    image.src = source;
+    avatar.replaceChildren(image);
+  }
+}
+
+async function avatarThumbnail(file) {
+  if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 8 * 1024 * 1024) {
+    throw new Error('Elige una foto JPG, PNG o WebP de hasta 8 MB.');
+  }
+  const bitmap = await createImageBitmap(file);
+  try {
+    const canvas = document.createElement('canvas');
+    canvas.width = canvas.height = 80;
+    const context = canvas.getContext('2d');
+    const side = Math.min(bitmap.width, bitmap.height);
+    context.fillStyle = 'white';
+    context.fillRect(0, 0, 80, 80);
+    context.drawImage(bitmap, (bitmap.width - side) / 2, (bitmap.height - side) / 2, side, side, 0, 0, 80, 80);
+    const image = canvas.toDataURL('image/jpeg', 0.72);
+    if (!image.startsWith('data:image/jpeg;') || image.length > 6000) {
+      throw new Error('No se pudo guardar esta foto. Prueba con otra.');
+    }
+    return image;
+  } finally {
+    bitmap.close();
+  }
+}
+
+function authMessage(error) {
+  if (error.code === 'invalid_credentials') return 'Revisa tu correo y contraseña.';
+  if (error.code === 'email_not_confirmed') return 'Confirma tu correo antes de entrar.';
+  if (error.code === 'email_address_not_authorized') return 'Este correo todavía no está habilitado para recibir confirmaciones.';
+  if (error.code === 'over_email_send_rate_limit' || error.status === 429) return 'Espera un momento antes de volver a intentarlo.';
+  if (error.code === 'weak_password') return 'Elige una contraseña más fuerte.';
+  if (error.name === 'AuthRetryableFetchError') return 'No se pudo conectar. Inténtalo otra vez.';
+  return error.name === 'Error' ? error.message : 'No se pudo completar la solicitud. Inténtalo otra vez.';
+}
+
+function handle(form, action) {
+  const button = form.querySelector('button[type="submit"], button:not([type])');
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (button.disabled) return;
+    button.disabled = true;
+    message.textContent = 'Un momento…';
+    try {
+      message.textContent = await action(new FormData(form));
+    } catch (error) {
+      message.textContent = authMessage(error);
+    } finally {
+      if (form.elements.password) form.elements.password.value = '';
+      button.disabled = false;
+    }
+  });
+  button.disabled = false;
+}
+
+try {
+  const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.87.1/+esm');
+  const client = createClient(projectUrl, publishableKey, { auth: { flowType: 'implicit' } });
+
+  handle(login, async data => {
+    const { error } = await client.auth.signInWithPassword({
+      email: data.get('email').trim(),
+      password: data.get('password')
+    });
+    if (error) throw error;
+    return 'Sesión iniciada.';
+  });
+
+  handle(signup, async data => {
+    const name = username(data.get('username'));
+    if (!name) throw new Error('Elige un nombre válido de 3 a 24 caracteres.');
+    const metadata = { username: name };
+    const photo = data.get('photo');
+    if (photo.size) metadata.avatar = await avatarThumbnail(photo);
+    const { error } = await client.auth.signUp({
+      email: data.get('email').trim(),
+      password: data.get('password'),
+      options: { data: metadata, emailRedirectTo: storeUrl }
+    });
+    if (error) throw error;
+    signup.reset();
+    return 'Si el correo puede registrarse, recibirás un enlace para confirmar tu cuenta.';
+  });
+
+  handle(edit, async data => {
+    const name = username(data.get('username'));
+    if (!name) throw new Error('Elige un nombre válido de 3 a 24 caracteres.');
+    const photo = data.get('photo');
+    const metadata = { username: name };
+    if (photo.size) metadata.avatar = await avatarThumbnail(photo);
+    const { data: result, error } = await client.auth.updateUser({ data: metadata });
+    if (error) throw error;
+    edit.elements.photo.value = '';
+    renderAccount(result.user);
+    return 'Perfil guardado.';
+  });
+
+  signout.addEventListener('click', async () => {
+    signout.disabled = true;
+    try {
+      const { error } = await client.auth.signOut({ scope: 'local' });
+      if (error) throw error;
+      message.textContent = 'Sesión cerrada.';
+    } catch (error) {
+      message.textContent = authMessage(error);
+    } finally {
+      signout.disabled = false;
+    }
+  });
+  signout.disabled = false;
+
+  client.auth.onAuthStateChange((event, session) => {
+    renderAccount(session?.user);
+    if (event === 'INITIAL_SESSION') message.textContent = '';
+  });
+} catch {
+  message.textContent = 'El acceso a las cuentas no está disponible en este momento. Recarga la página para intentarlo otra vez.';
+}
