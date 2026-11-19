@@ -21,14 +21,25 @@ function username(value) {
 function renderAccount(user) {
   guest.hidden = Boolean(user);
   profile.hidden = !user;
-  sellerHeader.hidden = !user;
-  if (!user) return;
-
-  const name = username(user.user_metadata?.username) || 'Mi cuenta';
+  const owner = Boolean(user && user.app_metadata?.sadoc_role === 'owner');
   const avatar = sellerHeader.querySelector('.seller-avatar');
+  const label = sellerHeader.querySelector('strong');
+  sellerHeader.querySelector('.owner-badge').hidden = !owner;
+
+  if (!user) {
+    label.textContent = 'Registrarse';
+    const image = document.createElement('img');
+    image.alt = '';
+    image.src = 'assets/perfil-invitado.jpg';
+    avatar.replaceChildren(image);
+    return;
+  }
+
+  const profileName = username(user.user_metadata?.username);
+  const name = owner ? 'Sadoc777x' : profileName || 'Mi cuenta';
   const source = user.user_metadata?.avatar;
-  sellerHeader.querySelector('strong').textContent = name;
-  edit.elements.username.value = name;
+  label.textContent = name;
+  edit.elements.username.value = profileName;
   document.querySelector('#seller-welcome-title').textContent =
     `¡Te damos la bienvenida a SADOCSTYLE, ${name}!`;
   avatar.textContent = Array.from(name)[0].toUpperCase();

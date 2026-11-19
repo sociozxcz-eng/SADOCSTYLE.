@@ -315,19 +315,11 @@ header.ref-header{align-items:center!important}
 }
 </style>
 <style>
-#seller-header[hidden], .owner-label { display: none !important; }
-@media (min-width: 768px) {
-  header.ref-header:has(#seller-header[hidden]) .owner-label {
-    display: grid !important; grid-area: 1 / 1; align-self: start; justify-self: start;
-    gap: 4px; margin-top: 12px; color: #0b1531; font: 700 17px/1.25 Georgia, serif;
-  }
-  .owner-label-name { display: flex; align-items: center; gap: 6px; }
-  .owner-label small { color: #555f71; font-size: 12px; font-weight: 400; }
-  .owner-badge {
-    display: inline-grid; place-items: center; width: 21px; height: 21px;
-    box-sizing: border-box; border: 2px solid #e9d9ff; border-radius: 50%;
-    color: white; background: #8135e8; font: 900 12px Arial, sans-serif;
-  }
+.owner-badge[hidden] { display: none; }
+.owner-badge {
+  display: inline-grid; place-items: center; width: 21px; height: 21px; flex: none;
+  box-sizing: border-box; border: 2px solid #e9d9ff; border-radius: 50%;
+  color: white; background: #8135e8; font: 900 12px Arial, sans-serif;
 }
 #seller-header {
   display: flex; align-items: center; gap: 6px; min-width: 0;
@@ -386,13 +378,11 @@ header.ref-header{align-items:center!important}
   }
 }
 </style>
-<script type="module" src="seller-account.js?v=perfil"></script>
+<script type="module" src="seller-account.js?v=invitado"></script>
 </head><body>
-<div class="topline">🔒 SADOCSTYLE · Catálogo de ropa · Pagos próximamente.</div><header class="ref-header"><button class="ref-action ref-menu" onclick="menu(true)" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M3 12h18M3 19h18"/></svg></button><div class="owner-label">
-  <span class="owner-label-name"><strong>Sadoc777x</strong><span class="owner-badge" role="img" aria-label="Insignia del dueño de la tienda">✓</span></span>
-  <small>Dueño de la tienda</small>
-</div><a id="seller-header" href="#registro" onclick="return navigate(event, 'registro')" hidden>
-  <span class="seller-avatar" aria-hidden="true"></span><strong></strong>
+<div class="topline">🔒 SADOCSTYLE · Catálogo de ropa · Pagos próximamente.</div><header class="ref-header"><button class="ref-action ref-menu" onclick="menu(true)" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M3 12h18M3 19h18"/></svg></button><a id="seller-header" href="#registro" onclick="return navigate(event, 'registro')">
+  <span class="seller-avatar" aria-hidden="true"><img src="assets/perfil-invitado.jpg" alt=""></span>
+  <strong>Registrarse</strong><span class="owner-badge" role="img" aria-label="Insignia del dueño de la tienda" hidden>✓</span>
 </a><a class="ref-logo ref-logo-final sadoc-real-logo" href="#inicio" onclick="return navigate(event, 'inicio')" aria-label="SADOCSTYLE inicio"><picture><source media="(min-width: 768px)" srcset="assets/logo-escritorio.webp"><img src="assets/file_00000000c53c82129a1fae8b1a7595f4~2.jpg" alt="SADOCSTYLE: logo original con samuráis, espadas y gorro navideño" loading="eager" decoding="async"></picture></a><div class="ref-right"><button class="ref-action" onclick="view('productos')" aria-label="Buscar productos"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.2"/><path d="m16 16 5 5"/></svg></button><button class="ref-action ref-cart" onclick="view('carrito')" aria-label="Carrito"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2 3h3l2.5 13h12l2.5-10H6"/></svg><span class="cartnum" id="cartnum">0</span></button></div></header>
 <nav class="desktop-nav" aria-label="Menú principal">
   <a href="#inicio" onclick="return navigate(event, 'inicio')">Inicio</a>
