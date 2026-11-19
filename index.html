@@ -109,6 +109,16 @@ header:after{content:'🚚  Haz tu compra hoy, envíos inmediatos a toda Colombi
 .sadoc-coming-card h3{font:800 22px Georgia,serif;color:#111;margin:15px 0 8px}
 .sadoc-coming-card p{font:14px Arial,sans-serif;color:#666}
 @media(max-width:420px){.sadoc-coming-card{min-height:260px;padding:9px}.sadoc-coming-card h3{font-size:17px}}
+</style><style id="sadoc-mobile-two-columns-v8">
+/* Dos tarjetas pequeñas por fila también en móviles anchos */
+#homeproducts,#allproducts{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;max-width:700px!important;margin:0 auto!important;padding:12px 10px 28px!important}
+#homeproducts>.product,#allproducts>.product,#homeproducts>.sadoc-coming-card,#allproducts>.sadoc-coming-card{width:100%!important;max-width:215px!important;min-width:0!important;justify-self:center!important}
+#homeproducts .product .imgwrap,#allproducts .product .imgwrap{height:190px!important;padding:5px 5px 25px!important}
+#homeproducts .product .pc,#allproducts .product .pc{padding:12px 9px 14px!important}
+#homeproducts .product .pc h3,#allproducts .product .pc h3{font-size:17px!important;white-space:normal!important}
+#homeproducts .product .pc .price,#allproducts .product .pc .price{font-size:19px!important;white-space:normal!important}
+#homeproducts .product .pc .blackbutton,#allproducts .product .pc .blackbutton{font-size:17px!important;padding:9px!important}
+@media(min-width:760px){#homeproducts,#allproducts{grid-template-columns:repeat(3,minmax(0,1fr))!important;max-width:900px!important}}
 </style></head><body>
 <div class="topline">🔒 SADOCSTYLE · Catálogo de ropa · Pagos próximamente.</div><div class="coming" role="status">🔒 SADOCSTYLE está en exhibición pública · 🛍️ Compras y pagos: PRÓXIMAMENTE · No envíes dinero ni datos bancarios</div><div class="shipping">🚚 Envía y recibe pedidos en Colombia 🇨🇴 🎅 🎁</div>
 <header><button class="headbtn" onclick="menu(true)" aria-label="Abrir menú">☰</button><a href="#inicio" class="brand" onclick="view('inicio')" aria-label="SADOCSTYLE, inicio"><span class="brand-mark">🥷</span><span class="brand-words"><span class="brand-top">SADOC</span><span class="brand-bottom">STYLE</span></span><span class="santa-hat" aria-hidden="true">🎅</span></a><div class="headright"><button class="headbtn searchbtn" onclick="view('productos')" aria-label="Buscar productos">⌕</button><button class="headbtn" onclick="view('carrito')" aria-label="Carrito">🛒<span class="cartnum" id="cartnum">0</span></button></div></header>
