@@ -415,6 +415,7 @@ header.ref-header{align-items:center!important}
 }
 </style>
 <script type="module" src="seller-account.js?v=invitado"></script>
+<script type="module" src="product-photo.js"></script>
 </head><body>
 <div class="topline">🔒 SADOCSTYLE · Catálogo de ropa · Pagos próximamente.</div><header class="ref-header"><button class="ref-action ref-menu" onclick="menu(true)" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M3 12h18M3 19h18"/></svg></button><a id="seller-header" href="#registro" onclick="return navigate(event, 'registro')">
   <span class="seller-avatar" aria-hidden="true"><img src="assets/perfil-invitado.jpg" alt=""></span>
@@ -515,7 +516,7 @@ header.ref-header{align-items:center!important}
 </section>
 <section id="vender" class="screen"><h2>Vende tu ropa en SADOCSTYLE</h2><p>Publica tus prendas, indica el precio y selecciona si están en oferta.</p><div class="columns"><div class="frame"><h3>Venta normal</h3><div class="price">15 %</div><p class="message">Comisión para SADOCSTYLE por venta confirmada de un vendedor que todavía no ha comprado en la tienda.</p></div><div class="frame"><h3>Vendedor que ya compró</h3><div class="price">10 %</div><p class="message">Comisión reducida para vendedores que hayan realizado una compra confirmada en SADOCSTYLE.</p></div></div><p class="notice">El 10 % se aplica al vendedor que ya haya comprado en SADOCSTYLE, no a los productos en oferta. Estas comisiones son un modelo propuesto. En una versión real, la plataforma debe explicar también costos de pago, envíos, cancelaciones y devoluciones.</p><div class="sizes"><button class="redbutton" onclick="view('registro')">Registrarme para vender</button><button class="outline" onclick="view('comisiones')">Calcular comisión</button></div></section>
 <section id="comisiones" class="screen"><h2>Calculadora de comisiones</h2><p class="message">Simulación de comisión por venta confirmada. 10 % solo para vendedores con una compra previa confirmada; 15 % para los demás.</p><div class="form"><label>Precio del artículo (COP)<input id="calcprice" type="number" min="1" value="50000" oninput="calculate()"></label><label>Tipo de vendedor<select id="calctype" onchange="calculate()"><option value="0.15">Vendedor normal · 15 %</option><option value="0.10">Vendedor que compró · 10 %</option></select></label><div id="calcresult" class="summary"></div></div></section>
-<section id="publicar" class="screen"><h2>Publicar una prenda</h2><div class="coming">Publicación pública próximamente. Aún no se aceptan anuncios de vendedores.</div><p class="notice">Publicación de prueba: el anuncio se guarda solamente en este navegador. No aparecerá a otros usuarios.</p><form class="form" onsubmit="publish(event)" style="display:none"><label>Nombre del producto<input id="newname" maxlength="70" required placeholder="Ej.: Buzo negro"></label><label>Precio en COP<input id="newprice" type="number" min="1000" required></label><label>Tipo de venta<select id="newtype"><option value="normal">Vendedor normal (15 % comisión)</option><option value="oferta">Vendedor que compró (10 % comisión)</option></select></label><label>Descripción<textarea id="newdesc" maxlength="400" placeholder="Color, estado, material..."></textarea></label><label>Imagen de la prenda<input id="newimage" type="file" accept="image/*"></label><button class="redbutton">Publicar en este navegador</button></form></section>
+<section id="publicar" class="screen"><h2>Publicar un producto</h2><div class="coming">Publicación pública próximamente. Aún no se aceptan anuncios de vendedores.</div><p class="notice">Publicación de prueba: el anuncio se guarda solamente en este navegador. No aparecerá a otros usuarios.</p><form class="form" id="publish-form" onsubmit="publish(event)"><label>Nombre del producto<input id="newname" maxlength="70" required placeholder="Ej.: Buzo negro"></label><label>Precio en COP<input id="newprice" type="number" min="1000" required></label><label>Tipo de venta<select id="newtype"><option value="normal">Vendedor normal (15 % comisión)</option><option value="oferta">Vendedor que compró (10 % comisión)</option></select></label><label>Descripción<textarea id="newdesc" maxlength="400" placeholder="Color, estado, material..."></textarea></label><label>Foto del producto<input id="newimage" type="file" accept="image/jpeg,image/png,image/webp" required></label><p id="photo-status" class="message" role="status">El fondo se quitará automáticamente al elegir una foto.</p><img id="photo-preview" alt="Vista previa del producto sobre fondo blanco" style="width:min(100%,320px);border:1px solid #eee;border-radius:10px" hidden><a id="photo-download" class="outline" download="producto-fondo-blanco.jpg" hidden>Descargar foto</a><button id="publish-local" class="redbutton" disabled>Guardar anuncio en este navegador</button></form></section>
 <section id="pedidos" class="screen"><h2>Mis pedidos</h2><p class="notice">Todavía no hay seguimiento de pedidos reales. Esta función requiere cuentas de usuario, pedidos guardados en un servidor y actualizaciones de envío.</p></section>
 <section id="tallas" class="screen"><h2>Guía de tallas</h2><p>XS · S · M · L · XL</p><p class="message">Consulta las medidas exactas con el vendedor antes de comprar.</p></section>
 <footer class="foot">SADOCSTYLE 🥷 · Colombia · Precios en COP<br>Comisión propuesta: 15 % vendedor normal · 10 % vendedor que ya compró<br><strong>Tienda en vista previa pública.</strong> Pagos, pedidos y publicaciones de terceros próximamente.</footer>
@@ -588,7 +589,32 @@ function persistEdits(){localStorage.setItem('sadoc_product_overrides',JSON.stri
 function saveEdit(e){e.preventDefault();const p=all().find(p=>p.id===document.getElementById('editproduct').value);if(!p)return;const file=document.getElementById('editimage').files[0];if(file&&file.size>600000){alert('Usa una foto menor de 600 KB.');return}const finish=image=>{p.name=document.getElementById('editname').value.trim();p.price=Number(document.getElementById('editprice').value);p.desc=document.getElementById('editdesc').value.trim();if(image)p.image=image;if(persistEdits()){document.getElementById('editstatus').textContent='Guardado en este navegador. No se publicó para otros visitantes.';renderEditor()}};if(file){const r=new FileReader();r.onload=()=>finish(r.result);r.readAsDataURL(file)}else finish(null)}
 function newProduct(){listings.push({id:'p'+Date.now(),name:'Nuevo producto',price:50000,desc:'Descripción pendiente',image:'assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12',type:'normal'});persistEdits();renderEditor();document.getElementById('editproduct').value=listings[listings.length-1].id;loadEdit()}
 function deleteProduct(){const id=document.getElementById('editproduct').value;if(id==='main'){alert('El producto principal no se puede eliminar en esta demo. Puedes editarlo.');return}if(!confirm('¿Eliminar este producto de este navegador?'))return;listings=listings.filter(p=>p.id!==id);persistEdits();renderEditor()}
-function publish(e){e.preventDefault();const file=document.getElementById('newimage').files[0];const finish=image=>{const p={id:'p'+Date.now(),name:document.getElementById('newname').value.trim(),price:Number(document.getElementById('newprice').value),type:document.getElementById('newtype').value,desc:document.getElementById('newdesc').value||'Prenda publicada por un vendedor',image:image||'assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12'};listings.push(p);try{localStorage.setItem('sadoc_listings',JSON.stringify(listings))}catch{p.image='assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12';localStorage.setItem('sadoc_listings',JSON.stringify(listings))}e.target.reset();alert('Anuncio agregado a esta demostración local. No es público.');view('productos')};if(file){if(file.size>800000){alert('Para esta demostración usa una imagen menor de 800 KB.');return}const reader=new FileReader();reader.onload=()=>finish(reader.result);reader.readAsDataURL(file)}else finish('')}
+function publish(event) {
+  event.preventDefault();
+  const preview = document.getElementById('photo-preview');
+  if (preview.hidden || document.getElementById('publish-local').disabled) return;
+  const name = document.getElementById('newname').value.trim();
+  if (!name) return;
+  const product = {
+    id: 'p' + Date.now(),
+    name,
+    price: Number(document.getElementById('newprice').value),
+    type: document.getElementById('newtype').value,
+    desc: document.getElementById('newdesc').value || 'Producto publicado por un vendedor',
+    image: preview.src
+  };
+  const next = [...listings, product];
+  try {
+    localStorage.setItem('sadoc_listings', JSON.stringify(next));
+  } catch {
+    document.getElementById('photo-status').textContent =
+      'No hay espacio para guardar el anuncio en este navegador. Puedes descargar la foto.';
+    return;
+  }
+  listings = next;
+  event.target.reset();
+  view('productos');
+}
 function showLocation() {
   const target = document.getElementById(location.hash.slice(1));
   view(target?.matches('section.page, section.screen') ? target.id : 'inicio', false);
