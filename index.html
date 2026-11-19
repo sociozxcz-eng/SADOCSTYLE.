@@ -226,19 +226,35 @@ header.ref-header{align-items:center!important}
   .ref-shipping { padding: 0 20px 15px; }
   .ref-shipping-line { width: min(360px, 55%); height: 2px; margin-bottom: 10px; }
   .ref-shipping p { font: 16px/1.45 Arial, sans-serif; letter-spacing: normal; }
-  #inicio { background: #f6f5f4; padding: 18px 28px 34px; }
+  #inicio { background: #f6f5f4; padding-bottom: 34px; }
   #inicio .hero {
-    max-width: 1120px;
+    --holiday-art: url('assets/navidad-escritorio.webp');
+    isolation: isolate;
+    overflow: hidden;
+    height: clamp(460px, calc(100svh - 290px), 720px) !important;
+    aspect-ratio: auto !important;
+    background: #0b1531 !important;
+  }
+  #inicio .hero::before,
+  #inicio .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  #inicio .hero::before {
+    background: var(--holiday-art) center / 100% 100% no-repeat;
+    filter: blur(32px) saturate(.8);
+    transform: scale(1.04);
+  }
+  #inicio .hero::after {
+    width: min(100%, calc(clamp(460px, calc(100svh - 290px), 720px) * 1536 / 959));
     margin-inline: auto;
-    aspect-ratio: 1536 / 959 !important;
-    background-image: url('assets/navidad-escritorio.webp') !important;
-    border-radius: 18px 18px 0 0;
+    background: var(--holiday-art) center / contain no-repeat;
+    mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent);
   }
   #inicio .promo {
-    max-width: 1120px;
-    margin-inline: auto;
     padding: 14px 18px;
-    border-radius: 0 0 18px 18px;
     font-size: 19px;
   }
   #inicio .promo:hover { background: #750819; }
