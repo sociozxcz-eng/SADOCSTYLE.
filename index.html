@@ -200,158 +200,81 @@ header.ref-header a.sadoc-real-logo{display:flex!important;align-items:center!im
 header.ref-header a.sadoc-real-logo img{display:block!important;width:100%!important;height:auto!important;max-width:660px!important;object-fit:contain!important;opacity:1!important;visibility:visible!important}
 header.ref-header{align-items:center!important}
 </style><style id="sadoc-cart-owner-v25">.sadoc-seller-label{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;margin:12px 0;color:#181818}.sadoc-purple-check{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:50%;background:#7835dc;color:white;font-size:14px;font-weight:900}.sadoc-verified-caption{font-size:11px;color:#666}#detalle .redbutton:not(.disabledpay){margin:12px 0 8px;width:100%}#detalle .outline{margin:5px 0}</style><style id="sadoc-cart-v26">.sadoc-cart-all{display:flex;gap:9px;align-items:center;padding:14px 0;font-weight:700}.sadoc-cart-all input,.sadoc-cart-item>input{width:19px;height:19px;accent-color:#111}.sadoc-cart-item{display:flex;align-items:flex-start;gap:12px;padding:18px 0;border-bottom:1px solid #ddd}.sadoc-cart-item img{width:95px;height:110px;object-fit:cover;border-radius:8px}.sadoc-cart-info{display:flex;flex-direction:column;gap:8px;flex:1;min-width:0}.sadoc-cart-info b{color:#b71925}.sadoc-cart-qty{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.sadoc-cart-qty button{border:1px solid #ddd;border-radius:6px;background:white;padding:6px 11px}.sadoc-cart-qty button:last-child{border:0;text-decoration:underline;color:#666}#carttotal{display:flex;flex-direction:column;gap:8px}#carttotal strong{font-size:22px}#carttotal small{color:#777}.sadoc-cart-empty{text-align:center;padding:40px 0}</style><style id="sadoc-verified-badge-v27">.sadoc-purple-check{background:#8135e8!important;color:#fff!important;border:2px solid #e9d9ff!important;box-shadow:0 1px 5px rgba(111,45,206,.28)!important;font-size:12px!important;font-weight:900!important;width:21px!important;height:21px!important;line-height:1!important}</style><style id="sadoc-ratings-v28">.sadoc-rating-panel{border:1px solid #e5e5e5;border-radius:12px;padding:18px;margin:18px 0;background:#fff}.sadoc-rating-panel h3{font-size:17px;margin:0 0 8px}.sadoc-rating-stars{font-size:28px;letter-spacing:3px;color:#9b9b9b}.sadoc-rating-panel p{font-size:13px;margin:8px 0}.sadoc-rating-note{color:#777}.sadoc-rating-panel button:disabled{opacity:.55;cursor:not-allowed}</style><style id="sadoc-nequi-v29">.sadoc-nequi-pay{margin-top:18px}.sadoc-nequi-number{border:1px dashed #9b70ce;background:#faf6ff;color:#6029a6;padding:17px;border-radius:10px;font-weight:700;overflow-wrap:anywhere}.sadoc-nequi-pay .redbutton:disabled{opacity:.55;cursor:not-allowed}</style><style id="sadoc-checkout-flow-v30">#sadoc-payment-step{margin-top:22px}#sadoc-payment-step[hidden]{display:none!important}.sadoc-payment-method{border:2px solid #7a36ce;border-radius:12px;padding:16px;display:flex;align-items:center;gap:9px;margin:12px 0}.sadoc-payment-method span{margin-left:auto;color:#666;font-size:12px}.sadoc-nequi-pay{margin-top:16px}</style><style id="sadoc-buy-now-v31">#detalle .sadoc-buy-now{display:block;width:100%;padding:14px;margin:8px 0;border-radius:28px}</style>
-<style id="sadoc-desktop-layout-v42">
-/* Mejora exclusiva para laptop y escritorio: el diseño móvil permanece intacto. */
+<style id="sadoc-desktop">
 @media (min-width: 768px) {
-  body {overflow-x: hidden;}
-  main {max-width: 1400px; margin-inline: auto; padding-inline: 24px;}
-  #productos.screen {max-width: 1400px; padding: 24px 28px 65px;}
-  #homeproducts.products {
-    display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    justify-content: center;
-    gap: 24px !important;
-    width: 100%;
-    margin-inline: auto;
-  }
-  #allproducts.products-mini {
-    display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 24px !important;
-  }
-  #homeproducts > .product, #allproducts > .product {
-    box-sizing: border-box;
-    width: 100% !important;
-    max-width: none !important;
-    min-width: 0;
-    margin: 0 auto;
-  }
-  #homeproducts .product .imgwrap, #allproducts .product .imgwrap {
-    height: clamp(250px, 27vw, 350px) !important;
-  }
-  #homeproducts .product .pc h3, #allproducts .product .pc h3 {
-    font-size: clamp(20px, 2vw, 28px) !important;
-    overflow-wrap: anywhere;
-  }
-  #homeproducts .product .pc .price, #allproducts .product .pc .price {
-    font-size: clamp(20px, 2.2vw, 30px) !important;
-  }
-  .screen.show {width: min(100% - 36px, 1100px);}
-  #detalle .columns {grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);}
-  header.ref-header {padding-left: clamp(24px, 5vw, 85px) !important; padding-right: clamp(24px, 5vw, 85px) !important;}
-  .ref-shipping p {max-width: 1100px;}
-}
-@media (min-width: 1200px) {
-  #homeproducts.products, #allproducts.products-mini {
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  }
-  #homeproducts .product .imgwrap, #allproducts .product .imgwrap {
-    height: 300px !important;
-  }
-}
-</style>
-
-
-<style id="sadoc-desktop-layout-repair-v46">
-/* Clear independent desktop header rows: logo and shipping text never overlap. */
-@media screen and (min-width: 768px) {
   header.ref-header {
-    display: grid !important;
-    position: relative !important;
-    grid-template-columns: 60px minmax(0,1fr) 125px !important;
+    grid-template-columns: 116px minmax(0, 1fr) 116px !important;
     grid-template-rows: auto !important;
-    min-height: 105px !important;
-    height: auto !important;
-    align-items: center !important;
-    padding: 14px clamp(22px,4vw,65px) !important;
-    column-gap: 16px !important;
-    overflow: visible !important;
+    padding: 10px clamp(24px, 5vw, 72px) !important;
   }
   header.ref-header .ref-menu,
-  header.ref-header .ref-logo-final,
-  header.ref-header .ref-right {
-    grid-row: 1 !important;
-    align-self: center !important;
+  header.ref-header .ref-right,
+  header.ref-header a.sadoc-real-logo { grid-row: 1; }
+  header.ref-header .ref-menu { grid-column: 1; }
+  header.ref-header .ref-right { grid-column: 3; justify-self: end; gap: 12px !important; }
+  header.ref-header a.sadoc-real-logo {
+    grid-column: 2;
+    max-width: clamp(390px, 42vw, 560px) !important;
   }
-  header.ref-header .ref-menu {grid-column:1 !important;justify-self:start !important;}
-  header.ref-header .ref-logo-final {grid-column:2 !important;justify-self:center !important;width: min(100%, 380px) !important;}
-  header.ref-header .ref-logo-final img {
-    display:block !important;
-    width: 100% !important;
-    max-width: 380px !important;
-    max-height: 110px !important;
-    height: auto !important;
-    object-fit: contain !important;
+  header.ref-header .ref-action {
+    width: 46px !important;
+    height: 46px !important;
+    padding: 9px !important;
+    border-radius: 50%;
   }
-  header.ref-header .ref-right {grid-column:3 !important;justify-self:end !important;}
-  .ref-shipping {
-    clear: both !important;
-    position: relative !important;
-    display:block !important;
-    margin:0 !important;
-    padding: 10px 20px 14px !important;
-    background: #fff !important;
-    text-align:center !important;
+  .ref-header .ref-action:hover { background: #f3f3f3; }
+  .ref-shipping { padding: 0 20px 15px; }
+  .ref-shipping-line { width: min(360px, 55%); height: 2px; margin-bottom: 10px; }
+  .ref-shipping p { font: 16px/1.45 Arial, sans-serif; letter-spacing: normal; }
+  #inicio { background: #f6f5f4; padding: 18px 28px 34px; }
+  #inicio .hero {
+    max-width: 1120px;
+    margin-inline: auto;
+    aspect-ratio: 1536 / 959 !important;
+    background-image: url('assets/navidad-escritorio.webp') !important;
+    border-radius: 18px 18px 0 0;
   }
-  .ref-shipping .ref-shipping-line {margin: 0 auto 12px !important;}
-  .ref-shipping p {font-size: clamp(15px,1.5vw,19px) !important;line-height:1.4 !important;white-space:normal !important;}
-  section#inicio .hero {
-    display: block !important;
-    width: 100% !important;
-    height: 270px !important;
-    max-height: 270px !important;
-    min-height:0 !important;
-    padding:0 !important;
-    aspect-ratio:auto !important;
-    background: #101b34 url('assets/navidad.png') center 44%/cover no-repeat !important;
-    overflow:hidden !important;
+  #inicio .promo {
+    max-width: 1120px;
+    margin-inline: auto;
+    padding: 14px 18px;
+    border-radius: 0 0 18px 18px;
+    font-size: 19px;
   }
-  section#inicio .hero::before,
-  section#inicio .hero::after {content:none !important;display:none !important;}
-  #inicio .promo {padding: 14px 12px !important;}
-  #inicio .wave {height: 12px !important;}
+  #inicio .promo:hover { background: #750819; }
+  #inicio .wave { display: none; }
+  #homeproducts.products, #allproducts.products-mini {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 340px)) !important;
+    justify-content: center;
+    gap: 24px !important;
+    max-width: 1100px !important;
+    padding: 28px 0 10px !important;
+    align-items: stretch !important;
+  }
+  #homeproducts > .product, #allproducts > .product,
+  #homeproducts > .sadoc-coming-card, #allproducts > .sadoc-coming-card {
+    max-width: none !important;
+  }
+  #homeproducts .product .imgwrap, #allproducts .product .imgwrap {
+    height: 260px !important;
+  }
+  #homeproducts .product .pc h3, #allproducts .product .pc h3 {
+    font-size: 23px !important;
+  }
+  .screen.show { width: min(100% - 48px, 1020px); max-width: none; }
+  #detalle .columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-</style>
-
-<style id="sadoc-desktop-visibility-v47">
-/* Laptop y escritorio: logo protagonista, banner mas visible sin ampliar artificialmente. */
-@media screen and (min-width: 768px) {
-  header.ref-header {
-    grid-template-columns: 68px minmax(0, 1fr) 140px !important;
-    min-height: 155px !important;
-    padding: 14px clamp(20px, 4vw, 60px) !important;
-  }
-  header.ref-header a.sadoc-real-logo,
-  header.ref-header .ref-logo-final {
-    width: min(100%, 680px) !important;
-    max-width: 680px !important;
-    justify-self: center !important;
-  }
-  header.ref-header a.sadoc-real-logo img {
-    width: 100% !important;
-    max-width: 680px !important;
-    max-height: 150px !important;
-    object-fit: contain !important;
-  }
-  header.ref-header .ref-action {width: 52px !important;height:52px !important;}
-  .ref-shipping {padding: 6px 20px 12px !important;}
-  section#inicio .hero {
-    height: clamp(400px, 36vw, 510px) !important;
-    max-height: 510px !important;
-    aspect-ratio: auto !important;
-    background-image: url('assets/navidad.png') !important;
-    background-size: cover !important;
-    background-position: center 62% !important;
-    background-repeat: no-repeat !important;
-    background-color: #101b34 !important;
-    image-rendering: auto !important;
-  }
+.sadoc-real-logo picture { display: block; width: 100%; min-width: 0; }
+#inicio .promo { display: block; }
+#inicio .promo:focus-visible, .ref-header :is(button, a):focus-visible {
+  outline: 3px solid #ad142d;
+  outline-offset: 3px;
 }
 </style>
 </head><body>
-<div class="topline">🔒 SADOCSTYLE · Catálogo de ropa · Pagos próximamente.</div><header class="ref-header"><button class="ref-action ref-menu" onclick="menu(true)" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M3 12h18M3 19h18"/></svg></button><a class="ref-logo ref-logo-final sadoc-real-logo" href="#inicio" onclick="view('inicio')" aria-label="SADOCSTYLE inicio"><img src="assets/file_00000000c53c82129a1fae8b1a7595f4~2.jpg" alt="SADOCSTYLE: logo original con samuráis, espadas y gorro navideño" loading="eager" decoding="async"></a><div class="ref-right"><button class="ref-action" onclick="view('productos')" aria-label="Buscar productos"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.2"/><path d="m16 16 5 5"/></svg></button><button class="ref-action ref-cart" onclick="view('carrito')" aria-label="Carrito"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2 3h3l2.5 13h12l2.5-10H6"/></svg><span class="cartnum" id="cartnum">0</span></button></div></header><div class="ref-shipping"><div class="ref-shipping-line"></div><p>🚚 Haz tu compra hoy, envíos inmediatos a toda Colombia. 🎅 🎁</p></div>
+<div class="topline">🔒 SADOCSTYLE · Catálogo de ropa · Pagos próximamente.</div><header class="ref-header"><button class="ref-action ref-menu" onclick="menu(true)" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M3 12h18M3 19h18"/></svg></button><a class="ref-logo ref-logo-final sadoc-real-logo" href="#inicio" onclick="return navigate(event, 'inicio')" aria-label="SADOCSTYLE inicio"><picture><source media="(min-width: 768px)" srcset="assets/logo-escritorio.webp"><img src="assets/file_00000000c53c82129a1fae8b1a7595f4~2.jpg" alt="SADOCSTYLE: logo original con samuráis, espadas y gorro navideño" loading="eager" decoding="async"></picture></a><div class="ref-right"><button class="ref-action" onclick="view('productos')" aria-label="Buscar productos"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.2"/><path d="m16 16 5 5"/></svg></button><button class="ref-action ref-cart" onclick="view('carrito')" aria-label="Carrito"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2 3h3l2.5 13h12l2.5-10H6"/></svg><span class="cartnum" id="cartnum">0</span></button></div></header><div class="ref-shipping"><div class="ref-shipping-line"></div><p>🚚 Haz tu compra hoy, envíos inmediatos a toda Colombia. 🎅 🎁</p></div>
 <div id="overlay" class="overlay" onclick="menu(false)"></div><aside id="drawer" class="drawer"><button class="close" onclick="menu(false)">×</button><h2>SADOC<span style="color:#96081c">STYLE</span> 🥷</h2><button class="nav" onclick="view('inicio')">Inicio</button><button class="nav" onclick="view('productos')">Todos los productos</button><button class="nav" onclick="view('vender')">Vender ropa</button><button class="nav" onclick="view('registro')">Registro de vendedores (próximamente)</button><button class="nav" onclick="view('publicar')">Publicar producto (próximamente)</button><button class="nav" onclick="view('pedidos')">Mis pedidos</button><button class="nav" onclick="view('comisiones')">Comisiones</button><button class="nav" onclick="view('tallas')">Guía de tallas</button><button class="nav" onclick="view('administrar')">✏️ Editar mis productos (demo)</button><div class="bottom">Colombia | COP $<p class="message">Tienda en exhibición. Pagos próximamente.</p></div></aside>
-<section id="inicio" class="page"><div class="hero" role="img" aria-label="Banner navideño original SADOCSTYLE: ninja con espada, árbol de Navidad y regalos"></div><div class="promo" onclick="view('productos')">🎄 COLECCIÓN NAVIDEÑA · VER COLECCIÓN 🎁</div><div class="wave"></div><main><div class="products" id="homeproducts"></div></main></section>
+<section id="inicio" class="page"><div class="hero" role="img" aria-label="Banner navideño original SADOCSTYLE: ninja con espada, árbol de Navidad y regalos"></div><a class="promo" href="#productos" onclick="return navigate(event, 'productos')">🎄 COLECCIÓN NAVIDEÑA · VER COLECCIÓN 🎁</a><div class="wave"></div><main><div class="products" id="homeproducts"></div></main></section>
 <section id="productos" class="screen"><h2 class="section-title">TODOS LOS PRODUCTOS</h2><div class="products-mini" id="allproducts"></div></section>
 <section id="detalle" class="screen"><button class="outline" onclick="view('inicio')">← Volver</button><div class="columns" style="margin-top:20px"><div><img src="assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12" class="detail-pic" id="detailimage" alt="Buzo estampado"><div class="sizes"><button class="outline" onclick="switchImage('assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12')">Vista frontal</button><button class="outline" onclick="switchImage('assets/file_000000004e0c81f7886b1030db71e95b.jpg')">Vista trasera</button></div></div><div><h1 id="detailname">DENIM TEARS</h1><div class="price" id="detailprice">$50.000 COP</div><p class="message">Buzo blanco con capucha, estampados negros y bolsillo delantero. Fotografías del producto.</p><p><strong>Talla</strong></p><div class="sizes" id="sizeoptions"></div><div class="frame" style="margin:12px 0;padding:14px"><strong>📍 Ubicación del vendedor: Ibagué, Tolima, Colombia</strong></div><div class="sadoc-seller-label"><strong>SADOC 777X</strong> <span class="sadoc-purple-check" title="Verificado en SADOCSTYLE" aria-label="Verificado en SADOCSTYLE">✓</span><span class="sadoc-verified-caption">Verificado</span></div><button class="redbutton" type="button" onclick="addCart(true)">🛒 Agregar al carrito</button><button class="blackbutton sadoc-buy-now" type="button" onclick="buyNow()">🛍️ Comprar ahora</button><button class="outline" type="button" onclick="addCart(false);alert('Producto agregado al carrito 🛒')">+ Añadir y seguir mirando</button><div id="sadoc-seller-rating"></div><p class="notice">💜 Compra con Nequi o consulta tu pedido por WhatsApp. El pago y la entrega se confirman directamente con SADOCSTYLE.</p></div></div></section>
 <section id="carrito" class="screen"><h2>Mi carrito 🛒</h2><div id="cartlist"></div><div class="summary" id="carttotal"></div><button class="redbutton" type="button" onclick="view('checkout')">🛍️ Comprar</button></section>
@@ -365,7 +288,17 @@ header.ref-header{align-items:center!important}
 <footer class="foot">SADOCSTYLE 🥷 · Colombia · Precios en COP<br>Comisión propuesta: 15 % vendedor normal · 10 % vendedor que ya compró<br><strong>Tienda en vista previa pública.</strong> Pagos, pedidos, registro y publicaciones de terceros próximamente.</footer>
 <section id="administrar" class="screen"><h2>✏️ Editar mis productos</h2><p class="notice"><strong>Modo demostración:</strong> estos cambios se guardan solo en este navegador. Otros visitantes NO los verán. Para administrar una tienda pública necesitamos acceso privado y una base de datos.</p><div class="frame"><label>Producto<select id="editproduct" onchange="loadEdit()"></select></label><form class="form" onsubmit="saveEdit(event)"><label>Nombre<input id="editname" required maxlength="70"></label><label>Precio (COP)<input id="editprice" type="number" min="1000" required></label><label>Descripción<textarea id="editdesc" maxlength="400"></textarea></label><label>Imagen del producto<input id="editimage" type="file" accept="image/*"></label><button class="redbutton" type="submit">Guardar cambios en este celular</button></form><button class="outline" onclick="newProduct()">+ Agregar otro producto</button><button class="outline" onclick="deleteProduct()">Eliminar producto seleccionado</button><p class="smallnote" id="editstatus"></p></div></section><script>
 const money=n=>'$'+Number(n||0).toLocaleString('es-CO')+' COP';const base={id:'main',name:'DENIM TEARS',price:50000,type:'normal',image:'assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12',desc:'Buzo blanco con capucha y estampados negros'};let cart=JSON.parse(localStorage.getItem('sadoc_cart')||'[]');let listings=JSON.parse(localStorage.getItem('sadoc_listings')||'[]');let selectedSize='Única',current=base;const overrides=JSON.parse(localStorage.getItem('sadoc_product_overrides')||'{}');Object.assign(base,overrides);base.name='DENIM TEARS';base.image='assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12';
-function menu(open){document.getElementById('drawer').classList.toggle('show',open);document.getElementById('overlay').classList.toggle('show',open)}function view(s){menu(false);document.querySelectorAll('section.page,section.screen').forEach(el=>el.classList.toggle('show',el.id===s));document.querySelector('#inicio').style.display=s==='inicio'?'block':'none';if(s==='productos')renderProducts();if(s==='carrito'){sadocDirectPurchase=null;renderCart();}if(s==='checkout')renderCheckout();if(s==='comisiones')calculate();if(s==='administrar')renderEditor();window.scrollTo(0,0);location.hash=s}
+function menu(open){document.getElementById('drawer').classList.toggle('show',open);document.getElementById('overlay').classList.toggle('show',open)}function navigate(event, screen) {
+  if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  view(screen);
+}
+function view(s, updateHistory = true) {
+menu(false);document.querySelectorAll('section.page,section.screen').forEach(el=>el.classList.toggle('show',el.id===s));document.querySelector('#inicio').style.display=s==='inicio'?'block':'none';if(s==='productos')renderProducts();if(s==='carrito'){sadocDirectPurchase=null;renderCart();}if(s==='checkout')renderCheckout();if(s==='comisiones')calculate();if(s==='administrar')renderEditor();if (updateHistory && location.hash !== '#' + s) {
+    history.pushState(null, '', '#' + s);
+  }
+  window.scrollTo(0, 0);
+}
 function card(p){const div=document.createElement('article');div.className='product';const wrap=document.createElement('div');wrap.className='imgwrap';const img=document.createElement('img');img.src=p.id==='main'?'assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12':p.image;img.alt=p.name;wrap.appendChild(img);if(p.type==='oferta'||p.id==='main'){const pill=document.createElement('span');pill.className='pill';pill.textContent='Oferta';wrap.appendChild(pill)}div.appendChild(wrap);const pc=document.createElement('div');pc.className='pc';const title=document.createElement('h3');title.textContent=p.id==='main'?'DENIM TEARS 🥷':p.name;pc.appendChild(title);if(p.id==='main'){const old=document.createElement('p');old.className='oldprice';old.textContent=money(83000);pc.appendChild(old)}const price=document.createElement('div');price.className='price';price.textContent=money(p.price);pc.appendChild(price);if(p.id==='main'){const seller=document.createElement('div');seller.className='sadoc-seller-label';seller.innerHTML='<strong>SADOC 777X</strong> <span class="sadoc-purple-check" title="Insignia interna de SADOCSTYLE">✦</span>';pc.appendChild(seller)}if(p.id==='main'&&p.price<83000){const saving=document.createElement('span');saving.className='save';saving.textContent='♧ Ahorras '+Math.round((1-p.price/83000)*100)+'%';pc.appendChild(saving)}const small=document.createElement('p');small.className='info';small.textContent=p.id==='main'?'Diseño exclusivo · Estilo urbano':p.desc;const btn=document.createElement('button');btn.className='blackbutton';btn.textContent='VER 🛒';btn.onclick=()=>openProduct(p.id);if(p.id!=='main')pc.appendChild(small);pc.appendChild(btn);div.appendChild(pc);return div}
 function all(){return [base,...listings]}function comingCard(){const el=document.createElement('article');el.className='sadoc-coming-card';el.innerHTML='<span class="coming-icon" aria-hidden="true">👕</span><h3>PRÓXIMAMENTE</h3><p>Nuevas prendas en camino</p>';return el}function renderProducts(){for(const id of ['homeproducts','allproducts']){const el=document.getElementById(id);const products=(id==='homeproducts'?[base]:all()).map(card);if(id==='homeproducts'||all().length===1)products.push(comingCard());el.replaceChildren(...products)}}
 function openProduct(id){current=all().find(p=>p.id===id)||base;document.getElementById('detailname').textContent=current.id==='main'?'DENIM TEARS 🥷':current.name;document.getElementById('detailprice').textContent=money(current.price);document.getElementById('detailimage').src=current.image;document.getElementById('sizeoptions').replaceChildren(...['Única'].map(s=>{let b=document.createElement('button');b.className='sz'+(s===selectedSize?' selected':'');b.textContent=s;b.onclick=()=>{selectedSize=s;openProduct(id)};return b}));renderSellerRating();view('detalle')}
@@ -414,5 +347,12 @@ function saveEdit(e){e.preventDefault();const p=all().find(p=>p.id===document.ge
 function newProduct(){listings.push({id:'p'+Date.now(),name:'Nuevo producto',price:50000,desc:'Descripción pendiente',image:'assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12',type:'normal'});persistEdits();renderEditor();document.getElementById('editproduct').value=listings[listings.length-1].id;loadEdit()}
 function deleteProduct(){const id=document.getElementById('editproduct').value;if(id==='main'){alert('El producto principal no se puede eliminar en esta demo. Puedes editarlo.');return}if(!confirm('¿Eliminar este producto de este navegador?'))return;listings=listings.filter(p=>p.id!==id);persistEdits();renderEditor()}
 function publish(e){e.preventDefault();const file=document.getElementById('newimage').files[0];const finish=image=>{const p={id:'p'+Date.now(),name:document.getElementById('newname').value.trim(),price:Number(document.getElementById('newprice').value),type:document.getElementById('newtype').value,desc:document.getElementById('newdesc').value||'Prenda publicada por un vendedor',image:image||'assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12'};listings.push(p);try{localStorage.setItem('sadoc_listings',JSON.stringify(listings))}catch{p.image='assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12';localStorage.setItem('sadoc_listings',JSON.stringify(listings))}e.target.reset();alert('Anuncio agregado a esta demostración local. No es público.');view('productos')};if(file){if(file.size>800000){alert('Para esta demostración usa una imagen menor de 800 KB.');return}const reader=new FileReader();reader.onload=()=>finish(reader.result);reader.readAsDataURL(file)}else finish('')}
-window.addEventListener('hashchange',()=>{let s=location.hash.slice(1);if(document.getElementById(s))view(s)});saveCart();renderProducts();view(document.getElementById(location.hash.slice(1))?location.hash.slice(1):'inicio');
+function showLocation() {
+  const target = document.getElementById(location.hash.slice(1));
+  view(target?.matches('section.page, section.screen') ? target.id : 'inicio', false);
+}
+window.addEventListener('hashchange', showLocation);
+saveCart();
+renderProducts();
+showLocation();
 </script></body></html>
