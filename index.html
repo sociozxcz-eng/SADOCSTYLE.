@@ -288,6 +288,58 @@ header.ref-header{align-items:center!important}
   }
 }
 </style>
+
+<style id="sadoc-desktop-hero-split-v45">
+/* Laptop/PC: banner horizontal con arte completo, sin recortes. */
+@media screen and (min-width: 768px) {
+  section#inicio .hero {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    width: 100% !important;
+    height: 340px !important;
+    max-height: 340px !important;
+    min-height: 0 !important;
+    aspect-ratio: auto !important;
+    padding: 35px max(32px, calc((100vw - 1240px) / 2)) !important;
+    background-color: #101b34 !important;
+    background-image: linear-gradient(100deg, #101b34 0%, #101b34 40%, rgba(16,27,52,.80) 54%, transparent 72%), url('assets/navidad.png') !important;
+    background-size: 100% 100%, auto 100% !important;
+    background-position: center, right center !important;
+    background-repeat: no-repeat !important;
+    overflow: hidden !important;
+  }
+  section#inicio .hero::before {
+    content: 'SADOCSTYLE';
+    display: block;
+    position: relative;
+    z-index: 1;
+    max-width: 55%;
+    color: #fff;
+    font: 900 clamp(32px, 4.7vw, 65px)/1.1 Arial, sans-serif;
+    letter-spacing: -.045em;
+  }
+  section#inicio .hero::after {
+    content: 'Descubre nuestra colección de ropa';
+    display: block;
+    position: relative;
+    z-index: 1;
+    max-width: 45%;
+    margin-top: 14px;
+    color: #f5f5f5;
+    font: 400 clamp(15px, 1.8vw, 21px)/1.4 Arial, sans-serif;
+  }
+  #inicio .promo {padding: 13px 12px !important;}
+  #inicio .wave {height: 12px !important;}
+}
+@media screen and (min-width: 1200px) {
+  section#inicio .hero {
+    height: 380px !important;
+    max-height: 380px !important;
+  }
+}
+</style>
 </head><body>
 <div class="topline">🔒 SADOCSTYLE · Catálogo de ropa · Pagos próximamente.</div><header class="ref-header"><button class="ref-action ref-menu" onclick="menu(true)" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M3 12h18M3 19h18"/></svg></button><a class="ref-logo ref-logo-final sadoc-real-logo" href="#inicio" onclick="view('inicio')" aria-label="SADOCSTYLE inicio"><img src="assets/file_00000000c53c82129a1fae8b1a7595f4~2.jpg" alt="SADOCSTYLE: logo original con samuráis, espadas y gorro navideño" loading="eager" decoding="async"></a><div class="ref-right"><button class="ref-action" onclick="view('productos')" aria-label="Buscar productos"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.2"/><path d="m16 16 5 5"/></svg></button><button class="ref-action ref-cart" onclick="view('carrito')" aria-label="Carrito"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2 3h3l2.5 13h12l2.5-10H6"/></svg><span class="cartnum" id="cartnum">0</span></button></div></header><div class="ref-shipping"><div class="ref-shipping-line"></div><p>🚚 Haz tu compra hoy, envíos inmediatos a toda Colombia. 🎅 🎁</p></div>
 <div id="overlay" class="overlay" onclick="menu(false)"></div><aside id="drawer" class="drawer"><button class="close" onclick="menu(false)">×</button><h2>SADOC<span style="color:#96081c">STYLE</span> 🥷</h2><button class="nav" onclick="view('inicio')">Inicio</button><button class="nav" onclick="view('productos')">Todos los productos</button><button class="nav" onclick="view('vender')">Vender ropa</button><button class="nav" onclick="view('registro')">Registro de vendedores (próximamente)</button><button class="nav" onclick="view('publicar')">Publicar producto (próximamente)</button><button class="nav" onclick="view('pedidos')">Mis pedidos</button><button class="nav" onclick="view('comisiones')">Comisiones</button><button class="nav" onclick="view('tallas')">Guía de tallas</button><button class="nav" onclick="view('administrar')">✏️ Editar mis productos (demo)</button><div class="bottom">Colombia | COP $<p class="message">Tienda en exhibición. Pagos próximamente.</p></div></aside>
