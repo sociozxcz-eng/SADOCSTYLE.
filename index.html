@@ -202,6 +202,21 @@ header.ref-header{align-items:center!important}
 </style><style id="sadoc-cart-owner-v25">.sadoc-seller-label{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;margin:12px 0;color:#181818}.sadoc-purple-check{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:50%;background:#7835dc;color:white;font-size:14px;font-weight:900}.sadoc-verified-caption{font-size:11px;color:#666}#detalle .redbutton:not(.disabledpay){margin:12px 0 8px;width:100%}#detalle .outline{margin:5px 0}</style><style id="sadoc-cart-v26">.sadoc-cart-all{display:flex;gap:9px;align-items:center;padding:14px 0;font-weight:700}.sadoc-cart-all input,.sadoc-cart-item>input{width:19px;height:19px;accent-color:#111}.sadoc-cart-item{display:flex;align-items:flex-start;gap:12px;padding:18px 0;border-bottom:1px solid #ddd}.sadoc-cart-item img{width:95px;height:110px;object-fit:cover;border-radius:8px}.sadoc-cart-info{display:flex;flex-direction:column;gap:8px;flex:1;min-width:0}.sadoc-cart-info b{color:#b71925}.sadoc-cart-qty{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.sadoc-cart-qty button{border:1px solid #ddd;border-radius:6px;background:white;padding:6px 11px}.sadoc-cart-qty button:last-child{border:0;text-decoration:underline;color:#666}#carttotal{display:flex;flex-direction:column;gap:8px}#carttotal strong{font-size:22px}#carttotal small{color:#777}.sadoc-cart-empty{text-align:center;padding:40px 0}</style><style id="sadoc-verified-badge-v27">.sadoc-purple-check{background:#8135e8!important;color:#fff!important;border:2px solid #e9d9ff!important;box-shadow:0 1px 5px rgba(111,45,206,.28)!important;font-size:12px!important;font-weight:900!important;width:21px!important;height:21px!important;line-height:1!important}</style><style id="sadoc-ratings-v28">.sadoc-rating-panel{border:1px solid #e5e5e5;border-radius:12px;padding:18px;margin:18px 0;background:#fff}.sadoc-rating-panel h3{font-size:17px;margin:0 0 8px}.sadoc-rating-stars{font-size:28px;letter-spacing:3px;color:#9b9b9b}.sadoc-rating-panel p{font-size:13px;margin:8px 0}.sadoc-rating-note{color:#777}.sadoc-rating-panel button:disabled{opacity:.55;cursor:not-allowed}</style><style id="sadoc-nequi-v29">.sadoc-nequi-pay{margin-top:18px}.sadoc-nequi-number{border:1px dashed #9b70ce;background:#faf6ff;color:#6029a6;padding:17px;border-radius:10px;font-weight:700;overflow-wrap:anywhere}.sadoc-nequi-pay .redbutton:disabled{opacity:.55;cursor:not-allowed}</style><style id="sadoc-checkout-flow-v30">#sadoc-payment-step{margin-top:22px}#sadoc-payment-step[hidden]{display:none!important}.sadoc-payment-method{border:2px solid #7a36ce;border-radius:12px;padding:16px;display:flex;align-items:center;gap:9px;margin:12px 0}.sadoc-payment-method span{margin-left:auto;color:#666;font-size:12px}.sadoc-nequi-pay{margin-top:16px}</style><style id="sadoc-buy-now-v31">#detalle .sadoc-buy-now{display:block;width:100%;padding:14px;margin:8px 0;border-radius:28px}</style>
 <style id="sadoc-desktop">
 .desktop-nav, .store-owner { display: none; }
+#sales-nav:not([hidden]) {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  width: min(calc(100% - 30px), 990px);
+  margin: 10px auto 0;
+  font: 700 15px/1.3 Georgia, serif;
+}
+#sales-nav a {
+  padding: 9px 13px;
+  border: 1px solid #e9edf3;
+  border-radius: 8px;
+  background: #f6f8fb;
+  color: #0b1531;
+}
+#sales-nav a:hover { border-color: #0b1531; }
+#sales-nav a[aria-current="page"] { color: white; background: #0b1531; border-color: #0b1531; }
 @media (min-width: 768px) {
   header.ref-header {
     grid-template-columns: 140px minmax(0, 1fr) 140px !important;
@@ -249,7 +264,7 @@ header.ref-header{align-items:center!important}
   }
   .desktop-nav a { padding: 10px 7px; border-bottom: 2px solid transparent; }
   .desktop-nav a:hover { background: #f1f4f9; }
-  .desktop-nav a[aria-current="page"] { border-bottom-color: #0b1531; }
+  .desktop-nav a[aria-current] { border-bottom-color: #0b1531; }
   .desktop-nav a:focus-visible { outline: 2px solid #0b1531; outline-offset: 2px; }
   .ref-header .ref-action:hover { background: #f3f3f3; }
   .ref-shipping { padding: 10px 20px 12px; }
@@ -379,16 +394,19 @@ header.ref-header{align-items:center!important}
 <nav class="desktop-nav" aria-label="Menú principal">
   <a href="#inicio" onclick="return navigate(event, 'inicio')">Inicio</a>
   <a href="#productos" onclick="return navigate(event, 'productos')">Productos</a>
-  <a href="#vender" onclick="return navigate(event, 'vender')">Vender ropa</a>
+  <a href="#vender" onclick="return navigate(event, 'vender')">Ventas</a>
   <a href="#registro" onclick="return navigate(event, 'registro')">Cuenta de vendedor</a>
-  <a href="#publicar" onclick="return navigate(event, 'publicar')">Publicar producto</a>
   <a href="#pedidos" onclick="return navigate(event, 'pedidos')">Mis pedidos</a>
-  <a href="#comisiones" onclick="return navigate(event, 'comisiones')">Comisiones</a>
   <a href="#tallas" onclick="return navigate(event, 'tallas')">Guía de tallas</a>
-  <a href="#administrar" onclick="return navigate(event, 'administrar')">Editar productos (demo)</a>
 </nav>
 <div class="ref-shipping"><div class="ref-shipping-line"></div><p>🚚 Haz tu compra hoy, envíos inmediatos a toda Colombia. 🎅 🎁</p></div>
-<div id="overlay" class="overlay" onclick="menu(false)"></div><aside id="drawer" class="drawer"><button class="close" onclick="menu(false)">×</button><h2>SADOC<span style="color:#96081c">STYLE</span> 🥷</h2><button class="nav" onclick="view('inicio')">Inicio</button><button class="nav" onclick="view('productos')">Todos los productos</button><button class="nav" onclick="view('vender')">Vender ropa</button><button class="nav" onclick="view('registro')">Cuenta de vendedor</button><button class="nav" onclick="view('publicar')">Publicar producto (próximamente)</button><button class="nav" onclick="view('pedidos')">Mis pedidos</button><button class="nav" onclick="view('comisiones')">Comisiones</button><button class="nav" onclick="view('tallas')">Guía de tallas</button><button class="nav" onclick="view('administrar')">✏️ Editar mis productos (demo)</button><div class="bottom">Colombia | COP $<p class="message">Tienda en exhibición. Pagos próximamente.</p></div></aside>
+<div id="overlay" class="overlay" onclick="menu(false)"></div><aside id="drawer" class="drawer"><button class="close" onclick="menu(false)">×</button><h2>SADOC<span style="color:#96081c">STYLE</span> 🥷</h2><button class="nav" onclick="view('inicio')">Inicio</button><button class="nav" onclick="view('productos')">Todos los productos</button><button class="nav" onclick="view('vender')">Ventas</button><button class="nav" onclick="view('registro')">Cuenta de vendedor</button><button class="nav" onclick="view('pedidos')">Mis pedidos</button><button class="nav" onclick="view('tallas')">Guía de tallas</button><div class="bottom">Colombia | COP $<p class="message">Tienda en exhibición. Pagos próximamente.</p></div></aside>
+<nav id="sales-nav" aria-label="Menú de ventas" hidden>
+  <a href="#vender" onclick="return navigate(event, 'vender')">Vender ropa</a>
+  <a href="#publicar" onclick="return navigate(event, 'publicar')">Publicar producto</a>
+  <a href="#comisiones" onclick="return navigate(event, 'comisiones')">Comisiones</a>
+  <a href="#administrar" onclick="return navigate(event, 'administrar')">Editar productos (demo)</a>
+</nav>
 <section id="inicio" class="page"><div class="hero" role="img" aria-label="Banner navideño original SADOCSTYLE: ninja con espada, árbol de Navidad y regalos"></div><a class="promo" href="#productos" onclick="return navigate(event, 'productos')"><span class="promo-mobile">🎄 COLECCIÓN NAVIDEÑA · VER COLECCIÓN 🎁</span><span class="promo-desktop">Ver colección navideña →</span></a><div class="wave"></div><main><div class="products" id="homeproducts"></div></main></section>
 <section id="productos" class="screen"><h2 class="section-title">TODOS LOS PRODUCTOS</h2><div class="products-mini" id="allproducts"></div></section>
 <section id="detalle" class="screen"><button class="outline" onclick="view('inicio')">← Volver</button><div class="columns" style="margin-top:20px"><div><img src="assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12" class="detail-pic" id="detailimage" alt="Buzo estampado"><div class="sizes"><button class="outline" onclick="switchImage('assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12')">Vista frontal</button><button class="outline" onclick="switchImage('assets/file_000000004e0c81f7886b1030db71e95b.jpg')">Vista trasera</button></div></div><div><h1 id="detailname">DENIM TEARS</h1><div class="price" id="detailprice">$50.000 COP</div><p class="message">Buzo blanco con capucha, estampados negros y bolsillo delantero. Fotografías del producto.</p><p><strong>Talla</strong></p><div class="sizes" id="sizeoptions"></div><div class="frame" style="margin:12px 0;padding:14px"><strong>📍 Ubicación del vendedor: Ibagué, Tolima, Colombia</strong></div><div class="sadoc-seller-label"><strong>Sadoc777x</strong><span class="sadoc-purple-check" role="img" aria-label="Insignia del dueño de la tienda" title="Insignia del dueño de la tienda">✓</span></div><button class="redbutton" type="button" onclick="addCart(true)">🛒 Agregar al carrito</button><button class="blackbutton sadoc-buy-now" type="button" onclick="buyNow()">🛍️ Comprar ahora</button><button class="outline" type="button" onclick="addCart(false);alert('Producto agregado al carrito 🛒')">+ Añadir y seguir mirando</button><div id="sadoc-seller-rating"></div><p class="notice">💜 Compra con Nequi o consulta tu pedido por WhatsApp. El pago y la entrega se confirman directamente con SADOCSTYLE.</p></div></div></section>
@@ -455,8 +473,13 @@ function menu(open){document.getElementById('drawer').classList.toggle('show',op
   view(screen);
 }
 function view(s, updateHistory = true) {
-  for (const link of document.querySelectorAll('.desktop-nav a')) {
-    if (link.hash === '#' + s) link.setAttribute('aria-current', 'page');
+  const sales = document.getElementById('sales-nav');
+  const salesScreen = ['vender', 'publicar', 'comisiones', 'administrar'].includes(s);
+  sales.hidden = !salesScreen;
+  for (const link of document.querySelectorAll('.desktop-nav a, #sales-nav a')) {
+    const active = link.hash === '#' + s;
+    const salesCategory = salesScreen && link.hash === '#vender' && !sales.contains(link);
+    if (active || salesCategory) link.setAttribute('aria-current', active ? 'page' : 'true');
     else link.removeAttribute('aria-current');
   }
 menu(false);document.querySelectorAll('section.page,section.screen').forEach(el=>el.classList.toggle('show',el.id===s));document.querySelector('#inicio').style.display=s==='inicio'?'block':'none';if(s==='productos')renderProducts();if(s==='carrito'){sadocDirectPurchase=null;renderCart();}if(s==='checkout')renderCheckout();if(s==='comisiones')calculate();if(s==='administrar')renderEditor();if (updateHistory && location.hash !== '#' + s) {
