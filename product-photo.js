@@ -6,35 +6,38 @@ const download = document.querySelector('#photo-download');
 const remove = document.querySelector('#photo-remove');
 
 let revision = 0;
-let model;
+let worker;
 
-async function preparePhoto(file) {
-  const { pipeline, RawImage } = await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1');
-  model ??= pipeline('background-removal', 'onnx-community/ormbg-ONNX', { dtype: 'q8', device: 'wasm' })
-    .catch(error => { model = undefined; throw error; });
-
-  const bitmap = await createImageBitmap(file);
-  const source = document.createElement('canvas');
-  try {
-    const scale = Math.min(1, 900 / Math.max(bitmap.width, bitmap.height));
-    source.width = Math.max(1, Math.round(bitmap.width * scale));
-    source.height = Math.max(1, Math.round(bitmap.height * scale));
-    source.getContext('2d').drawImage(bitmap, 0, 0, source.width, source.height);
-  } finally {
-    bitmap.close();
-  }
-
-  const removeBackground = await model;
-  const cutouts = await removeBackground(await RawImage.fromCanvas(source));
-  const subject = cutouts[0].toCanvas();
-  const output = document.createElement('canvas');
-  output.width = subject.width;
-  output.height = subject.height;
-  const context = output.getContext('2d');
-  context.fillStyle = '#fff';
-  context.fillRect(0, 0, output.width, output.height);
-  context.drawImage(subject, 0, 0);
-  return output.toDataURL('image/jpeg', 0.88);
+function preparePhoto(file) {
+  return new Promise((resolve, reject) => {
+    worker ??= new Worker(new URL('./product-photo-worker.js?v=1', import.meta.url), { type: 'module' });
+    const activeWorker = worker;
+    const finish = () => {
+      clearTimeout(timeout);
+      activeWorker.onmessage = null;
+      activeWorker.onerror = null;
+    };
+    const fail = error => {
+      finish();
+      activeWorker.terminate();
+      worker = undefined;
+      reject(error);
+    };
+    const timeout = setTimeout(() => fail(new Error('El recorte tardó demasiado.')), 180000);
+    activeWorker.onerror = event => fail(new Error(event.message || 'No se pudo iniciar el recorte.'));
+    activeWorker.onmessage = ({ data }) => {
+      if (!data.image) {
+        fail(new Error(data.error));
+        return;
+      }
+      finish();
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(data.image);
+    };
+    activeWorker.postMessage(file);
+  });
 }
 
 function clearPreview() {
