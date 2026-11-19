@@ -415,7 +415,15 @@ header.ref-header{align-items:center!important}
 }
 </style>
 <script type="module" src="seller-account.js?v=invitado"></script>
-<script type="module" src="product-photo.js?v=4"></script>
+<script type="module" src="product-photo.js?v=5"></script>
+<style>
+#homeproducts > .product, #allproducts > .product {
+  box-shadow: 0 5px 14px rgb(20 24 34 / 7%) !important;
+}
+#homeproducts .imgwrap img, #allproducts .imgwrap img {
+  filter: none !important;
+}
+</style>
 </head><body>
 <div class="topline">🔒 SADOCSTYLE · Catálogo de ropa · Pagos próximamente.</div><header class="ref-header"><button class="ref-action ref-menu" onclick="menu(true)" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M3 12h18M3 19h18"/></svg></button><a id="seller-header" href="#registro" onclick="return navigate(event, 'registro')">
   <span class="seller-avatar" aria-hidden="true"><img src="assets/perfil-invitado.jpg" alt=""></span>

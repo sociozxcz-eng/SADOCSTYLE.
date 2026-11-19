@@ -16,7 +16,7 @@ function releaseOriginal() {
 
 function preparePhoto(file) {
   return new Promise((resolve, reject) => {
-    worker ??= new Worker(new URL('./product-photo-worker.js?v=1', import.meta.url), { type: 'module' });
+    worker ??= new Worker(new URL('./product-photo-worker.js?v=2', import.meta.url), { type: 'module' });
     const activeWorker = worker;
     const finish = () => {
       clearTimeout(timeout);

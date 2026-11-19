@@ -19,9 +19,15 @@ async function whiteBackground(file) {
   segmenter ??= pipeline('background-removal', 'onnx-community/ormbg-ONNX', { dtype: 'q8', device: 'wasm' });
   const removeBackground = await segmenter;
   const [subject] = await removeBackground(new RawImage(pixels.data, width, height, 4));
+  const rgba = new Uint8ClampedArray(subject.data);
+  // Clear faint background traces while preserving soft edges on the product.
+  for (let alpha = 3; alpha < rgba.length; alpha += 4) {
+    const coverage = Math.max(0, Math.min(1, (rgba[alpha] - 45) / 179));
+    rgba[alpha] = 255 * coverage * coverage * (3 - 2 * coverage);
+  }
   const cutout = new OffscreenCanvas(subject.width, subject.height);
   cutout.getContext('2d').putImageData(
-    new ImageData(new Uint8ClampedArray(subject.data), subject.width, subject.height), 0, 0
+    new ImageData(rgba, subject.width, subject.height), 0, 0
   );
   context.fillStyle = '#fff';
   context.fillRect(0, 0, width, height);
