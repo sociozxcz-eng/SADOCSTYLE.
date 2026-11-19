@@ -3,7 +3,7 @@ const form = document.querySelector('#publish-form');
 const preview = document.querySelector('#photo-preview');
 const status = document.querySelector('#photo-status');
 const download = document.querySelector('#photo-download');
-const save = document.querySelector('#publish-local');
+const remove = document.querySelector('#photo-remove');
 
 let revision = 0;
 let model;
@@ -43,8 +43,15 @@ function clearPreview() {
   preview.removeAttribute('src');
   download.hidden = true;
   download.removeAttribute('href');
-  save.disabled = true;
+  remove.hidden = true;
 }
+
+remove.addEventListener('click', () => {
+  input.value = '';
+  clearPreview();
+  status.textContent = 'Foto quitada. Puedes elegir otra.';
+  if (!input.disabled) input.focus();
+});
 
 form.addEventListener('reset', () => {
   clearPreview();
@@ -65,6 +72,7 @@ input.addEventListener('change', async () => {
   }
 
   input.disabled = true;
+  remove.hidden = false;
   status.textContent = 'Quitando el fondo… La primera vez se descarga el modelo y puede tardar.';
   try {
     const image = await preparePhoto(file);
@@ -73,12 +81,13 @@ input.addEventListener('change', async () => {
     preview.hidden = false;
     download.href = image;
     download.hidden = false;
-    save.disabled = false;
+    remove.hidden = false;
     status.textContent = 'Foto lista. Revísala antes de guardarla o descárgala.';
   } catch (error) {
     if (request !== revision) return;
     console.error('No se pudo preparar la foto', error);
     input.value = '';
+    remove.hidden = true;
     status.textContent = 'No se pudo quitar el fondo. Revisa tu conexión y vuelve a elegir la foto.';
   } finally {
     input.disabled = false;
