@@ -10,7 +10,6 @@ const message = document.querySelector('#seller-message');
 const guest = document.querySelector('#seller-guest');
 const profile = document.querySelector('#seller-profile');
 const sellerHeader = document.querySelector('#seller-header');
-const ownerHeader = document.querySelector('#store-owner');
 
 function username(value) {
   const name = String(value ?? '').normalize('NFKC').trim();
@@ -22,7 +21,6 @@ function username(value) {
 function renderAccount(user) {
   guest.hidden = Boolean(user);
   profile.hidden = !user;
-  ownerHeader.hidden = Boolean(user);
   sellerHeader.hidden = !user;
   if (!user) return;
 
