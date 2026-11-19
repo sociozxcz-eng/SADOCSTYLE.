@@ -329,6 +329,21 @@ header.ref-header{align-items:center!important}
 }
 #registro form { width: 100%; margin: 0; }
 #registro h3 { margin: 0 0 6px; }
+.seller-welcome {
+  padding: clamp(18px, 4vw, 30px);
+  margin-bottom: 18px;
+  border: 2px solid #dbb66b;
+  border-radius: 18px;
+  background: #701d32;
+  color: #fff9ee;
+}
+.seller-welcome h3, .seller-welcome summary { color: #ffdf99; }
+.seller-welcome p { margin: 8px 0; line-height: 1.55; }
+.seller-welcome details { margin-top: 14px; }
+.seller-welcome summary { width: fit-content; cursor: pointer; font-weight: 700; }
+.seller-history { margin-bottom: 18px; }
+.seller-history article { border: 1px solid #ece6e1; }
+.seller-history p { margin: 0; }
 @media (min-width: 768px) {
   #seller-header { grid-column: 1; grid-row: 1; align-self: start; margin-top: 12px; }
 }
@@ -399,6 +414,24 @@ header.ref-header{align-items:center!important}
     </form>
   </div>
   <div id="seller-profile" hidden>
+    <section class="seller-welcome" aria-labelledby="seller-welcome-title">
+      <h3 id="seller-welcome-title">¡Te damos la bienvenida a SADOCSTYLE!</h3>
+      <p>Gracias por acompañarnos desde el lanzamiento y crear tu cuenta.</p>
+      <details>
+        <summary>🎁 Ver regalo de bienvenida</summary>
+        <p>Pronto anunciaremos cuál será el regalo y cómo podrás reclamarlo.</p>
+      </details>
+    </section>
+    <div class="seller-auth-grid seller-history">
+      <article class="frame">
+        <h3>Historial de pedidos</h3>
+        <p class="message">El historial estará disponible cuando los pedidos se guarden en tu cuenta.</p>
+      </article>
+      <article class="frame">
+        <h3>Historial de ventas</h3>
+        <p class="message">El historial estará disponible cuando se habiliten las ventas de vendedores en SADOCSTYLE.</p>
+      </article>
+    </div>
     <form id="seller-edit" method="post" class="form frame">
       <h3>Tu perfil</h3>
       <label>Nombre de usuario <input name="username" minlength="3" maxlength="24" required></label>

@@ -31,6 +31,8 @@ function renderAccount(user) {
   const source = user.user_metadata?.avatar;
   sellerHeader.querySelector('strong').textContent = name;
   edit.elements.username.value = name;
+  document.querySelector('#seller-welcome-title').textContent =
+    `¡Te damos la bienvenida a SADOCSTYLE, ${name}!`;
   avatar.textContent = Array.from(name)[0].toUpperCase();
   if (typeof source === 'string' && source.length <= 6000 &&
       /^data:image\/jpeg;base64,[A-Za-z0-9+/]+=*$/.test(source)) {
