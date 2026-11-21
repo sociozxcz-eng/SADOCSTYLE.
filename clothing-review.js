@@ -56,11 +56,20 @@ export function connectClothingReview(client) {
     if (!available) return;
     catalog.replaceChildren(...result.data.map(listingCard));
     publicSection.hidden = !result.data.length;
-    notice.textContent = 'Solo se aprueban anuncios cuya foto principal muestre ropa.';
+    notice.textContent = 'Envía una foto clara de la prenda. La revisión puede analizar la foto, el nombre y la descripción con IA de Cloudflare.';
     submit.hidden = !signedIn;
     if (!signedIn) feedback.textContent = 'Inicia sesión en Cuenta de vendedor para enviar tu anuncio.';
     else feedback.textContent = '';
-    if (!owner) return;
+    if (!owner) {
+      if (signedIn) {
+        // RLS limits non-public statuses to the signed-in seller.
+        const own = await client.from(table).select('name,status').in('status', ['pending', 'rejected'])
+          .order('created_at', { ascending: false }).limit(10);
+        if (request === refreshId && !own.error && own.data.length)
+          feedback.textContent = own.data.map(item => item.name + ' · ' + (item.status === 'pending' ? 'En revisión' : 'Rechazado')).join(' | ');
+      }
+      return;
+    }
 
     const review = await client.from(table).select(fields)
       .eq('status', 'pending').order('created_at', { ascending: true }).limit(20);
@@ -121,7 +130,7 @@ export function connectClothingReview(client) {
       }
       form.reset();
       if (currentUser?.app_metadata?.sadoc_role === 'owner') await refresh(currentUser);
-      feedback.textContent = 'Anuncio enviado. Aparecerá en el catálogo cuando el dueño apruebe la foto.';
+      feedback.textContent = 'Anuncio enviado a revisión. Si se aprueba, aparecerá en el catálogo público.';
     } finally {
       submit.disabled = false;
     }

@@ -413,7 +413,7 @@ header.ref-header{align-items:center!important}
   }
 }
 </style>
-<script type="module" src="seller-account.js?v=contraentrega"></script>
+<script type="module" src="seller-account.js?v=revision2"></script>
 <script type="module" src="product-photo.js?v=5"></script>
 <style>
 #homeproducts > .product, #allproducts > .product {
@@ -538,7 +538,13 @@ header.ref-header{align-items:center!important}
 <section id="pedidos" class="screen"><h2>Mis pedidos</h2><p class="notice">Todavía no hay seguimiento de pedidos reales. Esta función requiere cuentas de usuario, pedidos guardados en un servidor y actualizaciones de envío.</p></section>
 <section id="soporte" class="screen">
   <h2>Ayuda y reportes</h2>
-  <p>Escríbenos si necesitas ayuda con un pedido, tu cuenta o una publicación.</p>
+  <form id="shop-assistant" class="form frame" style="max-width:40rem;margin-bottom:1rem">
+    <label for="shop-question"><strong>Asistente de la tienda</strong></label>
+    <input id="shop-question" name="question" placeholder="¿Qué ropa puedo publicar?" maxlength="300" required>
+    <button class="blackbutton" type="submit">Preguntar</button>
+    <p id="shop-answer" role="status" aria-live="polite"></p>
+  </form>
+  <script defer src="support.js?v=1"></script>
   <div class="sizes">
     <a class="blackbutton" id="sadoc-help-link" target="_blank" rel="noopener">Hablar con soporte</a>
     <a class="outline" id="sadoc-report-link" target="_blank" rel="noopener">Reportar una publicación</a>
