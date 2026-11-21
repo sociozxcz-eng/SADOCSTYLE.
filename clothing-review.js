@@ -23,6 +23,15 @@ function listingCard(listing) {
   const description = document.createElement('p');
   description.textContent = listing.description;
   card.append(image, title, price, description);
+  if (listing.status === 'approved') {
+    const report = document.createElement('a');
+    report.className = 'outline';
+    report.textContent = 'Reportar publicación';
+    report.href = window.sadocSupportUrl('Hola SADOCSTYLE, quiero reportar una publicación.\nProducto: ' + listing.name + '\nReferencia: ' + listing.id + '\nMotivo: ');
+    report.target = '_blank';
+    report.rel = 'noopener';
+    card.append(report);
+  }
   return card;
 }
 

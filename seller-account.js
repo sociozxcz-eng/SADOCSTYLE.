@@ -1,4 +1,4 @@
-import { connectClothingReview } from './clothing-review.js';
+import { connectClothingReview } from './clothing-review.js?v=reportes';
 
 const projectUrl = 'https://ozgpmnmmaxwuyedioetw.supabase.co';
 const publishableKey = 'sb_publishable_hEIsnV1e2CYehJ11flIawQ_HD_EnYEL';
