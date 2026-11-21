@@ -428,7 +428,13 @@ header.ref-header{align-items:center!important}
 .clothing-grid img { display: block; width: 100%; height: 180px; object-fit: contain; background: #fff; }
 #submit-clothing[hidden] { display: none; }
 </style>
-</head><body>
+<style>
+#shop-assistant{max-width:40rem;margin:0 auto 1.5rem}
+#shop-log{display:flex;flex-direction:column;gap:.6rem;max-height:22rem;overflow:auto;padding:.5rem 0}
+#shop-log p{max-width:85%;margin:0;padding:.7rem 1rem;border-radius:1rem;white-space:pre-wrap;overflow-wrap:anywhere}
+.chat-assistant{background:#f0f1f5;color:#151823;align-self:flex-start}
+.chat-user{background:#101b3a;color:white;align-self:flex-end}
+</style></head><body>
 <div class="topline">🔒 SADOCSTYLE · Catálogo de ropa · Pagos próximamente.</div><header class="ref-header"><button class="ref-action ref-menu" onclick="menu(true)" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M3 12h18M3 19h18"/></svg></button><a id="seller-header" href="#registro" onclick="return navigate(event, 'registro')">
   <span class="seller-avatar" aria-hidden="true"><img src="assets/perfil-invitado.jpg" alt=""></span>
   <strong>Registrarse</strong><span class="owner-badge" role="img" aria-label="Insignia del dueño de la tienda" hidden>✓</span>
@@ -538,13 +544,16 @@ header.ref-header{align-items:center!important}
 <section id="pedidos" class="screen"><h2>Mis pedidos</h2><p class="notice">Todavía no hay seguimiento de pedidos reales. Esta función requiere cuentas de usuario, pedidos guardados en un servidor y actualizaciones de envío.</p></section>
 <section id="soporte" class="screen">
   <h2>Ayuda y reportes</h2>
-  <form id="shop-assistant" class="form frame" style="max-width:40rem;margin-bottom:1rem">
-    <label for="shop-question"><strong>Asistente de la tienda</strong></label>
-    <input id="shop-question" name="question" placeholder="¿Qué ropa puedo publicar?" maxlength="300" required>
-    <button class="blackbutton" type="submit">Preguntar</button>
-    <p id="shop-answer" role="status" aria-live="polite"></p>
+  <form id="shop-assistant" class="form frame">
+    <strong>Chat con SADOCSTYLE</strong>
+    <div id="shop-log" role="log" aria-label="Conversación" aria-live="polite"></div>
+    <label for="shop-question">Tu mensaje</label>
+    <input id="shop-question" name="question" placeholder="Escribe aquí…" maxlength="400" required>
+    <small>La primera vez se descargan varios cientos de MB para usar la IA en tu dispositivo. Te recomendamos usar Wi-Fi.</small>
+    <button class="blackbutton" type="submit">Enviar</button>
+    <small id="shop-answer" role="status"></small>
   </form>
-  <script defer src="support.js?v=1"></script>
+  <script defer src="support.js?v=chat2"></script>
   <div class="sizes">
     <a class="blackbutton" id="sadoc-help-link" target="_blank" rel="noopener">Hablar con soporte</a>
     <a class="outline" id="sadoc-report-link" target="_blank" rel="noopener">Reportar una publicación</a>

@@ -1,35 +1,55 @@
-// Retrieve the closest shop answer using TF-IDF over Spanish example questions.
-const topics = [
-  ['comisión comisiones porcentaje cuánto cobran por vender tarifa comisión reducida', 'La comisión es del 10 % por venta confirmada. Baja al 5 % si el vendedor ya hizo una compra confirmada en la tienda.'],
-  ['registro registrarme cuenta contraseña correo iniciar sesión perfil entrar', 'Abre Cuenta de vendedor. Allí puedes crear tu cuenta con tu correo o iniciar sesión para acceder a tu perfil.'],
-  ['qué ropa prendas publicar producto permitido aprobado aprobación revisión vender camiseta pantalón buzo objetos prohibidos foto', 'Se admiten prendas de vestir. La foto debe mostrar la prenda y coincidir con el anuncio. Un carro o una silla quedan fuera del catálogo de ropa.'],
-  ['pendiente estado mi publicación anuncio revisado rechazado borrador aparece visible publicado', 'Un borrador solo se ve en tu navegador. Un anuncio enviado queda pendiente hasta su aprobación. Puedes consultar el estado en Publicar producto con tu sesión iniciada.'],
-  ['envíos envío domicilio pagar pago contraentrega contra entrega activar transportadora nequi', 'La contraentrega automática está pendiente de activación. Puedes ver las opciones disponibles al finalizar la compra.'],
-  ['regalo velas primera compra caja velitas', 'La caja de 10 velas navideñas corresponde a la primera compra confirmada.'],
-  ['reportar denunciar fraude estafa publicación ofensiva ayuda humana persona asesor', 'Usa Reportar una publicación e indica el producto y el motivo. Para atención personal, toca Hablar con soporte.']
-];
-const stop = new Set('que como cuanto cuanto es mi una las los por para del con de en la el un se me al ya y a puedo'.split(' '));
-function words(text) {
-  return new Set(text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').split(/[^a-z0-9]+/).filter(w => w && !stop.has(w)));
-}
-const docs = topics.map(([question]) => words(question));
-const weights = new Map();
-for (const doc of docs) for (const word of doc) weights.set(word, (weights.get(word) || 0) + 1);
-for (const [word, count] of weights) weights.set(word, 1 + Math.log(docs.length / count));
-function answer(text) {
-  const query = words(text);
-  const scores = docs.map((doc, index) => {
-    const total = [...doc].reduce((n, w) => n + weights.get(w) ** 2, 0);
-    const match = [...query].reduce((n, w) => n + (doc.has(w) ? weights.get(w) ** 2 : 0), 0);
-    return { index, score: match / Math.sqrt(total) };
-  }).sort((a,b) => b.score - a.score);
-  if (!scores[0].score || scores[0].score === scores[1].score)
-    return '¿Tu pregunta es sobre publicar ropa, comisiones, pagos o tu cuenta? También puedes tocar Hablar con soporte.';
-  return topics[scores[0].index][1];
-}
 const form = document.querySelector('#shop-assistant');
+const input = form.elements.question;
+const log = document.querySelector('#shop-log');
+const statusLine = document.querySelector('#shop-answer');
+const submit = form.querySelector('button');
+const greeting = '¡Hola! Soy el asistente virtual de SADOCSTYLE. ¿En qué te puedo ayudar?';
+const instructions = 'Eres el asistente de SADOCSTYLE. Conversa en español colombiano, con naturalidad y brevedad. Responde al último mensaje teniendo en cuenta los anteriores. Datos de la tienda: solo prendas de vestir; comisión 10 % normal y 5 % tras una compra confirmada; caja de 10 velas en la primera compra confirmada; contraentrega pendiente de activación. Para registro: Cuenta de vendedor. No tienes acceso a pedidos, cuentas ni fotos. No afirmes que aprobaste productos, realizaste operaciones o verificaste un pago. Si desconoces algo, ofrece el botón Hablar con soporte. Nunca pidas claves, datos bancarios ni documentos.';
+const history = [];
+let worker;
+function bubble(role, text) {
+  const bubble = document.createElement('p');
+  bubble.className = 'chat-' + role;
+  bubble.textContent = text;
+  bubble.setAttribute('aria-label', (role === 'assistant' ? 'Asistente: ' : 'Tú: ') + text);
+  log.append(bubble);
+  log.scrollTop = log.scrollHeight;
+}
+function finish(message) {
+  statusLine.textContent = message;
+  submit.disabled = false;
+  input.focus();
+}
+function fail() {
+  worker?.terminate();
+  worker = null;
+  if (history.at(-1)?.role === 'user') input.value = history.pop().content;
+  finish('La IA no pudo cargar en este dispositivo. Puedes reintentar o tocar Hablar con soporte.');
+}
+bubble('assistant', greeting);
 form.addEventListener('submit', event => {
   event.preventDefault();
-  const question = form.elements.question.value.trim();
-  if (question) document.getElementById('shop-answer').textContent = answer(question);
+  const question = input.value.trim();
+  if (!question || submit.disabled) return;
+  input.value = '';
+  bubble('user', question);
+  history.push({ role: 'user', content: question });
+  submit.disabled = true;
+  statusLine.textContent = worker ? 'Pensando…' : 'Cargando la IA en tu dispositivo…';
+  try {
+    if (!worker) {
+      worker = new Worker('support-worker.js?v=1', { type: 'module' });
+      worker.onerror = fail;
+      worker.onmessage = ({ data }) => {
+        if (data.error) return fail();
+        if (data.reply) {
+          history.push({ role: 'assistant', content: data.reply });
+          bubble('assistant', data.reply);
+          finish('');
+        } else if (data.thinking) statusLine.textContent = 'Escribiendo…';
+        else if (Number.isFinite(data.progress)) statusLine.textContent = 'Cargando IA: ' + data.progress + ' %';
+      };
+    }
+    worker.postMessage([{ role: 'system', content: instructions }, ...history.slice(-7)]);
+  } catch { fail(); }
 });
