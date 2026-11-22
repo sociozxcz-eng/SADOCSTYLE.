@@ -413,7 +413,7 @@ header.ref-header{align-items:center!important}
   }
 }
 </style>
-<script type="module" src="seller-account.js?v=revision2"></script>
+<script type="module" src="seller-account.js?v=soporte6"></script>
 <script type="module" src="product-photo.js?v=5"></script>
 <style>
 #homeproducts > .product, #allproducts > .product {
@@ -550,14 +550,20 @@ header.ref-header{align-items:center!important}
     <div id="shop-log" role="log" aria-label="Conversación" aria-live="polite"></div>
     <label for="shop-question">Tu mensaje</label>
     <input id="shop-question" name="question" placeholder="Escribe aquí…" maxlength="400" required>
-    <small>La primera vez se descargan varios cientos de MB para usar la IA en tu dispositivo. Te recomendamos usar Wi-Fi.</small>
+    <small>Al décimo mensaje, soporte recibirá la conversación y podrá responderte aquí. La primera vez se descargan varios cientos de MB para usar la IA en tu dispositivo. Te recomendamos usar Wi-Fi.</small>
     <button class="blackbutton" type="submit">Enviar</button>
     <button type="button" class="outline" id="chat-cancel" hidden>Cancelar envío</button>
     <small id="shop-answer" role="status"></small>
   </form>
-  <script defer src="support.js?v=ayuda4"></script>
+  <section class="form frame" id="staff-panel" hidden>
+    <h3>Bandeja de soporte</h3>
+    <label>Conversación<select id="staff-chats"><option value="">Selecciona una conversación</option></select></label>
+    <div id="staff-history" style="white-space:pre-wrap;overflow-wrap:anywhere;max-height:350px;overflow:auto"></div>
+    <form class="form" id="staff-form" hidden><label>Tu respuesta<input name="reply" maxlength="400" required></label><button class="blackbutton">Responder</button></form>
+    <small id="staff-status" role="status"></small>
+  </section>
+  <script type="module" src="support.js?v=soporte6"></script>
   <div class="sizes">
-    <a class="blackbutton" id="sadoc-help-link" target="_blank" rel="noopener">Hablar con una persona por WhatsApp</a>
     <a class="outline" id="sadoc-report-link" target="_blank" rel="noopener">Reportar una publicación</a>
   </div>
   <p class="message">Para reportar un anuncio, indica el nombre del producto y el motivo.</p>
@@ -626,7 +632,6 @@ const SADOC_CONTACT_WHATSAPP='573105825606';
 function sadocSupportUrl(message) {
   return 'https://wa.me/' + SADOC_CONTACT_WHATSAPP + '?text=' + encodeURIComponent(message);
 }
-document.getElementById('sadoc-help-link').href = sadocSupportUrl('Hola SADOCSTYLE, necesito ayuda con la tienda.');
 document.getElementById('sadoc-report-link').href = sadocSupportUrl('Hola SADOCSTYLE, quiero reportar una publicación. Producto: \nMotivo: ');
 function sadocPaymentChanged() {
   const pickup = document.querySelector('input[name="sadoc-delivery"]:checked')?.value === 'presencial';

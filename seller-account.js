@@ -1,7 +1,5 @@
 import { connectClothingReview } from './clothing-review.js?v=revision2';
 
-const projectUrl = 'https://ozgpmnmmaxwuyedioetw.supabase.co';
-const publishableKey = 'sb_publishable_hEIsnV1e2CYehJ11flIawQ_HD_EnYEL';
 const storeUrl = 'https://sociozxcz-eng.github.io/SADOCSTYLE./';
 
 const login = document.querySelector('#seller-login');
@@ -107,9 +105,7 @@ function handle(form, action) {
 }
 
 try {
-  const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.87.1/+esm');
-  const client = createClient(projectUrl, publishableKey, { auth: { flowType: 'implicit' } });
-
+  const { client } = await import('./shop-client.js');
   handle(login, async data => {
     const { error } = await client.auth.signInWithPassword({
       email: data.get('email').trim(),
