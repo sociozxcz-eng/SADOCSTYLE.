@@ -15,14 +15,23 @@ jobs:
             const browser=await chromium.launch({executablePath:'/usr/bin/google-chrome',args:['--no-sandbox']});
             for(const [name,options] of [['computador',{viewport:{width:1366,height:800}}],['celular',{...devices['Pixel 7'],deviceScaleFactor:1}]]){
               const page=await browser.newPage(options);
-              await page.goto('https://sociozxcz-eng.github.io/SADOCSTYLE./?rev=f6a8e1c#registro');
-              await page.getByText('Próximamente · Pago contraentrega',{exact:true}).waitFor();
-              const address=page.locator('#seller-signup input[name="pickup_address"]');
-              await address.scrollIntoViewIfNeeded();
-              if(!await address.isVisible() || !await address.evaluate(el=>el.required)) throw Error('Dirección obligatoria');
-              if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)) throw Error('Desbordamiento');
-              const jpg=await page.screenshot({type:'jpeg',quality:65});
-              console.log('CAPTURA_'+name+'='+jpg.toString('base64'));
+              for(let i=0;i<18;i++){
+                await page.goto('https://sociozxcz-eng.github.io/SADOCSTYLE./?v=7a70c79&t='+i+'#productos');
+                if(await page.locator('.community-footer').count())break;
+                await new Promise(r=>setTimeout(r,5000));
+              }
+              await page.getByRole('heading',{name:'Apóyanos en TikTok'}).scrollIntoViewIfNeeded();
+              console.log('CAPTURA_'+name+'='+(await page.screenshot({type:'jpeg', quality:58})).toString('base64'));
+              await page.locator('#allproducts .product button').first().click();
+              await page.getByRole('button',{name:/Comprar ahora/}).click();
+              await page.locator('[value="presencial"]').check();
+              if(await page.locator('#sadoc-buyer-phone').isVisible())throw Error('Teléfono visible');
+              await page.locator('#sadoc-buyer-name').fill('Prueba');
+              await page.evaluate(()=>window.open=url=>{window.previewWhatsApp=url});
+              await page.getByRole('button',{name:'Coordinar encuentro por WhatsApp'}).click();
+              if(!await page.evaluate(()=>window.previewWhatsApp?.startsWith('https://wa.me/')&&!decodeURIComponent(window.previewWhatsApp).includes('Teléfono:')))throw Error('Consulta inválida');
+              await page.locator('[value="envio"]').check();
+              if(!await page.locator('#sadoc-buyer-phone').isVisible())throw Error('Teléfono de entrega');
               await page.close();
             }
             await browser.close();
