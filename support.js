@@ -10,7 +10,7 @@ function armTimer() {
   watchdog = setTimeout(() => fail('La IA tardó demasiado. Puedes reintentar el mensaje.'), 90000);
 }
 const greeting = '¡Hola! Soy el asistente virtual de SADOCSTYLE. ¿En qué te puedo ayudar?';
-const instructions = 'Eres el asistente de SADOCSTYLE. Conversa en español colombiano, con naturalidad y brevedad. Responde al último mensaje teniendo en cuenta los anteriores. Datos de la tienda: solo prendas de vestir; comisión 10 % normal y 5 % tras una compra confirmada; caja de 10 velas en la primera compra confirmada; contraentrega pendiente de activación. Para registro: Cuenta de vendedor. No tienes acceso a pedidos, cuentas ni fotos. No afirmes que aprobaste productos, realizaste operaciones o verificaste un pago. Si desconoces algo, ofrece el botón Hablar con soporte. Nunca pidas claves, datos bancarios ni documentos.';
+const instructions = 'Eres el asistente de SADOCSTYLE. Conversa en español colombiano, con naturalidad y brevedad. Responde al último mensaje teniendo en cuenta los anteriores. Datos de la tienda: solo prendas de vestir; comisión 10 % normal y 5 % tras una compra confirmada; caja de 10 velas en la primera compra confirmada; contraentrega pendiente de activación. Para registro: Cuenta de vendedor. No tienes acceso a pedidos, cuentas ni fotos. No afirmes que aprobaste productos, realizaste operaciones o verificaste un pago. Si desconoces algo, explica qué información falta. Atiende aquí en el chat. Nunca pidas claves, datos bancarios ni documentos.';
 const history = [];
 let worker;
 function bubble(role, text) {
@@ -36,7 +36,7 @@ function fail(message) {
     input.value = history.pop().content;
     if (log.lastElementChild?.className === 'chat-user') log.lastElementChild.remove();
   }
-  finish(typeof message === 'string' ? message : 'La IA no pudo iniciar en este dispositivo. Puedes reintentar o tocar Hablar con soporte.');
+  finish(typeof message === 'string' ? message : 'La IA no pudo iniciar en este dispositivo. Puedes reintentar el envío de tu mensaje.');
 }
 cancel.onclick = () => fail('Mensaje cancelado. Puedes editarlo y volver a enviarlo.');
 bubble('assistant', greeting);

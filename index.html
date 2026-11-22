@@ -546,7 +546,7 @@ header.ref-header{align-items:center!important}
 <section id="soporte" class="screen">
   <h2>Ayuda y reportes</h2>
   <form id="shop-assistant" class="form frame">
-    <strong>Chat con SADOCSTYLE</strong>
+    <strong>Chat de soporte con IA</strong>
     <div id="shop-log" role="log" aria-label="Conversación" aria-live="polite"></div>
     <label for="shop-question">Tu mensaje</label>
     <input id="shop-question" name="question" placeholder="Escribe aquí…" maxlength="400" required>
@@ -555,9 +555,8 @@ header.ref-header{align-items:center!important}
     <button type="button" class="outline" id="chat-cancel" hidden>Cancelar envío</button>
     <small id="shop-answer" role="status"></small>
   </form>
-  <script defer src="support.js?v=chat3"></script>
+  <script defer src="support.js?v=ayuda4"></script>
   <div class="sizes">
-    <a class="blackbutton" id="sadoc-help-link" target="_blank" rel="noopener">Hablar con soporte</a>
     <a class="outline" id="sadoc-report-link" target="_blank" rel="noopener">Reportar una publicación</a>
   </div>
   <p class="message">Para reportar un anuncio, indica el nombre del producto y el motivo.</p>
@@ -626,7 +625,6 @@ const SADOC_CONTACT_WHATSAPP='573105825606';
 function sadocSupportUrl(message) {
   return 'https://wa.me/' + SADOC_CONTACT_WHATSAPP + '?text=' + encodeURIComponent(message);
 }
-document.getElementById('sadoc-help-link').href = sadocSupportUrl('Hola SADOCSTYLE, necesito ayuda con: ');
 document.getElementById('sadoc-report-link').href = sadocSupportUrl('Hola SADOCSTYLE, quiero reportar una publicación. Producto: \nMotivo: ');
 function sadocPaymentChanged() {
   const pickup = document.querySelector('input[name="sadoc-delivery"]:checked')?.value === 'presencial';
