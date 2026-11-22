@@ -557,6 +557,7 @@ header.ref-header{align-items:center!important}
   </form>
   <script defer src="support.js?v=ayuda4"></script>
   <div class="sizes">
+    <a class="blackbutton" id="sadoc-help-link" target="_blank" rel="noopener">Hablar con una persona por WhatsApp</a>
     <a class="outline" id="sadoc-report-link" target="_blank" rel="noopener">Reportar una publicación</a>
   </div>
   <p class="message">Para reportar un anuncio, indica el nombre del producto y el motivo.</p>
@@ -625,6 +626,7 @@ const SADOC_CONTACT_WHATSAPP='573105825606';
 function sadocSupportUrl(message) {
   return 'https://wa.me/' + SADOC_CONTACT_WHATSAPP + '?text=' + encodeURIComponent(message);
 }
+document.getElementById('sadoc-help-link').href = sadocSupportUrl('Hola SADOCSTYLE, necesito ayuda con la tienda.');
 document.getElementById('sadoc-report-link').href = sadocSupportUrl('Hola SADOCSTYLE, quiero reportar una publicación. Producto: \nMotivo: ');
 function sadocPaymentChanged() {
   const pickup = document.querySelector('input[name="sadoc-delivery"]:checked')?.value === 'presencial';
