@@ -1,0 +1,30 @@
+name: Comprobar vistas públicas de publicación
+on:
+  push:
+    branches: [prueba-vistas-publicacion]
+permissions: {}
+jobs:
+  vistas:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          npm install playwright@1.55.0 --no-save --silent
+          node <<'JS'
+          const {chromium, devices} = require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({executablePath:'/usr/bin/google-chrome',args:['--no-sandbox']});
+            for(const [name,options] of [['computador',{viewport:{width:1366,height:800}}],['celular',{...devices['Pixel 7'],deviceScaleFactor:1}]]){
+              const page=await browser.newPage(options);
+              await page.goto('https://sociozxcz-eng.github.io/SADOCSTYLE./?v=e38be64#inicio');
+              await page.getByRole('link',{name:'Publicar mi ropa'}).click();
+              await page.getByText(/La IA revisa las fotos por turnos/).waitFor();
+              if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth))throw Error('Desbordamiento en '+name);
+              const jpg=await page.screenshot({type:'jpeg', quality:68});
+              console.log('CAPTURA_'+name+'='+jpg.toString('base64'));
+              await page.getByRole('link',{name:'Entrar o crear mi cuenta'}).click();
+              await page.waitForURL('**#registro').catch(async()=>{if(!page.url().endsWith('#registro'))throw Error('Registro');});
+              await page.close();
+            }
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exitCode=1});
+          JS
