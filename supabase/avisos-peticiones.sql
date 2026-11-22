@@ -9,7 +9,7 @@ create table sadoc_support.mail_batches (
 create function sadoc_support.count_request() returns trigger language plpgsql security definer set search_path='' as $$
 declare n bigint;
 begin
-  update sadoc_support.request_counter set total=total+1 returning total into n;
+  update sadoc_support.request_counter set total=total+1 where total>=0 returning total into n;
   if n%10=0 then insert into sadoc_support.mail_batches(batch) values(n/10); end if;
   return new;
 end $$;
