@@ -551,8 +551,9 @@ header.ref-header{align-items:center!important}
     <div id="shop-log" role="log" aria-label="Conversación" aria-live="polite"></div>
     <label for="shop-question">Tu mensaje</label>
     <input id="shop-question" name="question" placeholder="Escribe aquí…" maxlength="400" required>
-    <small>Al décimo mensaje, soporte recibirá la conversación y podrá responderte aquí. La primera vez se descargan varios cientos de MB para usar la IA en tu dispositivo. Te recomendamos usar Wi-Fi.</small>
+    <small>Puedes dejar una petición y consultar la respuesta en este chat. La primera vez se descargan varios cientos de MB para usar la IA en tu dispositivo. Te recomendamos usar Wi-Fi.</small>
     <button class="blackbutton" type="submit">Enviar</button>
+    <button type="button" class="outline" id="leave-request">Dejar una petición</button>
     <button type="button" class="outline" id="chat-cancel" hidden>Cancelar envío</button>
     <small id="shop-answer" role="status"></small>
   </form>
@@ -563,7 +564,7 @@ header.ref-header{align-items:center!important}
     <form class="form" id="staff-form" hidden><label>Tu respuesta<input name="reply" maxlength="400" required></label><button class="blackbutton">Responder</button></form>
     <small id="staff-status" role="status"></small>
   </section>
-  <script type="module" src="support.js?v=soporte6"></script>
+  <script type="module" src="support.js?v=peticiones1"></script>
   <div class="sizes">
     <a class="outline" id="sadoc-report-link" target="_blank" rel="noopener">Reportar una publicación</a>
   </div>

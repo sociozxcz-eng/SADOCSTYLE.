@@ -22,7 +22,17 @@ async function rpc(name, params) {
   if (error) throw error;
   return data;
 }
-const waiting = 'Ya envié tu conversación a soporte. Espera aquí mientras llega un asistente.';
+const waiting = 'Recibimos tu petición. La revisaremos y te responderemos más tarde por este chat.';
+const requestButton = document.querySelector('#leave-request');
+requestButton.hidden = Boolean(state.chat);
+requestButton.onclick = () => {
+  if (state.chat || requestButton.disabled) return;
+  if (worker && submit.disabled) fail('Puedes dejar tu petición.');
+  state.collecting = true;
+  persist();
+  statusLine.textContent = 'Cuéntame qué pasó y toca Enviar.';
+  input.focus();
+};
 let rendered = 0;
 async function refreshCustomer() {
   const data = await rpc('read', { chat: state.chat, k: state.key });
@@ -38,15 +48,20 @@ async function openChat() {
   const { data, error } = await client.rpc('sadoc_open_chat', { k: state.key, transcript_text: transcript });
   if (error) throw error;
   state.chat = data;
+  state.collecting = false;
+  requestButton.hidden = true;
   persist();
   bubble('assistant', waiting);
   finish('');
 }
 async function handoff() {
   submit.disabled = true;
+  requestButton.disabled = true;
+  retry.hidden = true;
   try { await openChat(); }
   catch { finish('No se pudo entregar la conversación. Toca Reintentar conexión.');
     retry.hidden = false; }
+  finally { requestButton.disabled = false; }
 }
 const retry = document.createElement('button');
 retry.textContent = 'Reintentar conexión';
@@ -86,7 +101,7 @@ for (const m of history) bubble(m.role, m.content);
 if (state.chat) {
   bubble('assistant', waiting);
   refreshCustomer().catch(() => { statusLine.textContent = 'Intentando reconectar…'; });
-} else if (state.count >= 10) handoff();
+}
 setInterval(() => {
   if (state.chat && !document.hidden && form.offsetWidth) refreshCustomer().catch(() => {});
 }, 3500);
@@ -104,13 +119,16 @@ form.addEventListener('submit', async event => {
     } catch { finish('No se pudo actualizar el chat. Revisa tu conexión.'); }
     return;
   }
-  if (state.count >= 10) return handoff();
-  state.count++;
+
   input.value = '';
   bubble('user', question);
   history.push({ role: 'user', content: question });
   persist();
-  if (state.count >= 10) return handoff();
+  if (state.collecting || /\b(falla\w*|error(?:es)?|problema\w*|reclamo|queja|petici[oó]n|reportar|no (?:me )?(?:funciona|carga|deja|llega)|hablar con (?:una persona|soporte))\b/iu.test(question)) {
+    state.collecting = true;
+    persist();
+    return handoff();
+  }
   if (/^(hola+(?: mano| bro)?|holi|buenas(?: tardes| noches)?|buenos d[ií]as)[!.¡¿? ]*$/iu.test(question.replace(/^¡/, ''))) {
     const reply = '¡Hola! Cuéntame, ¿quieres comprar, publicar una prenda o necesitas ayuda con tu cuenta?';
     history.push({ role: 'assistant', content: reply });
