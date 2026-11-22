@@ -45,7 +45,7 @@ export function connectClothingReview(client) {
     currentUser = user;
     const request = ++refreshId;
     signedIn = Boolean(user);
-    const owner = user?.app_metadata?.sadoc_role === 'owner';
+    const owner = user?.app_metadata?.sadoc_role === 'owner' || user?.app_metadata?.clothing_reviewer === true;
     queue.hidden = true;
     submit.hidden = true;
     pending.replaceChildren();
@@ -53,10 +53,13 @@ export function connectClothingReview(client) {
       .eq('status', 'approved').order('created_at', { ascending: false }).limit(20);
     if (request !== refreshId) return;
     available = !result.error;
-    if (!available) return;
+    if (!available) {
+      notice.textContent = 'No se pudo conectar con el catálogo. Guarda un borrador o vuelve a cargar la página.';
+      return;
+    }
     catalog.replaceChildren(...result.data.map(listingCard));
     publicSection.hidden = !result.data.length;
-    notice.textContent = 'Envía una foto clara de la prenda. La revisión puede analizar la foto, el nombre y la descripción con IA de Cloudflare.';
+    notice.textContent = 'Envía una foto clara de la prenda. Una vez aprobada, tu publicación aparecerá en Productos para todos los visitantes.';
     submit.hidden = !signedIn;
     if (!signedIn) feedback.textContent = 'Inicia sesión en Cuenta de vendedor para enviar tu anuncio.';
     else feedback.textContent = '';
@@ -129,8 +132,10 @@ export function connectClothingReview(client) {
         return;
       }
       form.reset();
-      if (currentUser?.app_metadata?.sadoc_role === 'owner') await refresh(currentUser);
+      await refresh(currentUser);
       feedback.textContent = 'Anuncio enviado a revisión. Si se aprueba, aparecerá en el catálogo público.';
+    } catch {
+      feedback.textContent = 'Se perdió la conexión. Revisa tus anuncios antes de volver a enviarlo.';
     } finally {
       submit.disabled = false;
     }

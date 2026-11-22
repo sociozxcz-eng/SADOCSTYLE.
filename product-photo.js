@@ -100,8 +100,25 @@ input.addEventListener('change', async () => {
   } catch (error) {
     if (request !== revision) return;
     console.error('No se pudo preparar la foto', error);
-    input.value = '';
-    status.textContent = 'No se pudo quitar el fondo. Sigue visible la foto original. Vuelve a elegirla para reintentar.';
+    try {
+      await preview.decode();
+      if (request !== revision) return;
+      const scale = Math.min(1, 640 / Math.max(preview.naturalWidth, preview.naturalHeight));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(preview.naturalWidth * scale));
+      canvas.height = Math.max(1, Math.round(preview.naturalHeight * scale));
+      const context = canvas.getContext('2d');
+      context.fillStyle = '#fff';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(preview, 0, 0, canvas.width, canvas.height);
+      download.href = canvas.toDataURL('image/jpeg', 0.78);
+      download.download = 'foto-producto.jpg';
+      download.hidden = false;
+      status.textContent = 'Tu foto está lista con el fondo original. Puedes enviarla a revisión.';
+    } catch {
+      input.value = '';
+      status.textContent = 'No se pudo abrir la foto. Elige otra imagen.';
+    }
   } finally {
     input.disabled = false;
   }

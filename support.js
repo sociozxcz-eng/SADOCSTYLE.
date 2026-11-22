@@ -22,7 +22,7 @@ async function rpc(name, params) {
   if (error) throw error;
   return data;
 }
-const waiting = 'Recibimos tu petición. La revisaremos y te responderemos más tarde por este chat.';
+const waiting = 'Gracias por avisarnos. Recibimos tu petición y revisaremos lo que pasó. Te responderemos por este chat. Atentamente, el equipo de SADOCSTYLE.';
 const requestButton = document.querySelector('#leave-request');
 requestButton.hidden = Boolean(state.chat);
 requestButton.onclick = () => {
@@ -58,6 +58,7 @@ async function handoff() {
   submit.disabled = true;
   requestButton.disabled = true;
   retry.hidden = true;
+  statusLine.textContent = 'Un momento, estamos guardando tu petición…';
   try { await openChat(); }
   catch { finish('No se pudo entregar la conversación. Toca Reintentar conexión.');
     retry.hidden = false; }
