@@ -23,6 +23,10 @@ jobs:
       - name: Consultar anuncios pendientes
         id: cola
         run: python3 moderation/review.py queue
+      - uses: actions/setup-python@v5
+        if: steps.cola.outputs.pending != '0' || github.event_name != 'schedule'
+        with:
+          python-version: '3.11'
       - name: Instalar clasificador
         if: steps.cola.outputs.pending != '0' || github.event_name != 'schedule'
         run: |

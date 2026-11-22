@@ -4,8 +4,6 @@ const form = document.getElementById('publish-form');
 const submit = document.getElementById('submit-clothing');
 const notice = document.getElementById('clothing-notice');
 const feedback = document.getElementById('clothing-feedback');
-const queue = document.getElementById('clothing-review');
-const pending = document.getElementById('clothing-pending');
 const publicSection = document.getElementById('clothing-catalog');
 const catalog = document.getElementById('clothing-approved');
 
@@ -45,10 +43,8 @@ export function connectClothingReview(client) {
     currentUser = user;
     const request = ++refreshId;
     signedIn = Boolean(user);
-    const owner = user?.app_metadata?.sadoc_role === 'owner' || user?.app_metadata?.clothing_reviewer === true;
-    queue.hidden = true;
+    document.getElementById('clothing-login').hidden = signedIn;
     submit.hidden = true;
-    pending.replaceChildren();
     const result = await client.from(table).select(fields)
       .eq('status', 'approved').order('created_at', { ascending: false }).limit(20);
     if (request !== refreshId) return;
@@ -59,56 +55,20 @@ export function connectClothingReview(client) {
     }
     catalog.replaceChildren(...result.data.map(listingCard));
     publicSection.hidden = !result.data.length;
-    notice.textContent = 'Envía una foto clara de la prenda. Una vez aprobada, tu publicación aparecerá en Productos para todos los visitantes.';
+    notice.textContent = 'La IA revisa las fotos por turnos. Si reconoce una prenda, tu anuncio aparecerá en Productos.';
     submit.hidden = !signedIn;
-    if (!signedIn) feedback.textContent = 'Inicia sesión en Cuenta de vendedor para enviar tu anuncio.';
-    else feedback.textContent = '';
-    if (!owner) {
-      if (signedIn) {
-        // RLS limits non-public statuses to the signed-in seller.
-        const own = await client.from(table).select('name,status').in('status', ['pending', 'rejected'])
-          .order('created_at', { ascending: false }).limit(10);
-        if (request === refreshId && !own.error && own.data.length)
-          feedback.textContent = own.data.map(item => item.name + ' · ' + (item.status === 'pending' ? 'En revisión' : 'Rechazado')).join(' | ');
-      }
-      return;
+    feedback.textContent = '';
+    if (signedIn) {
+      const own = await client.from(table).select('name,status').in('status', ['pending','rejected'])
+        .order('created_at', {ascending:false}).limit(10);
+      if (request === refreshId && !own.error) feedback.textContent = own.data.map(item =>
+        item.name + ' · ' + (item.status === 'pending' ? 'En revisión automática' : 'No publicado. Prueba con una foto más clara de la prenda.')).join(' | ');
     }
-
-    const review = await client.from(table).select(fields)
-      .eq('status', 'pending').order('created_at', { ascending: true }).limit(20);
-    if (request !== refreshId) return;
-    queue.hidden = false;
-    const state = document.getElementById('clothing-review-state');
-    state.textContent = review.error ? 'No se pudo cargar la revisión.' :
-      review.data.length ? 'Aprueba el anuncio si la foto principal muestra ropa.' : 'No hay anuncios pendientes.';
-    if (review.error) return;
-    pending.replaceChildren(...review.data.map(listing => {
-      const card = listingCard(listing);
-      const actions = document.createElement('div');
-      actions.className = 'sizes';
-      for (const [label, status] of [['Aprobar', 'approved'], ['Rechazar', 'rejected']]) {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = 'outline';
-        button.textContent = label;
-        button.onclick = async () => {
-          for (const control of actions.children) control.disabled = true;
-          const update = await client.from(table).update({ status }).eq('id', listing.id)
-            .eq('status', 'pending').select('id').maybeSingle();
-          if (update.error) {
-            for (const control of actions.children) control.disabled = false;
-            state.textContent = 'No se pudo guardar la revisión. Inténtalo nuevamente.';
-            return;
-          }
-          if (request === refreshId) await refresh(currentUser);
-        };
-        actions.append(button);
-      }
-      card.append(actions);
-      return card;
-    }));
   }
-
+  window.addEventListener('hashchange', () => {
+    if (['#productos','#publicar'].includes(location.hash)) refresh(currentUser).catch(console.error);
+  });
+  
   form.addEventListener('submit', async event => {
     if (event.submitter !== submit) return;
     event.preventDefault();
@@ -133,7 +93,7 @@ export function connectClothingReview(client) {
       }
       form.reset();
       await refresh(currentUser);
-      feedback.textContent = 'Anuncio enviado a revisión. Si se aprueba, aparecerá en el catálogo público.';
+      feedback.textContent = 'Anuncio recibido. La IA revisará la foto y publicará la prenda si cumple los criterios.';
     } catch {
       feedback.textContent = 'Se perdió la conexión. Revisa tus anuncios antes de volver a enviarlo.';
     } finally {

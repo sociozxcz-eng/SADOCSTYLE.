@@ -1,4 +1,4 @@
-import { connectClothingReview } from './clothing-review.js?v=publicar3';
+import { connectClothingReview } from './clothing-review.js?v=revisionia1';
 
 const storeUrl = 'https://sociozxcz-eng.github.io/SADOCSTYLE./';
 
