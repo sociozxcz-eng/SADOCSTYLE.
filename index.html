@@ -30,7 +30,7 @@ header .headright{gap:5px;align-items:center}
 header .cartnum{background:#111!important;color:#fff}
 @media(max-width:390px){header{height:102px!important}header .brand{font-size:20px!important}header .santa-hat{right:calc(50% - 61px);font-size:23px;top:-20px}header .brand-mark{font-size:21px}header .headright{gap:1px}}
 </style><style id="sadoc-ninja-header-v3">
-.topline{display:none!important}.shipping{display:none!important}
+.topline{display:block;background:#101b36;color:white;padding:7px 12px;font-weight:600}.shipping{display:none!important}
 header{height:auto!important;min-height:130px!important;display:grid!important;grid-template-columns:55px minmax(0,1fr) 95px;grid-template-rows:106px auto;align-items:center!important;padding:8px 12px 12px!important;position:relative!important;top:auto!important;border-bottom:2px solid #0e1524!important;background:#fff!important;gap:0!important}
 header .brand{grid-column:2;grid-row:1;display:flex!important;align-items:center;justify-content:center;gap:3px;min-width:0;text-align:center!important;font-family:Georgia,serif!important;color:#050505!important;letter-spacing:-1px!important;line-height:1!important}
 header .brand-words{display:block!important;transform:none!important;text-shadow:none!important}
@@ -413,7 +413,7 @@ header.ref-header{align-items:center!important}
   }
 }
 </style>
-<script type="module" src="seller-account.js?v=revisionia1"></script>
+<script type="module" src="seller-account.js?v=recogida1"></script>
 <script type="module" src="product-photo.js?v=6"></script>
 <style>
 #homeproducts > .product, #allproducts > .product {
@@ -437,7 +437,7 @@ header.ref-header{align-items:center!important}
 .chat-assistant{background:#f0f1f5;color:#151823;align-self:flex-start}
 .chat-user{background:#101b3a;color:white;align-self:flex-end}
 </style></head><body>
-<div class="topline">🔒 SADOCSTYLE · Catálogo de ropa · Pagos próximamente.</div><header class="ref-header"><button class="ref-action ref-menu" onclick="menu(true)" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M3 12h18M3 19h18"/></svg></button><a id="seller-header" href="#registro" onclick="return navigate(event, 'registro')">
+<div class="topline">Próximamente · Pago contraentrega</div><header class="ref-header"><button class="ref-action ref-menu" onclick="menu(true)" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M3 12h18M3 19h18"/></svg></button><a id="seller-header" href="#registro" onclick="return navigate(event, 'registro')">
   <span class="seller-avatar" aria-hidden="true"><img src="assets/perfil-invitado.jpg" alt=""></span>
   <strong>Registrarse</strong><span class="owner-badge" role="img" aria-label="Insignia del dueño de la tienda" hidden>✓</span>
 </a><a class="ref-logo ref-logo-final sadoc-real-logo" href="#inicio" onclick="return navigate(event, 'inicio')" aria-label="SADOCSTYLE inicio"><picture><source media="(min-width: 768px)" srcset="assets/logo-escritorio.webp"><img src="assets/file_00000000c53c82129a1fae8b1a7595f4~2.jpg" alt="SADOCSTYLE: logo original con samuráis, espadas y gorro navideño" loading="eager" decoding="async"></picture></a><div class="ref-right"><button class="ref-action" onclick="view('productos')" aria-label="Buscar productos"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.2"/><path d="m16 16 5 5"/></svg></button><button class="ref-action ref-cart" onclick="view('carrito')" aria-label="Carrito"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2 3h3l2.5 13h12l2.5-10H6"/></svg><span class="cartnum" id="cartnum">0</span></button></div></header>
@@ -506,6 +506,10 @@ header.ref-header{align-items:center!important}
       <label>Nombre de usuario <input name="username" autocomplete="username" minlength="3" maxlength="24" required></label>
       <label>Correo electrónico <input name="email" type="email" autocomplete="email" required></label>
       <label>Contraseña <input name="password" type="password" autocomplete="new-password" minlength="8" required></label>
+      <h4>Recogida de pedidos</h4>
+      <p class="message">Indica dónde podrá recoger tus paquetes la transportadora. Esta dirección solo aparece en tu cuenta.</p>
+      <label>Ciudad o municipio y departamento <input name="pickup_city" autocomplete="address-level2" placeholder="Ej. Ibagué, Tolima" minlength="2" maxlength="100" required></label>
+      <label>Dirección de recogida <input name="pickup_address" autocomplete="street-address" placeholder="Calle, número y barrio o vereda" minlength="5" maxlength="180" required></label>
       <label>Foto de perfil (opcional) <input name="photo" type="file" accept="image/jpeg,image/png,image/webp"></label>
       <button class="redbutton" disabled>Registrarme</button>
     </form>
@@ -534,6 +538,10 @@ header.ref-header{align-items:center!important}
     <form id="seller-edit" method="post" class="form frame">
       <h3>Tu perfil</h3>
       <label>Nombre de usuario <input name="username" minlength="3" maxlength="24" required></label>
+      <h4>Recogida de pedidos</h4>
+      <p class="message">Indica dónde podrá recoger tus paquetes la transportadora. Esta dirección solo aparece en tu cuenta.</p>
+      <label>Ciudad o municipio y departamento <input name="pickup_city" autocomplete="address-level2" placeholder="Ej. Ibagué, Tolima" minlength="2" maxlength="100" required></label>
+      <label>Dirección de recogida <input name="pickup_address" autocomplete="street-address" placeholder="Calle, número y barrio o vereda" minlength="5" maxlength="180" required></label>
       <label>Foto de perfil <input name="photo" type="file" accept="image/jpeg,image/png,image/webp"></label>
       <button class="blackbutton" disabled>Guardar perfil</button>
       <button id="seller-signout" class="outline" type="button" disabled>Cerrar sesión</button>
