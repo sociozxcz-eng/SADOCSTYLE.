@@ -18,6 +18,15 @@ function username(value) {
   return compact === 'sadoc777x' || compact === 'sadocstyle' ? '' : name;
 }
 
+function pickupDetails(data) {
+  const pickup_city = String(data.get('pickup_city') || '').trim();
+  const pickup_address = String(data.get('pickup_address') || '').trim();
+  if (pickup_city.length < 2 || pickup_address.length < 5) {
+    throw new Error('Escribe el municipio y la dirección completa de recogida.');
+  }
+  return { pickup_city, pickup_address };
+}
+
 function renderAccount(user) {
   guest.hidden = Boolean(user);
   profile.hidden = !user;
@@ -40,6 +49,9 @@ function renderAccount(user) {
   const source = user.user_metadata?.avatar;
   label.textContent = name;
   edit.elements.username.value = profileName;
+  for (const field of ['pickup_city', 'pickup_address']) {
+    if (edit.elements[field]) edit.elements[field].value = user.user_metadata?.[field] || '';
+  }
   document.querySelector('#seller-welcome-title').textContent =
     `¡Te damos la bienvenida a SADOCSTYLE, ${name}!`;
   avatar.textContent = Array.from(name)[0].toUpperCase();
@@ -118,7 +130,7 @@ try {
   handle(signup, async data => {
     const name = username(data.get('username'));
     if (!name) throw new Error('Elige un nombre válido de 3 a 24 caracteres.');
-    const metadata = { username: name };
+    const metadata = { username: name, ...pickupDetails(data) };
     const photo = data.get('photo');
     if (photo.size) metadata.avatar = await avatarThumbnail(photo);
     const { error } = await client.auth.signUp({
@@ -135,7 +147,7 @@ try {
     const name = username(data.get('username'));
     if (!name) throw new Error('Elige un nombre válido de 3 a 24 caracteres.');
     const photo = data.get('photo');
-    const metadata = { username: name };
+    const metadata = { username: name, ...pickupDetails(data) };
     if (photo.size) metadata.avatar = await avatarThumbnail(photo);
     const { data: result, error } = await client.auth.updateUser({ data: metadata });
     if (error) throw error;
