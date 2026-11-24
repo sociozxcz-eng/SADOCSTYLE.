@@ -10,7 +10,7 @@ function armTimer() {
   watchdog = setTimeout(() => fail('La IA tardó demasiado. Puedes reintentar el mensaje.'), 90000);
 }
 const greeting = '¡Hola! Soy el asistente virtual de SADOCSTYLE. ¿En qué te puedo ayudar?';
-const instructions = 'Eres el asistente de SADOCSTYLE. Conversa en español colombiano, con naturalidad y brevedad. Responde al último mensaje teniendo en cuenta los anteriores. Datos de la tienda: solo prendas de vestir; comisión 10 % normal y 5 % tras una compra confirmada; caja de 10 velas en la primera compra confirmada; contraentrega pendiente de activación. Para registro: Cuenta de vendedor. No tienes acceso a pedidos, cuentas ni fotos. No afirmes que aprobaste productos, realizaste operaciones o verificaste un pago. Si desconoces algo, explica qué información falta. Ayuda a describir los reportes de publicaciones y explica cómo enviarlos en este chat. Nunca pidas claves, datos bancarios ni documentos.';
+const instructions = 'Eres el asistente de SADOCSTYLE. Conversa en español colombiano, con naturalidad y brevedad. Relaciona cada pregunta con lo que ya explicó el cliente. Si falta un dato para entender «eso» o «cuánto», pregunta cuál. Si te cuentan una falla, ayuda a diagnosticarla con una pregunta concreta. Si quieren atención humana, indica que escriban su petición y pulsen Enviar a soporte. Solo ese botón o Enviar reporte registra solicitudes. Responde solo con la respuesta final. Datos de la tienda: solo prendas de vestir; comisión 10 % normal y 5 % tras una compra confirmada; caja de 10 velas en la primera compra confirmada; contraentrega pendiente de activación. Para registro: Cuenta de vendedor. No tienes acceso a pedidos, cuentas ni fotos. No afirmes que aprobaste productos, realizaste operaciones o verificaste un pago. Si desconoces algo, explica qué información falta. Ayuda a describir los reportes de publicaciones y explica cómo enviarlos en este chat. Nunca pidas claves, datos bancarios ni documentos.';
 let saved;
 try { saved = JSON.parse(sessionStorage.getItem('sadoc-support-v1')); } catch {}
 const state = saved || { count: 0, history: [], key: crypto.randomUUID() };
@@ -24,14 +24,31 @@ async function rpc(name, params) {
 }
 const waiting = 'Gracias por avisarnos. Recibimos tu petición y revisaremos lo que pasó. Te responderemos por este chat. Atentamente, el equipo de SADOCSTYLE.';
 const requestButton = document.querySelector('#leave-request');
-requestButton.hidden = Boolean(state.chat);
-requestButton.onclick = () => {
-  if (state.chat || requestButton.disabled) return;
-  if (worker && submit.disabled) fail('Puedes dejar tu petición.');
-  state.collecting = true;
-  persist();
-  statusLine.textContent = 'Cuéntame qué pasó y toca Enviar.';
-  input.focus();
+requestButton.onclick = async () => {
+  const body = input.value.trim();
+  if (submit.disabled || requestButton.disabled) return;
+  if (!body) { statusLine.textContent='Escribe tu petición y pulsa Enviar a soporte.'; input.focus(); return; }
+  submit.disabled = requestButton.disabled = true;
+  statusLine.textContent = 'Enviando a soporte…';
+  try {
+    if (state.chat) {
+      if (state.pending?.body !== body) state.pending = {id:crypto.randomUUID(),body};
+      persist();
+      await rpc('send',{chat:state.chat,k:state.key,request:state.pending.id,body_text:body});
+      state.pending=null;
+      await refreshCustomer().catch(()=>{});
+    } else {
+      const {client}=await import('./shop-client.js');
+      const conversation=[...history,{role:'user',content:body}];
+      const transcript=conversation.map(m=>(m.role==='user'?'Cliente: ':'IA: ')+m.content).join('\n').slice(-24000);
+      const {data,error}=await client.rpc('sadoc_open_chat',{k:state.key,transcript_text:transcript});
+      if(error||!data) throw error || Error();
+      state.chat=data;
+      history.push({role:'user',content:body}); bubble('user',body);
+    }
+    input.value=''; history.push({role:'assistant',content:waiting}); bubble('assistant',waiting); finish('');
+  } catch { finish('No se pudo confirmar el envío. Puedes reintentar con Enviar a soporte.'); }
+  finally {requestButton.disabled=false;}
 };
 const draft = document.querySelector('#report-draft');
 const reportButton = document.querySelector('#sadoc-report-link');
@@ -92,7 +109,7 @@ reportSend.onclick = async () => {
       const transcript = [...history,{role:'user',content:body}].map(m=>(m.role==='user'?'Cliente: ':'IA: ')+m.content).join('\n').slice(-24000);
       const {data,error} = await client.rpc('sadoc_open_chat',{k:state.key,transcript_text:transcript});
       if(error || !data) throw error || Error();
-      state.chat=data; state.collecting=false; requestButton.hidden=true;
+      state.chat=data; state.collecting=false;
       history.push({role:'user',content:body}); bubble('user',body);
     }
     closeReport(); bubble('assistant',ack); statusLine.textContent='';
@@ -109,33 +126,6 @@ async function refreshCustomer() {
     rendered++;
   }
 }
-async function openChat() {
-  const { client } = await import('./shop-client.js');
-  const transcript = history.map(m => (m.role === 'user' ? 'Cliente: ' : 'IA: ') + m.content).join('\n').slice(-24000);
-  const { data, error } = await client.rpc('sadoc_open_chat', { k: state.key, transcript_text: transcript });
-  if (error) throw error;
-  state.chat = data; delete state.report;
-  state.collecting = false;
-  requestButton.hidden = true;
-  persist();
-  bubble('assistant', waiting);
-  finish('');
-}
-async function handoff() {
-  submit.disabled = true;
-  requestButton.disabled = true;
-  retry.hidden = true;
-  statusLine.textContent = 'Un momento, estamos guardando tu petición…';
-  try { await openChat(); }
-  catch { finish('No se pudo entregar la conversación. Toca Reintentar conexión.');
-    retry.hidden = false; }
-  finally { requestButton.disabled = false; }
-}
-const retry = document.createElement('button');
-retry.textContent = 'Reintentar conexión';
-retry.type = 'button'; retry.className = 'outline'; retry.hidden = true;
-form.append(retry);
-retry.onclick = () => { retry.hidden = true; handoff(); };
 let worker;
 function bubble(role, text) {
   const bubble = document.createElement('p');
@@ -167,7 +157,6 @@ cancel.onclick = () => fail('Mensaje cancelado. Puedes editarlo y volver a envia
 bubble('assistant', greeting);
 for (const m of history) bubble(m.role, m.content);
 if (state.chat) {
-  bubble('assistant', waiting);
   refreshCustomer().catch(() => { statusLine.textContent = 'Intentando reconectar…'; });
 }
 setInterval(() => {
@@ -177,41 +166,12 @@ form.addEventListener('submit', async event => {
   event.preventDefault();
   let question = input.value.trim();
   if (!question || submit.disabled) return;
-  if (!state.chat && /^(?:hola+|buenas|hey|holi)[\s!.¡¿?]*$/iu.test(question)) {
-    input.value='';
-    const answer='¡Hola! ¿En qué te puedo ayudar?';
-    history.push({role:'user',content:question},{role:'assistant',content:answer});
-    bubble('user',question); bubble('assistant',answer); finish(''); return;
-  }
-  if (/^(?:quiero |necesito )?reportar\b/iu.test(question)) {
-    input.value=''; beginReport(); return;
-  }
-  if (state.chat) {
-    submit.disabled = true;
-    if (state.pending?.body !== question) state.pending = { id: crypto.randomUUID(), body: question };
-    persist();
-    try {
-      await rpc('send', { chat: state.chat, k: state.key, request: state.pending.id, body_text: question });
-      state.pending = null; input.value = ''; persist(); await refreshCustomer(); finish('');
-    } catch { finish('No se pudo actualizar el chat. Revisa tu conexión.'); }
-    return;
-  }
-
   input.value = '';
   bubble('user', question);
-  history.push({ role: 'user', content: question });
-  persist();
-  if (!state.report && (state.collecting || /\b(falla\w*|error(?:es)?|problema\w*|reclamo|queja|petici[oó]n|reportar|no (?:me )?(?:funciona|carga|deja|llega)|hablar con (?:una persona|soporte))\b/iu.test(question))) {
-    state.collecting = true;
-    persist();
-    return handoff();
-  }
-  if (/^(hola+(?: mano| bro)?|holi|buenas(?: tardes| noches)?|buenos d[ií]as)[!.¡¿? ]*$/iu.test(question.replace(/^¡/, ''))) {
-    const reply = '¡Hola! Cuéntame, ¿quieres comprar, publicar una prenda o necesitas ayuda con tu cuenta?';
-    history.push({ role: 'assistant', content: reply });
-    bubble('assistant', reply);
-    finish('');
-    return;
+  history.push({role:'user',content:question}); persist();
+  if (/^[¡!¿?.,\s]*(?:nada(?: más| gracias)?|por ahora nada|no necesito nada|eso es todo|no gracias)[!¿?.,\s]*$/iu.test(question)) {
+    const answer='Listo. Si después necesitas algo, aquí estoy.';
+    history.push({role:'assistant',content:answer}); bubble('assistant',answer); finish(''); return;
   }
   submit.disabled = true;
   cancel.hidden = false;
@@ -232,7 +192,16 @@ form.addEventListener('submit', async event => {
         else if (Number.isFinite(data.progress)) statusLine.textContent = data.progress >= 100 ? 'Descarga completa. Preparando la IA en tu dispositivo…' : 'Descargando IA: ' + data.progress + ' %';
       };
     }
-    worker.postMessage([{ role: 'system', content: instructions }, ...history.slice(-7)]);
+    const turns = [];
+    for (const message of history.slice(-14)) {
+      if (!turns.length && message.role !== 'user') continue;
+      if (turns.at(-1)?.role === message.role) turns.at(-1).content += '\n' + message.content;
+      else turns.push({...message});
+    }
+    const price=document.querySelector('#allproducts .product .price')?.textContent;
+    const product=document.querySelector('#allproducts .product h3')?.textContent;
+    const catalog=price && product ? ' En el catálogo: '+product+', '+price+'.' : '';
+    worker.postMessage([{role:'system',content:instructions+catalog},...turns]);
   } catch { fail(); }
 });
 
