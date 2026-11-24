@@ -413,7 +413,7 @@ header.ref-header{align-items:center!important}
   }
 }
 </style>
-<script type="module" src="seller-account.js?v=recogida1"></script>
+<script type="module" src="seller-account.js?v=historial3"></script>
 <script type="module" src="product-photo.js?v=6"></script>
 <style>
 #homeproducts > .product, #allproducts > .product {
@@ -436,6 +436,13 @@ header.ref-header{align-items:center!important}
 #shop-log p{max-width:85%;margin:0;padding:.7rem 1rem;border-radius:1rem;white-space:pre-wrap;overflow-wrap:anywhere}
 .chat-assistant{background:#f0f1f5;color:#151823;align-self:flex-start}
 .chat-user{background:#101b3a;color:white;align-self:flex-end}
+</style><style>
+#staff-chats{display:grid;gap:4px;max-height:320px;overflow:auto}
+#staff-chats h4{margin:12px 0 4px;color:#566074}
+#staff-chats button{font:inherit;display:flex;justify-content:space-between;align-items:center;gap:12px;border:0;border-radius:8px;background:#f6f7fa;padding:12px;text-align:left;min-height:44px}
+#staff-chats button[aria-pressed=true]{background:#182342;color:white}
+#staff-chats time{font:12px Arial,sans-serif;white-space:nowrap}
+#staff-chats span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 </style></head><body>
 <div class="topline">Próximamente · Pago contraentrega</div><header class="ref-header"><button class="ref-action ref-menu" onclick="menu(true)" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M3 12h18M3 19h18"/></svg></button><a id="seller-header" href="#registro" onclick="return navigate(event, 'registro')">
   <span class="seller-avatar" aria-hidden="true"><img src="assets/perfil-invitado.jpg" alt=""></span>
@@ -557,6 +564,7 @@ header.ref-header{align-items:center!important}
   <form id="shop-assistant" class="form frame">
     <strong>Chat de soporte con IA</strong>
     <div id="shop-log" role="log" aria-label="Conversación" aria-live="polite"></div>
+    <button type="button" class="outline" id="sadoc-report-link">Reportar una publicación</button>
     <label for="shop-question">Tu mensaje</label>
     <input id="shop-question" name="question" placeholder="Escribe aquí…" maxlength="400" required>
     <small>Puedes dejar una petición y consultar la respuesta en este chat. La primera vez se descargan varios cientos de MB para usar la IA en tu dispositivo. Te recomendamos usar Wi-Fi.</small>
@@ -566,17 +574,14 @@ header.ref-header{align-items:center!important}
     <small id="shop-answer" role="status"></small>
   </form>
   <section class="form frame" id="staff-panel" hidden>
-    <h3>Bandeja de soporte</h3>
-    <label>Conversación<select id="staff-chats"><option value="">Selecciona una conversación</option></select></label>
+    <h3>Historial de mensajes</h3>
+    <nav id="staff-chats" aria-label="Chats recientes"></nav>
     <div id="staff-history" style="white-space:pre-wrap;overflow-wrap:anywhere;max-height:350px;overflow:auto"></div>
     <form class="form" id="staff-form" hidden><label>Tu respuesta<input name="reply" maxlength="400" required></label><button class="blackbutton">Responder</button></form>
     <small id="staff-status" role="status"></small>
   </section>
-  <script type="module" src="support.js?v=peticiones2"></script>
-  <div class="sizes">
-    <a class="outline" id="sadoc-report-link" target="_blank" rel="noopener">Reportar una publicación</a>
-  </div>
-  <p class="message">Para reportar un anuncio, indica el nombre del producto y el motivo.</p>
+  <script type="module" src="support.js?v=historial3"></script>
+
 </section>
 <style>
 #sadoc-order-form [hidden]{display:none!important}
@@ -646,7 +651,6 @@ const SADOC_CONTACT_WHATSAPP='573105825606';
 function sadocSupportUrl(message) {
   return 'https://wa.me/' + SADOC_CONTACT_WHATSAPP + '?text=' + encodeURIComponent(message);
 }
-document.getElementById('sadoc-report-link').href = sadocSupportUrl('Hola SADOCSTYLE, quiero reportar una publicación. Producto: \nMotivo: ');
 function sadocPaymentChanged() {
   const pickup = document.querySelector('input[name="sadoc-delivery"]:checked')?.value === 'presencial';
   const codOption = document.getElementById('sadoc-cod-option');
