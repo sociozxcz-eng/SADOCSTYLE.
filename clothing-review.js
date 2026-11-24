@@ -25,9 +25,12 @@ function listingCard(listing) {
     const report = document.createElement('a');
     report.className = 'outline';
     report.textContent = 'Reportar publicación';
-    report.href = window.sadocSupportUrl('Hola SADOCSTYLE, quiero reportar una publicación.\nProducto: ' + listing.name + '\nReferencia: ' + listing.id + '\nMotivo: ');
-    report.target = '_blank';
-    report.rel = 'noopener';
+    report.href = '#soporte';
+    report.onclick = event => {
+      event.preventDefault();
+      window.view('soporte');
+      window.dispatchEvent(new CustomEvent('sadoc-report', {detail: {name:listing.name, id:listing.id}}));
+    };
     card.append(report);
   }
   return card;
