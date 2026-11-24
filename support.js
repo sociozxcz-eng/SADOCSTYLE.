@@ -33,15 +33,73 @@ requestButton.onclick = () => {
   statusLine.textContent = 'Cuéntame qué pasó y toca Enviar.';
   input.focus();
 };
+const draft = document.querySelector('#report-draft');
+const reportButton = document.querySelector('#sadoc-report-link');
+const reportName = document.querySelector('#report-name');
+const reportReason = document.querySelector('#report-reason');
+const reportStatus = document.querySelector('#report-status');
+const reportSend = document.querySelector('#report-send');
+const reportClose = document.querySelector('#report-close');
 function beginReport(listing) {
   if (submit.disabled) return;
-  const prompt = listing ? 'Cuéntame qué ocurrió con «' + listing.name + '».' : 'Dime el nombre de la publicación y qué ocurrió.';
-  state.report = listing || {};
-  history.push({role:'assistant',content:prompt}); bubble('assistant',prompt); persist();
-  input.focus();
+  state.report = listing ? {name:listing.name, id:listing.id} : state.report || {};
+  reportName.value = state.report.name || '';
+  reportReason.value = state.report.reason || '';
+  draft.hidden = false;
+  reportButton.setAttribute('aria-expanded','true');
+  reportStatus.textContent = '';
+  persist();
+  (reportName.value ? reportReason : reportName).focus();
 }
-document.querySelector('#sadoc-report-link').onclick = () => beginReport();
-window.addEventListener('sadoc-report', event => beginReport(event.detail));
+function closeReport() {
+  draft.hidden = true;
+  reportButton.setAttribute('aria-expanded','false');
+  delete state.report; persist(); reportButton.focus();
+}
+reportButton.onclick = () => beginReport();
+reportClose.onclick = closeReport;
+window.addEventListener('sadoc-report',event=>beginReport(event.detail));
+draft.oninput = () => {
+  if (state.report.name !== reportName.value) delete state.report.id;
+  Object.assign(state.report,{name:reportName.value,reason:reportReason.value});
+  persist();
+};
+draft.onkeydown = event => {
+  if (event.key === 'Enter' && event.target === reportName) {event.preventDefault(); reportReason.focus();}
+};
+reportSend.onclick = async () => {
+  if (submit.disabled || reportSend.disabled) return;
+  const name = reportName.value.trim(), reason = reportReason.value.trim();
+  const greetingOnly = /^(?:hola+|buenas(?: tardes| noches)?|hey|holi|buenos días)[\s!.¡¿?]*$/iu;
+  if (name.length < 2 || greetingOnly.test(name)) {
+    reportStatus.textContent = 'Escribe el nombre de la prenda que quieres reportar.'; reportName.focus(); return;
+  }
+  if (reason.length < 5 || greetingOnly.test(reason)) {
+    reportStatus.textContent = 'Cuenta qué pasó con la publicación para que podamos revisarla.'; reportReason.focus(); return;
+  }
+  const body = 'Reporte de publicación · ' + name + (state.report.id ? ' (' + state.report.id + ')' : '') + ': ' + reason;
+  const ack = 'Recibimos tu reporte sobre «' + name + '». Puedes consultar la respuesta en este chat.';
+  draft.disabled = true; submit.disabled = true; requestButton.disabled = true;
+  reportStatus.textContent = 'Enviando reporte…';
+  try {
+    if (state.chat) {
+      if (state.report.pending?.body !== body) state.report.pending = {body,id:crypto.randomUUID()};
+      persist();
+      await rpc('send',{chat:state.chat,k:state.key,request:state.report.pending.id,body_text:body});
+      await refreshCustomer().catch(()=>{});
+    } else {
+      const {client} = await import('./shop-client.js');
+      const transcript = [...history,{role:'user',content:body}].map(m=>(m.role==='user'?'Cliente: ':'IA: ')+m.content).join('\n').slice(-24000);
+      const {data,error} = await client.rpc('sadoc_open_chat',{k:state.key,transcript_text:transcript});
+      if(error || !data) throw error || Error();
+      state.chat=data; state.collecting=false; requestButton.hidden=true;
+      history.push({role:'user',content:body}); bubble('user',body);
+    }
+    closeReport(); bubble('assistant',ack); statusLine.textContent='';
+  } catch {reportStatus.textContent='El envío no se pudo confirmar. Conservamos tu reporte para que puedas reintentar.';}
+  finally {draft.disabled=false;submit.disabled=false;requestButton.disabled=false;}
+};
+if (state.report) beginReport();
 let rendered = 0;
 async function refreshCustomer() {
   const data = await rpc('read', { chat: state.chat, k: state.key });
@@ -119,14 +177,14 @@ form.addEventListener('submit', async event => {
   event.preventDefault();
   let question = input.value.trim();
   if (!question || submit.disabled) return;
-  const wantsGuidance = state.report && !state.chat && /^(¿|cómo |como |qué |me ayudas)/iu.test(question);
-  if (state.report && !wantsGuidance) {
-    const prefix = 'Reporte de publicación' + (state.report.name ? ' · ' + state.report.name + ' (' + state.report.id + ')' : '') + ': ';
-    if (state.chat && prefix.length + question.length > 400) {
-      statusLine.textContent = 'Resume el motivo en ' + (400-prefix.length) + ' caracteres.'; return;
-    }
-    question = prefix + question;
-    if (!state.chat) state.collecting = true;
+  if (!state.chat && /^(?:hola+|buenas|hey|holi)[\s!.¡¿?]*$/iu.test(question)) {
+    input.value='';
+    const answer='¡Hola! ¿En qué te puedo ayudar?';
+    history.push({role:'user',content:question},{role:'assistant',content:answer});
+    bubble('user',question); bubble('assistant',answer); finish(''); return;
+  }
+  if (/^(?:quiero |necesito )?reportar\b/iu.test(question)) {
+    input.value=''; beginReport(); return;
   }
   if (state.chat) {
     submit.disabled = true;
@@ -134,7 +192,7 @@ form.addEventListener('submit', async event => {
     persist();
     try {
       await rpc('send', { chat: state.chat, k: state.key, request: state.pending.id, body_text: question });
-      state.pending = null; delete state.report; input.value = ''; persist(); await refreshCustomer(); finish('');
+      state.pending = null; input.value = ''; persist(); await refreshCustomer(); finish('');
     } catch { finish('No se pudo actualizar el chat. Revisa tu conexión.'); }
     return;
   }
@@ -143,7 +201,7 @@ form.addEventListener('submit', async event => {
   bubble('user', question);
   history.push({ role: 'user', content: question });
   persist();
-  if (!wantsGuidance && (state.collecting || /\b(falla\w*|error(?:es)?|problema\w*|reclamo|queja|petici[oó]n|reportar|no (?:me )?(?:funciona|carga|deja|llega)|hablar con (?:una persona|soporte))\b/iu.test(question))) {
+  if (!state.report && (state.collecting || /\b(falla\w*|error(?:es)?|problema\w*|reclamo|queja|petici[oó]n|reportar|no (?:me )?(?:funciona|carga|deja|llega)|hablar con (?:una persona|soporte))\b/iu.test(question))) {
     state.collecting = true;
     persist();
     return handoff();
