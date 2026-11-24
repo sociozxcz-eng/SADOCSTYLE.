@@ -15,18 +15,28 @@ jobs:
             const browser=await chromium.launch({executablePath:'/usr/bin/google-chrome',args:['--no-sandbox']});
             for(const [name,options] of [['computador',{viewport:{width:1366,height:800}}],['celular',{...devices['Pixel 7'],deviceScaleFactor:1}]]){
               const page=await browser.newPage(options);
-              await page.route('**/shop-client.js',route=>route.fulfill({contentType:'application/javascript',body:`export const client={auth:{onAuthStateChange:fn=>fn('INITIAL_SESSION',{user:{id:'demo'}})},rpc:async(name,args)=>({data:name==='sadoc_chat_agent'?true:name==='sadoc_chat_inbox'?[{chat:'uno',updated_at:new Date().toISOString()},{chat:'dos',updated_at:new Date(Date.now()-86400000).toISOString()}]:{transcript:'Cliente: '+(args.chat==='uno'?'Pregunta por una chaqueta':'Consulta sobre una talla'),messages:[]}})}`}));
-              for(let i=0;i<24;i++){
-                await page.goto('https://sociozxcz-eng.github.io/SADOCSTYLE./?rev=4cc6fd3&t='+i+'#soporte');
-                if(await page.locator('nav#staff-chats').count())break;
+              let reports=0;
+              await page.route('**/shop-client.js',r=>r.fulfill({contentType:'application/javascript',body:"export const client={rpc:async(name)=>{if(name==='sadoc_open_chat'){await fetch('/report-test');return {data:'test'}};return {data:{messages:[]}}},auth:{onAuthStateChange:()=>{}}}"}));
+              await page.route('**/report-test',r=>{reports++;return r.fulfill({body:'ok'})});
+              for(let i=0;i<28;i++){
+                await page.goto('https://sociozxcz-eng.github.io/SADOCSTYLE./?rev=c96fbe2&t='+i+'#soporte');
+                if(await page.locator('#report-draft').count())break;
                 await new Promise(r=>setTimeout(r,5000));
               }
-              await page.getByRole('button',{name:'Reportar una publicación'}).click();
-              await page.getByText('Dime el nombre de la publicación y qué ocurrió.').waitFor();
-              await page.locator('#staff-chats button').nth(1).click();
-              await page.locator('#staff-history').getByText('Cliente: Consulta sobre una talla').waitFor();
-              const panel=page.locator('#staff-panel');
-              console.log('CAPTURA_'+name+'='+(await panel.screenshot({type:'jpeg',quality:66})).toString('base64'));
+              await page.locator('#sadoc-report-link').click();
+              await page.locator('#shop-question').fill('Hola');
+              await page.locator('#shop-assistant button[type=submit]').click();
+              await page.getByText('¡Hola! ¿En qué te puedo ayudar?',{exact:true}).waitFor();
+              await page.locator('#report-name').fill('Chaqueta blanca');
+              await page.locator('#report-reason').fill('Hola');
+              await page.locator('#report-send').click();
+              await page.getByText('Cuenta qué pasó con la publicación para que podamos revisarla.').waitFor();
+              if(reports)throw Error('Reporte prematuro');
+              await page.locator('#report-reason').fill('La descripción no coincide con la foto.');
+              console.log('CAPTURA_'+name+'='+(await page.locator('#shop-assistant').screenshot({type:'jpeg',quality:60})).toString('base64'));
+              await page.locator('#report-send').click();
+              await page.getByText(/Recibimos tu reporte sobre/).waitFor();
+              if(reports!==1)throw Error('Reporte duplicado o ausente');
               await page.close();
             }
             await browser.close();
