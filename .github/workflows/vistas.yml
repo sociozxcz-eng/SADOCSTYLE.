@@ -15,27 +15,18 @@ jobs:
             const browser=await chromium.launch({executablePath:'/usr/bin/google-chrome',args:['--no-sandbox']});
             for(const [name,options] of [['computador',{viewport:{width:1366,height:800}}],['celular',{...devices['Pixel 7'],deviceScaleFactor:1}]]){
               const page=await browser.newPage(options);
-              await page.addInitScript(()=>sessionStorage.setItem('sadoc-support-v1',JSON.stringify({history:[],collecting:true,key:'00000000-0000-4000-8000-000000000001'})));
-              await page.route('**/rest/v1/rpc/sadoc_open_chat',()=>{throw Error('Solicitud inesperada')});
-              for(let i=0;i<26;i++){
-                await page.goto('https://sociozxcz-eng.github.io/SADOCSTYLE./?rev=9c1e9b0&t='+i+'#soporte');
-                if(await page.getByRole('button',{name:'Enviar a soporte'}).count())break;
+              for(let i=0;i<24;i++){
+                await page.goto('https://sociozxcz-eng.github.io/SADOCSTYLE./?rev=5ad653a&t='+i+'#comisiones');
+                if(await page.locator('#calctype option[value="0.02"]').count())break;
                 await new Promise(r=>setTimeout(r,5000));
               }
-              const send=async q=>{await page.locator('#shop-question').fill(q);await page.locator('#shop-assistant button[type=submit]').click()};
-              await send('Nada');
-              await page.getByText('Listo. Si después necesitas algo, aquí estoy.').waitFor();
-              if(name==='computador'){
-                page.on('requestfailed',q=>console.log('FALLO',q.url().split('?')[0],q.failure().errorText));
-                await send('¿Cuánto cobra la tienda de comisión por vender?');
-                await page.waitForFunction(()=>!document.querySelector('#shop-assistant button[type=submit]').disabled,{},{timeout:240000});
-                console.log('RESPUESTA',await page.locator('#shop-log p').last().innerText(),await page.locator('#shop-answer').innerText());
-                if(await page.locator('#shop-question').inputValue())throw Error('Fallo de inferencia');
-                await send('¿Y si ya compré?');
-                await page.waitForFunction(()=>!document.querySelector('#shop-assistant button[type=submit]').disabled,{},{timeout:160000});
-                console.log('SEGUIMIENTO',await page.locator('#shop-log p').last().innerText());
+              await page.locator('#calcprice').fill('50000');
+              for(const [rate,fee,net] of [['0.05','2.500','47.500'],['0.02','1.000','49.000']]){
+                await page.locator('#calctype').selectOption(rate);
+                const result=await page.locator('#calcresult').innerText();
+                if(!result.includes(fee)||!result.includes(net)) throw Error(result);
               }
-              console.log('CAPTURA_'+name+'='+(await page.locator('#shop-assistant').screenshot({type:'jpeg',quality:60})).toString('base64'));
+              console.log('CAPTURA_'+name+'='+(await page.locator('#comisiones').screenshot({type:'jpeg',quality:60})).toString('base64'));
               await page.close();
             }
             await browser.close();
