@@ -16,17 +16,18 @@ jobs:
             for(const [name,options] of [['computador',{viewport:{width:1366,height:800}}],['celular',{...devices['Pixel 7'],deviceScaleFactor:1}]]){
               const page=await browser.newPage(options);
               for(let i=0;i<24;i++){
-                await page.goto('https://sociozxcz-eng.github.io/SADOCSTYLE./?rev=5ad653a&t='+i+'#comisiones');
-                if(await page.locator('#calctype option[value="0.02"]').count())break;
+                await page.goto('https://sociozxcz-eng.github.io/SADOCSTYLE./?rev=4e5eb80&t='+i+'#vender');
+                if(await page.locator('footer a[href="https://www.tiktok.com/@sadocstyle.rx"]').count())break;
                 await new Promise(r=>setTimeout(r,5000));
               }
-              await page.locator('#calcprice').fill('50000');
-              for(const [rate,fee,net] of [['0.05','2.500','47.500'],['0.02','1.000','49.000']]){
-                await page.locator('#calctype').selectOption(rate);
-                const result=await page.locator('#calcresult').innerText();
-                if(!result.includes(fee)||!result.includes(net)) throw Error(result);
-              }
-              console.log('CAPTURA_'+name+'='+(await page.locator('#comisiones').screenshot({type:'jpeg',quality:60})).toString('base64'));
+              await page.getByText(/Publicar y vender ropa en SADOCSTYLE es gratis/).waitFor();
+              await page.locator('#vender').getByRole('button',{name:'Publicar una prenda'}).click();
+              await page.getByText('$0 de comisión',{exact:true}).waitFor();
+              await page.goto('https://sociozxcz-eng.github.io/SADOCSTYLE./?rev=4e5eb80#soporte');
+              await page.locator('#shop-question').fill('¿Cuánto es la comisión?');
+              await page.locator('#shop-assistant button[type=submit]').click();
+              await page.locator('#shop-log').getByText(/La comisión es de \$0/).waitFor();
+              console.log('CAPTURA_'+name+'='+(await page.locator('footer').screenshot({type:'jpeg',quality:65})).toString('base64'));
               await page.close();
             }
             await browser.close();
