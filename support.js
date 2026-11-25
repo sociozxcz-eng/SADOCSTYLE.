@@ -10,7 +10,7 @@ function armTimer() {
   watchdog = setTimeout(() => fail('La IA tardó demasiado. Puedes reintentar el mensaje.'), 90000);
 }
 const greeting = '¡Hola! Soy el asistente virtual de SADOCSTYLE. ¿En qué te puedo ayudar?';
-const instructions = 'Eres el asistente de SADOCSTYLE. Conversa en español colombiano, con naturalidad y brevedad. Relaciona cada pregunta con lo que ya explicó el cliente. Si falta un dato para entender «eso» o «cuánto», pregunta cuál. Si te cuentan una falla, ayuda a diagnosticarla con una pregunta concreta. Si quieren atención humana, indica que escriban su petición y pulsen Enviar a soporte. Solo ese botón o Enviar reporte registra solicitudes. Responde solo con la respuesta final. Datos de la tienda: solo prendas de vestir; comisión 10 % normal y 5 % tras una compra confirmada; caja de 10 velas en la primera compra confirmada; contraentrega pendiente de activación. Para registro: Cuenta de vendedor. No tienes acceso a pedidos, cuentas ni fotos. No afirmes que aprobaste productos, realizaste operaciones o verificaste un pago. Si desconoces algo, explica qué información falta. Ayuda a describir los reportes de publicaciones y explica cómo enviarlos en este chat. Nunca pidas claves, datos bancarios ni documentos.';
+const instructions = 'Eres el asistente de SADOCSTYLE. Conversa en español colombiano, con naturalidad y brevedad. Relaciona cada pregunta con lo que ya explicó el cliente. Si falta un dato para entender «eso» o «cuánto», pregunta cuál. Si te cuentan una falla, ayuda a diagnosticarla con una pregunta concreta. Si quieren atención humana, indica que escriban su petición y pulsen Enviar a soporte. Solo ese botón o Enviar reporte registra solicitudes. Responde solo con la respuesta final. Datos de la tienda: solo prendas de vestir; comisión 5 % normal y 2 % tras una compra confirmada; caja de 10 velas en la primera compra confirmada; contraentrega pendiente de activación. Para registro: Cuenta de vendedor. No tienes acceso a pedidos, cuentas ni fotos. No afirmes que aprobaste productos, realizaste operaciones o verificaste un pago. Si desconoces algo, explica qué información falta. Ayuda a describir los reportes de publicaciones y explica cómo enviarlos en este chat. Nunca pidas claves, datos bancarios ni documentos.';
 let saved;
 try { saved = JSON.parse(sessionStorage.getItem('sadoc-support-v1')); } catch {}
 const state = saved || { count: 0, history: [], key: crypto.randomUUID() };
@@ -172,7 +172,7 @@ form.addEventListener('submit', async event => {
   const priorAnswer = history.at(-2)?.content || '';
   const purchaseFollowup = /^(?:y )?si ya (?:compr[eé]|he comprado)(?: (?:algo|antes|aqu[ií]|en la tienda))*$/iu;
   if (/comisi[oó]n/iu.test(priorAnswer) && purchaseFollowup.test(question.replace(/[¡!¿?.,]/g,'').trim())) {
-    const answer='Si ya tienes una compra confirmada en SADOCSTYLE, la comisión por vender baja del 10 % al 5 %. Por ejemplo, en una venta de $50.000 COP serían $2.500 COP de comisión.';
+    const answer='Si ya tienes una compra confirmada en SADOCSTYLE, la comisión por vender baja del 5 % al 2 %. Por ejemplo, en una venta de $50.000 COP serían $1.000 COP de comisión.';
     history.push({role:'assistant',content:answer}); bubble('assistant',answer); finish(''); return;
   }
   if (/^[¡!¿?.,\s]*(?:nada(?: más| gracias)?|por ahora nada|no necesito nada|eso es todo|no gracias)[!¿?.,\s]*$/iu.test(question)) {
