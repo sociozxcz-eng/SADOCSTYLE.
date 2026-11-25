@@ -16,7 +16,7 @@ Deno.serve(async req => {
   const body = await req.json();
   let result;
   if (body.action === "list") {
-    result = await db.from("clothing_listings").select("id").eq("status","pending").order("created_at").limit(20);
+    result = await db.rpc("clothing_review_queue");
   } else if (typeof body.id === "string" && /^[0-9a-f-]{36}$/i.test(body.id)) {
     if (body.action === "read") result = await db.from("clothing_listings").select("image,name,description").eq("id",body.id).eq("status","pending").maybeSingle();
     else if (["approved","rejected"].includes(body.decision)) result = await db.from("clothing_listings").update({status:body.decision}).eq("id",body.id).eq("status","pending");

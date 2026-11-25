@@ -58,7 +58,7 @@ export function connectClothingReview(client) {
     }
     catalog.replaceChildren(...result.data.map(listingCard));
     publicSection.hidden = !result.data.length;
-    notice.textContent = 'La IA revisa las fotos por turnos. Si reconoce una prenda, tu anuncio aparecerá en Productos.';
+    notice.textContent = 'Al empezar puedes enviar una prenda al día. Si tus tres últimas prendas revisadas fueron aprobadas, tus próximos anuncios pasan a revisión prioritaria.';
     submit.hidden = !signedIn;
     feedback.textContent = '';
     if (signedIn) {
@@ -91,7 +91,9 @@ export function connectClothingReview(client) {
         image: photo.href
       });
       if (error) {
-        feedback.textContent = 'No se pudo enviar el anuncio. Revisa los datos y vuelve a intentar.';
+        feedback.textContent = error.message === 'SADOC_DAILY_LIMIT'
+          ? 'Ya enviaste una prenda hoy. Puedes enviar otra mañana, según la hora de Colombia.'
+          : 'No se pudo enviar el anuncio. Revisa los datos y vuelve a intentar.';
         return;
       }
       form.reset();
