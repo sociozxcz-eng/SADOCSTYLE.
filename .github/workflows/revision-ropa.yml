@@ -24,15 +24,24 @@ jobs:
         id: cola
         run: python3 moderation/review.py queue
       - uses: actions/setup-python@v5
-        if: steps.cola.outputs.pending != '0' || github.event_name != 'schedule'
+        if: steps.cola.outputs.pending != '0' || github.event_name == 'push'
         with:
           python-version: '3.11'
+      - name: Recuperar el clasificador
+        uses: actions/cache@v4
+        id: vision
+        if: steps.cola.outputs.pending != '0' || github.event_name == 'push'
+        with:
+          path: |
+            /tmp/sadoc-vision
+            ~/.cache/huggingface/hub
+          key: sadoc-vision-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('moderation/review.py', '.github/workflows/revision-ropa.yml') }}
       - name: Instalar clasificador
-        if: steps.cola.outputs.pending != '0' || github.event_name != 'schedule'
+        if: (steps.cola.outputs.pending != '0' || github.event_name == 'push') && steps.vision.outputs.cache-hit != 'true'
         run: |
           python3 -m venv /tmp/sadoc-vision
           /tmp/sadoc-vision/bin/pip install --quiet --index-url https://download.pytorch.org/whl/cpu torch==2.7.1 torchvision==0.22.1
           /tmp/sadoc-vision/bin/pip install --quiet transformers==4.53.3 Pillow==11.3.0
       - name: Verificar y clasificar fotos
-        if: steps.cola.outputs.pending != '0' || github.event_name != 'schedule'
+        if: steps.cola.outputs.pending != '0' || github.event_name == 'push'
         run: /tmp/sadoc-vision/bin/python moderation/review.py process
