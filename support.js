@@ -169,6 +169,12 @@ form.addEventListener('submit', async event => {
   input.value = '';
   bubble('user', question);
   history.push({role:'user',content:question}); persist();
+  const priorAnswer = history.at(-2)?.content || '';
+  const purchaseFollowup = /^(?:y )?si ya (?:compr[eé]|he comprado)(?: (?:algo|antes|aqu[ií]|en la tienda))*$/iu;
+  if (/comisi[oó]n/iu.test(priorAnswer) && purchaseFollowup.test(question.replace(/[¡!¿?.,]/g,'').trim())) {
+    const answer='Si ya tienes una compra confirmada en SADOCSTYLE, la comisión por vender baja del 10 % al 5 %. Por ejemplo, en una venta de $50.000 COP serían $2.500 COP de comisión.';
+    history.push({role:'assistant',content:answer}); bubble('assistant',answer); finish(''); return;
+  }
   if (/^[¡!¿?.,\s]*(?:nada(?: más| gracias)?|por ahora nada|no necesito nada|eso es todo|no gracias)[!¿?.,\s]*$/iu.test(question)) {
     const answer='Listo. Si después necesitas algo, aquí estoy.';
     history.push({role:'assistant',content:answer}); bubble('assistant',answer); finish(''); return;
