@@ -42,8 +42,59 @@ export function connectClothingReview(client) {
   let available = false;
   let refreshId = 0;
 
+  const list = document.getElementById('mis-lista');
+  const statusLine = document.getElementById('mis-aviso');
+  const more = document.getElementById('mis-mas');
+  const reload = document.getElementById('mis-actualizar');
+  const labels = {pending:'Esperando comprobación', approved:'Aprobada · Visible en Productos', rejected:'Rechazada · Sin publicar'};
+  let historyRequest = 0;
+  async function loadMine(append = false) {
+    const request = ++historyRequest;
+    const offset = append ? list.childElementCount : 0;
+    if (!append) list.replaceChildren();
+    more.hidden = true;
+    reload.hidden = !currentUser;
+    document.getElementById('mis-login').hidden = Boolean(currentUser);
+    statusLine.textContent = currentUser ? 'Consultando tus prendas…' : 'Inicia sesión con la cuenta que usaste para enviar tu prenda.';
+    if (!currentUser) return;
+    try {
+      const {data,error} = await client.rpc('mis_publicaciones',{desde:offset});
+      if (request !== historyRequest) return;
+      if (error) throw error;
+      for (const item of data.slice(0,6)) {
+        const row = document.createElement('article');
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.alt = item.name;
+        const body = document.createElement('div');
+        const name = document.createElement('h3');
+        name.textContent = item.name;
+        const details = document.createElement('p');
+        details.textContent = '$' + Number(item.price).toLocaleString('es-CO') + ' COP · ' + new Date(item.created_at).toLocaleDateString('es-CO',{timeZone:'America/Bogota'});
+        const state = document.createElement('strong');
+        state.className = item.status;
+        state.textContent = labels[item.status];
+        body.append(name,details,state);
+        row.append(img,body);
+        list.append(row);
+      }
+      more.hidden = data.length <= 6;
+      statusLine.textContent = list.childElementCount ? '' : 'Todavía no has enviado prendas a revisión.';
+    } catch {
+      if (request === historyRequest) statusLine.textContent = 'No pudimos cargar tus prendas. Toca Actualizar estado para intentarlo otra vez.';
+    }
+  }
+  window.addEventListener('abrir-mis-publicaciones', () => loadMine());
+  more.onclick = () => loadMine(true);
+  reload.onclick = () => loadMine();
+
   async function refresh(user) {
+    if (user?.id !== currentUser?.id) {
+      historyRequest++;
+      list.replaceChildren();
+    }
     currentUser = user;
+    if (location.hash === '#mis-publicaciones') loadMine();
     const request = ++refreshId;
     signedIn = Boolean(user);
     document.getElementById('clothing-login').hidden = signedIn;
@@ -61,12 +112,7 @@ export function connectClothingReview(client) {
     notice.textContent = 'Al empezar puedes enviar una prenda al día. Si tus tres últimas prendas revisadas fueron aprobadas, tus próximos anuncios pasan a revisión prioritaria.';
     submit.hidden = !signedIn;
     feedback.textContent = '';
-    if (signedIn) {
-      const own = await client.from(table).select('name,status').in('status', ['pending','rejected'])
-        .order('created_at', {ascending:false}).limit(10);
-      if (request === refreshId && !own.error) feedback.textContent = own.data.map(item =>
-        item.name + ' · ' + (item.status === 'pending' ? 'En revisión automática' : 'No publicado. Prueba con una foto más clara de la prenda.')).join(' | ');
-    }
+
   }
   window.addEventListener('hashchange', () => {
     if (['#productos','#publicar'].includes(location.hash)) refresh(currentUser).catch(console.error);
@@ -98,7 +144,7 @@ export function connectClothingReview(client) {
       }
       form.reset();
       await refresh(currentUser);
-      feedback.textContent = 'Anuncio recibido. La IA revisará la foto y publicará la prenda si cumple los criterios.';
+      window.view('mis-publicaciones');
     } catch {
       feedback.textContent = 'Se perdió la conexión. Revisa tus anuncios antes de volver a enviarlo.';
     } finally {
