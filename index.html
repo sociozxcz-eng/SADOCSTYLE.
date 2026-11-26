@@ -413,7 +413,7 @@ header.ref-header{align-items:center!important}
   }
 }
 </style>
-<script type="module" src="seller-account.js?v=catalogo3"></script>
+<script type="module" src="seller-account.js?v=ficha4"></script>
 <script type="module" src="product-photo.js?v=6"></script>
 <style>
 #homeproducts > .product, #allproducts > .product {
@@ -459,6 +459,17 @@ header.ref-header{align-items:center!important}
 #mis-lista h3{margin:0;overflow-wrap:anywhere}#mis-lista p{margin:.3rem 0}
 #mis-lista strong{font-size:.95rem;color:#865100}#mis-lista .approved{color:#17603c}#mis-lista .rejected{color:#952d38}
 .mis-acciones{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+</style><style>
+#listing-dialog{box-sizing:border-box;width:min(92vw,520px);max-height:90dvh;margin:auto;padding:18px 22px;border:0;border-radius:18px;color:#101728;background:white;overflow:auto}
+#listing-dialog::backdrop{background:rgb(12 19 33 / 55%)}
+#listing-dialog .listing-actions{position:relative;display:flex;align-items:center;justify-content:space-between;background:white;padding:0;border:0;box-shadow:none}
+.listing-actions button,.listing-actions summary{background:white;color:#121b30;cursor:pointer;border:0;font:inherit;padding:10px}
+.listing-actions summary{list-style:none;font:bold 24px/24px sans-serif;min-width:44px;text-align:center;box-sizing:border-box}
+.listing-actions summary::-webkit-details-marker{display:none}
+.listing-actions .listing-report{position:absolute;right:0;top:100%;white-space:nowrap;border:1px solid #ddd;border-radius:9px;box-shadow:0 3px 12px #0002}
+#listing-dialog img{width:100%;height:min(42dvh,350px);object-fit:contain}
+#listing-dialog h2,#listing-dialog p{overflow-wrap:anywhere;margin:.6em 0}
+.listing-price{font-weight:bold;font-size:1.25rem}
 </style></head><body>
 <div class="topline">Próximamente · Pago contraentrega</div><header class="ref-header"><button class="ref-action ref-menu" onclick="menu(true)" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M3 12h18M3 19h18"/></svg></button><a id="seller-header" href="#registro" onclick="return navigate(event, 'registro')">
   <span class="seller-avatar" aria-hidden="true"><img src="assets/perfil-invitado.jpg" alt=""></span>
@@ -480,6 +491,13 @@ header.ref-header{align-items:center!important}
 </nav>
 <section id="inicio" class="page"><div class="hero" role="img" aria-label="Banner navideño original SADOCSTYLE: ninja con espada, árbol de Navidad y regalos"></div><a class="promo" href="#productos" onclick="return navigate(event, 'productos')"><span class="promo-mobile">🎄 COLECCIÓN NAVIDEÑA · VER COLECCIÓN 🎁</span><span class="promo-desktop">Ver colección navideña →</span></a><div class="wave"></div><main><div class="products" id="homeproducts"></div><p style="text-align:center"><a class="blackbutton" href="#publicar" onclick="return navigate(event, 'publicar')">Publicar mi ropa</a></p></main></section>
 <section id="productos" class="screen"><h2 class="section-title">TODOS LOS PRODUCTOS</h2><div class="products-mini" id="allproducts"></div></section>
+<dialog id="listing-dialog" aria-labelledby="listing-title">
+  <header class="listing-actions"><button type="button" class="listing-back" autofocus>← Volver</button>
+    <details><summary aria-label="Opciones de la publicación" title="Opciones de la publicación">⋯</summary>
+      <button type="button" class="listing-report">Reportar publicación</button></details>
+  </header>
+  <img alt=""><h2 id="listing-title"></h2><p class="listing-price"></p><p class="listing-description"></p>
+</dialog>
 <section id="detalle" class="screen"><button class="outline" onclick="view('inicio')">← Volver</button><div class="columns" style="margin-top:20px"><div><div class="detail-product-photo"><img src="assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12" class="detail-pic" id="detailimage" alt="Buzo estampado">
   <details class="detail-gift">
     <summary aria-label="Abrir promoción de regalo">

@@ -25,19 +25,38 @@ function listingCard(listing) {
   wrap.append(image);
   body.append(title, price, description);
   card.append(wrap, body);
-  if (listing.status === 'approved') {
-    const report = document.createElement('a');
-    report.className = 'outline';
-    report.textContent = 'Reportar publicación';
-    report.href = '#soporte';
-    report.onclick = event => {
-      event.preventDefault();
-      window.view('soporte');
-      window.dispatchEvent(new CustomEvent('sadoc-report', {detail: {name:listing.name, id:listing.id}}));
-    };
-    body.append(report);
-  }
+  const view = document.createElement('button');
+  view.type = 'button';
+  view.className = 'blackbutton';
+  view.textContent = 'VER';
+  view.setAttribute('aria-label', 'Ver ' + listing.name);
+  view.onclick = () => showListing(listing, image.src, price.textContent);
+  body.append(view);
   return card;
+}
+
+const dialog = document.getElementById('listing-dialog');
+const options = dialog.querySelector('details');
+dialog.querySelector('.listing-back').onclick = () => dialog.close();
+dialog.addEventListener('close', () => { options.open = false; });
+dialog.addEventListener('click', event => {
+  if (!options.contains(event.target)) options.open = false;
+});
+window.addEventListener('hashchange', () => { if (dialog.open) dialog.close(); });
+
+function showListing(listing, src, price) {
+  dialog.querySelector('h2').textContent = listing.name;
+  const photo = dialog.querySelector('img');
+  photo.src = src;
+  photo.alt = listing.name;
+  dialog.querySelector('.listing-price').textContent = price;
+  dialog.querySelector('.listing-description').textContent = listing.description;
+  dialog.querySelector('.listing-report').onclick = () => {
+    dialog.close();
+    window.view('soporte');
+    window.dispatchEvent(new CustomEvent('sadoc-report', {detail: {name:listing.name, id:listing.id}}));
+  };
+  dialog.showModal();
 }
 
 export function connectClothingReview(client) {
