@@ -4,12 +4,13 @@ const form = document.getElementById('publish-form');
 const submit = document.getElementById('submit-clothing');
 const notice = document.getElementById('clothing-notice');
 const feedback = document.getElementById('clothing-feedback');
-const publicSection = document.getElementById('clothing-catalog');
-const catalog = document.getElementById('clothing-approved');
-
 function listingCard(listing) {
   const card = document.createElement('article');
-  card.className = 'frame';
+  card.className = 'product';
+  const wrap = document.createElement('div');
+  wrap.className = 'imgwrap';
+  const body = document.createElement('div');
+  body.className = 'pc';
   const image = document.createElement('img');
   if (/^data:image\/jpeg;base64,[A-Za-z0-9+/]+={0,2}$/.test(listing.image)) image.src = listing.image;
   image.alt = listing.name;
@@ -17,10 +18,13 @@ function listingCard(listing) {
   const title = document.createElement('h3');
   title.textContent = listing.name;
   const price = document.createElement('p');
+  price.className = 'price';
   price.textContent = '$' + Number(listing.price).toLocaleString('es-CO') + ' COP';
   const description = document.createElement('p');
   description.textContent = listing.description;
-  card.append(image, title, price, description);
+  wrap.append(image);
+  body.append(title, price, description);
+  card.append(wrap, body);
   if (listing.status === 'approved') {
     const report = document.createElement('a');
     report.className = 'outline';
@@ -31,7 +35,7 @@ function listingCard(listing) {
       window.view('soporte');
       window.dispatchEvent(new CustomEvent('sadoc-report', {detail: {name:listing.name, id:listing.id}}));
     };
-    card.append(report);
+    body.append(report);
   }
   return card;
 }
@@ -107,16 +111,14 @@ export function connectClothingReview(client) {
       notice.textContent = 'No se pudo conectar con el catálogo. Guarda un borrador o vuelve a cargar la página.';
       return;
     }
-    catalog.replaceChildren(...result.data.map(listingCard));
-    publicSection.hidden = !result.data.length;
+    window.sellerCatalogCards = () => result.data.map(listingCard);
+    window.renderProducts();
     notice.textContent = 'Puedes publicar ropa, velas y otros productos de venta libre. Al empezar puedes enviar un producto al día. Revisamos la foto y el texto para detectar artículos prohibidos, ilegales o para mayores de 18 años.';
     submit.hidden = !signedIn;
     feedback.textContent = '';
 
   }
-  window.addEventListener('hashchange', () => {
-    if (['#productos','#publicar'].includes(location.hash)) refresh(currentUser).catch(console.error);
-  });
+  window.addEventListener('abrir-catalogo', () => refresh(currentUser).catch(console.error));
   
   form.addEventListener('submit', async event => {
     if (event.submitter !== submit) return;
