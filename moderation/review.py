@@ -27,7 +27,7 @@ def classifier():
     revision = "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268"
     processor = CLIPProcessor.from_pretrained(model_id, revision=revision)
     model = CLIPModel.from_pretrained(model_id, revision=revision, use_safetensors=False).eval()
-    labels = [
+    allowed = [
         "a product photo of clothing, such as a shirt, hoodie, jacket, or sweater",
         "a product photo of clothing, such as trousers, jeans, shorts, skirt or dress",
         "a product photo of children's clothes, pajamas, or a matching outfit",
@@ -36,15 +36,23 @@ def classifier():
         "a toy, vehicle, furniture, appliance, or electronic device",
         "a gift box, candle, food, or other non-clothing product",
         "shoes, jewelry, a bag or accessories without a garment",
-        "a weapon, gun, knife, illegal drug or drug paraphernalia",
-        "explicit nudity or sexual imagery", "a hateful symbol or violent scene",
-        "a screenshot, document, unrelated object, drawing or landscape",
+        "ordinary home decor, crafts, kitchen utensils or other household goods",
+        "a book, artwork, stationery or a general retail product",
     ]
+    prohibited = [
+        "a firearm, ammunition, explosive or other real weapon for sale",
+        "illegal drugs for sale",
+        "adult sex products or sexually explicit material",
+        "age-restricted merchandise: tobacco, vaping devices or alcoholic beverages",
+        "explicit nudity or sexual imagery", "a hateful symbol or violent scene",
+
+    ]
+    labels = allowed + prohibited
     def classify(image):
         inputs = processor(text=labels, images=image.convert("RGB"), return_tensors="pt", padding=True)
         with torch.inference_mode():
             scores = model(**inputs).logits_per_image.softmax(dim=1)[0]
-        return "approved" if scores[:5].sum().item() >= .80 and scores.argmax().item() < 5 else "rejected"
+        return "rejected" if scores[len(allowed):].sum().item() >= .5 else "approved"
     return classify
 
 def main():
@@ -54,7 +62,7 @@ def main():
         return
     from PIL import Image, UnidentifiedImageError
     classify = classifier()
-    for fixture, expected in [("buzo-frente.jpg","approved"),("velitas-primera-compra.jpg","rejected")]:
+    for fixture, expected in [("buzo-frente.jpg","approved"),("velitas-primera-compra.jpg","approved")]:
         with Image.open(Path("assets") / fixture) as image:
             if classify(image) != expected:
                 raise RuntimeError("Falló la prueba de clasificación: " + fixture)
@@ -63,7 +71,7 @@ def main():
         if not listing:
             continue
         text = listing["name"] + " " + listing["description"]
-        blocked = re.search(r"\b(coca[ií]na|hero[ií]na|pornograf[ií]a|vendo armas|venta de armas)\b", text, re.I)
+        blocked = re.search(r"\b(coca[ií]na|hero[ií]na|pornograf[ií]a|vendo armas|venta de armas|contenido (?:sexual|para adultos)|material (?:robado|pornogr[aá]fico)|vapeadores?|cigarrillos|municiones)\b", text, re.I)
         decision = "rejected"
         if not blocked:
             try:

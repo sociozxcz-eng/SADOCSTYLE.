@@ -55,7 +55,7 @@ export function connectClothingReview(client) {
     more.hidden = true;
     reload.hidden = !currentUser;
     document.getElementById('mis-login').hidden = Boolean(currentUser);
-    statusLine.textContent = currentUser ? 'Consultando tus prendas…' : 'Inicia sesión con la cuenta que usaste para enviar tu prenda.';
+    statusLine.textContent = currentUser ? 'Consultando tus prendas…' : 'Inicia sesión con la cuenta que usaste para enviar tu producto.';
     if (!currentUser) return;
     try {
       const {data,error} = await client.rpc('mis_publicaciones',{desde:offset});
@@ -79,7 +79,7 @@ export function connectClothingReview(client) {
         list.append(row);
       }
       more.hidden = data.length <= 6;
-      statusLine.textContent = list.childElementCount ? '' : 'Todavía no has enviado prendas a revisión.';
+      statusLine.textContent = list.childElementCount ? '' : 'Todavía no has enviado productos a revisión.';
     } catch {
       if (request === historyRequest) statusLine.textContent = 'No pudimos cargar tus prendas. Toca Actualizar estado para intentarlo otra vez.';
     }
@@ -109,7 +109,7 @@ export function connectClothingReview(client) {
     }
     catalog.replaceChildren(...result.data.map(listingCard));
     publicSection.hidden = !result.data.length;
-    notice.textContent = 'Al empezar puedes enviar una prenda al día. Si tus tres últimas prendas revisadas fueron aprobadas, tus próximos anuncios pasan a revisión prioritaria.';
+    notice.textContent = 'Puedes publicar ropa, velas y otros productos de venta libre. Al empezar puedes enviar un producto al día. Revisamos la foto y el texto para detectar artículos prohibidos, ilegales o para mayores de 18 años.';
     submit.hidden = !signedIn;
     feedback.textContent = '';
 
@@ -138,7 +138,7 @@ export function connectClothingReview(client) {
       });
       if (error) {
         feedback.textContent = error.message === 'SADOC_DAILY_LIMIT'
-          ? 'Ya enviaste una prenda hoy. Puedes enviar otra mañana, según la hora de Colombia.'
+          ? 'Ya enviaste un producto hoy. Puedes enviar otro mañana, según la hora de Colombia.'
           : 'No se pudo enviar el anuncio. Revisa los datos y vuelve a intentar.';
         return;
       }
