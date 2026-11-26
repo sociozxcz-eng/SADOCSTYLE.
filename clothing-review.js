@@ -4,61 +4,6 @@ const form = document.getElementById('publish-form');
 const submit = document.getElementById('submit-clothing');
 const notice = document.getElementById('clothing-notice');
 const feedback = document.getElementById('clothing-feedback');
-function listingCard(listing) {
-  const card = document.createElement('article');
-  card.className = 'product';
-  const wrap = document.createElement('div');
-  wrap.className = 'imgwrap';
-  const body = document.createElement('div');
-  body.className = 'pc';
-  const image = document.createElement('img');
-  if (/^data:image\/jpeg;base64,[A-Za-z0-9+/]+={0,2}$/.test(listing.image)) image.src = listing.image;
-  image.alt = listing.name;
-  image.loading = 'lazy';
-  const title = document.createElement('h3');
-  title.textContent = listing.name;
-  const price = document.createElement('p');
-  price.className = 'price';
-  price.textContent = '$' + Number(listing.price).toLocaleString('es-CO') + ' COP';
-  const description = document.createElement('p');
-  description.textContent = listing.description;
-  wrap.append(image);
-  body.append(title, price, description);
-  card.append(wrap, body);
-  const view = document.createElement('button');
-  view.type = 'button';
-  view.className = 'blackbutton';
-  view.textContent = 'VER';
-  view.setAttribute('aria-label', 'Ver ' + listing.name);
-  view.onclick = () => showListing(listing, image.src, price.textContent);
-  body.append(view);
-  return card;
-}
-
-const dialog = document.getElementById('listing-dialog');
-const options = dialog.querySelector('details');
-dialog.querySelector('.listing-back').onclick = () => dialog.close();
-dialog.addEventListener('close', () => { options.open = false; });
-dialog.addEventListener('click', event => {
-  if (!options.contains(event.target)) options.open = false;
-});
-window.addEventListener('hashchange', () => { if (dialog.open) dialog.close(); });
-
-function showListing(listing, src, price) {
-  dialog.querySelector('h2').textContent = listing.name;
-  const photo = dialog.querySelector('img');
-  photo.src = src;
-  photo.alt = listing.name;
-  dialog.querySelector('.listing-price').textContent = price;
-  dialog.querySelector('.listing-description').textContent = listing.description;
-  dialog.querySelector('.listing-report').onclick = () => {
-    dialog.close();
-    window.view('soporte');
-    window.dispatchEvent(new CustomEvent('sadoc-report', {detail: {name:listing.name, id:listing.id}}));
-  };
-  dialog.showModal();
-}
-
 export function connectClothingReview(client) {
   let currentUser;
   let signedIn = false;
@@ -130,8 +75,7 @@ export function connectClothingReview(client) {
       notice.textContent = 'No se pudo conectar con el catálogo. Guarda un borrador o vuelve a cargar la página.';
       return;
     }
-    window.sellerCatalogCards = () => result.data.map(listingCard);
-    window.renderProducts();
+    window.setApprovedProducts(result.data);
     notice.textContent = 'Puedes publicar ropa, velas y otros productos de venta libre. Al empezar puedes enviar un producto al día. Revisamos la foto y el texto para detectar artículos prohibidos, ilegales o para mayores de 18 años.';
     submit.hidden = !signedIn;
     feedback.textContent = '';
