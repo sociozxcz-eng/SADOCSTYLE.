@@ -1,7 +1,7 @@
 name: Revisión automática de prendas
 on:
   schedule:
-    - cron: '7,22,37,52 * * * *'
+    - cron: '3-58/5 * * * *'
   workflow_dispatch:
   push:
     branches: [main]
