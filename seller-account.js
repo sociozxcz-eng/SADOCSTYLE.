@@ -1,4 +1,4 @@
-import { connectClothingReview } from './clothing-review.js?v=catalogo5';
+import { connectClothingReview } from './clothing-review.js?v=perfiles1';
 
 const storeUrl = 'https://sociozxcz-eng.github.io/SADOCSTYLE./';
 
@@ -49,7 +49,9 @@ function renderAccount(user) {
   const name = verifiedName || (owner ? 'Sadoc777x' : profileName || 'Mi cuenta');
   const source = user.user_metadata?.avatar;
   label.textContent = name;
-  edit.elements.username.value = profileName;
+  edit.elements.username.value = verifiedName || profileName;
+  edit.elements.username.readOnly = Boolean(verifiedName);
+  if(edit.elements.public_bio) edit.elements.public_bio.value = user.user_metadata?.public_bio || '';
   for (const field of ['pickup_city', 'pickup_address']) {
     if (edit.elements[field]) edit.elements[field].value = user.user_metadata?.[field] || '';
   }
@@ -145,11 +147,12 @@ try {
   });
 
   handle(edit, async data => {
-    const name = username(data.get('username'));
+    const name = edit.elements.username.readOnly ? 'sadox777' : username(data.get('username'));
     if (!name) throw new Error('Elige un nombre válido de 3 a 24 caracteres.');
     const photo = data.get('photo');
     const metadata = { username: name, ...pickupDetails(data) };
     if (photo.size) metadata.avatar = await avatarThumbnail(photo);
+    metadata.public_bio = String(data.get('public_bio') || '').trim().slice(0,240);
     const { data: result, error } = await client.auth.updateUser({ data: metadata });
     if (error) throw error;
     edit.elements.photo.value = '';
