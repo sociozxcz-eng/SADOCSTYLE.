@@ -1,5 +1,4 @@
 const table = 'clothing_listings';
-const fields = 'id,name,price,description,image,status';
 const form = document.getElementById('publish-form');
 const submit = document.getElementById('submit-clothing');
 const notice = document.getElementById('clothing-notice');
@@ -67,8 +66,7 @@ export function connectClothingReview(client) {
     signedIn = Boolean(user);
     document.getElementById('clothing-login').hidden = signedIn;
     submit.hidden = true;
-    const result = await client.from(table).select(fields)
-      .eq('status', 'approved').order('created_at', { ascending: false }).limit(20);
+    const result = await client.rpc('sadoc_catalogo');
     if (request !== refreshId) return;
     available = !result.error;
     if (!available) {
