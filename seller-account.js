@@ -15,7 +15,7 @@ function username(value) {
   const name = String(value ?? '').normalize('NFKC').trim();
   if (!/^[\p{L}\p{N} ._-]{3,24}$/u.test(name) || !/[\p{L}\p{N}]/u.test(name)) return '';
   const compact = name.toLowerCase().replace(/[ ._-]/g, '');
-  return compact === 'sadoc777x' || compact === 'sadocstyle' ? '' : name;
+  return compact === 'sadox777' || compact === 'sadoc777x' || compact === 'sadocstyle' ? '' : name;
 }
 
 function pickupDetails(data) {
@@ -31,9 +31,10 @@ function renderAccount(user) {
   guest.hidden = Boolean(user);
   profile.hidden = !user;
   const owner = Boolean(user && user.app_metadata?.sadoc_role === 'owner');
+  const verifiedName = user?.app_metadata?.sadoc_verified_name === 'sadox777' ? 'sadox777' : '';
   const avatar = sellerHeader.querySelector('.seller-avatar');
   const label = sellerHeader.querySelector('strong');
-  sellerHeader.querySelector('.owner-badge').hidden = !owner;
+  sellerHeader.querySelector('.owner-badge').hidden = !(verifiedName || owner);
 
   if (!user) {
     label.textContent = 'Registrarse';
@@ -45,7 +46,7 @@ function renderAccount(user) {
   }
 
   const profileName = username(user.user_metadata?.username);
-  const name = owner ? 'Sadoc777x' : profileName || 'Mi cuenta';
+  const name = verifiedName || (owner ? 'Sadoc777x' : profileName || 'Mi cuenta');
   const source = user.user_metadata?.avatar;
   label.textContent = name;
   edit.elements.username.value = profileName;
