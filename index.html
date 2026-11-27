@@ -900,7 +900,7 @@ function publish(event) {
   view('productos');
 }
 function showLocation() {
-  if(/^#perfil\/[0-9a-f-]{36}$/i.test(location.hash)){showSeller(location.hash.slice(7));return;}
+  if(/^#perfil\/[0-9a-f-]{36}$/i.test(location.hash)){showSeller(location.hash.slice('#perfil/'.length));return;}
   const target = document.getElementById(location.hash.slice(1));
   view(target?.matches('section.page, section.screen') ? target.id : 'inicio', false);
 }
