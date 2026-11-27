@@ -413,7 +413,7 @@ header.ref-header{align-items:center!important}
   }
 }
 </style>
-<script type="module" src="seller-account.js?v=catalogo5"></script>
+<script type="module" src="seller-account.js?v=perfiles1"></script>
 <script type="module" src="product-photo.js?v=6"></script>
 <style>
 #homeproducts > .product, #allproducts > .product {
@@ -465,7 +465,7 @@ header.ref-header{align-items:center!important}
 .detail-toolbar details{position:relative}
 .detail-toolbar summary{cursor:pointer;list-style:none;font:bold 23px/44px sans-serif;width:44px;text-align:center}
 .detail-toolbar details button{position:absolute;right:0;top:100%;white-space:nowrap;background:white;z-index:3}
-</style></head><body>
+</style><style>.seller-link,#perfil-nombre{display:flex;align-items:center;gap:.35em;overflow-wrap:anywhere}.seller-link{margin:.5em 0;color:#342549;font-weight:700;text-decoration:underline}.seller-link .owner-badge,#perfil-nombre .owner-badge{width:18px;height:18px}#perfil-bio{white-space:pre-wrap;overflow-wrap:anywhere}</style></head><body>
 <div class="topline">Próximamente · Pago contraentrega</div><header class="ref-header"><button class="ref-action ref-menu" onclick="menu(true)" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M3 12h18M3 19h18"/></svg></button><a id="seller-header" href="#registro" onclick="return navigate(event, 'registro')">
   <span class="seller-avatar" aria-hidden="true"><img src="assets/perfil-invitado.jpg" alt=""></span>
   <strong>Registrarse</strong><span class="owner-badge" role="img" aria-label="Insignia del dueño de la tienda" hidden>✓</span>
@@ -486,7 +486,8 @@ header.ref-header{align-items:center!important}
 </nav>
 <section id="inicio" class="page"><div class="hero" role="img" aria-label="Banner navideño original SADOCSTYLE: ninja con espada, árbol de Navidad y regalos"></div><a class="promo" href="#productos" onclick="return navigate(event, 'productos')"><span class="promo-mobile">🎄 COLECCIÓN NAVIDEÑA · VER COLECCIÓN 🎁</span><span class="promo-desktop">Ver colección navideña →</span></a><div class="wave"></div><main><div class="products" id="homeproducts"></div><p style="text-align:center"><a class="blackbutton" href="#publicar" onclick="return navigate(event, 'publicar')">Publicar mi ropa</a></p></main></section>
 <section id="productos" class="screen"><h2 class="section-title">TODOS LOS PRODUCTOS</h2><div class="products-mini" id="allproducts"></div></section>
-<section id="detalle" class="screen"><div class="detail-toolbar"><button class="outline" onclick="view(detailOrigin)">← Volver</button><details id="detail-options" hidden><summary aria-label="Opciones de la publicación">⋯</summary><button class="outline" onclick="reportCurrent()">Reportar publicación</button></details></div><div class="columns" style="margin-top:20px"><div><div class="detail-product-photo"><img src="assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12" class="detail-pic" id="detailimage" alt="Buzo estampado">
+<section id="perfil" class="screen"><a href="#productos">← Productos</a><h1 id="perfil-nombre"></h1><p id="perfil-bio"></p><button type="button" class="outline" id="perfil-seguir" hidden>Seguir</button><h2>Catálogo</h2><p id="perfil-estado" role="status"></p><div class="products-mini" id="perfil-productos"></div></section>
+<section id="detalle" class="screen"><div class="detail-toolbar"><button class="outline" onclick="if(detailOrigin.startsWith(\'perfil/\'))location.hash=detailOrigin;else view(detailOrigin)">← Volver</button><details id="detail-options" hidden><summary aria-label="Opciones de la publicación">⋯</summary><button class="outline" onclick="reportCurrent()">Reportar publicación</button></details></div><div class="columns" style="margin-top:20px"><div><div class="detail-product-photo"><img src="assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12" class="detail-pic" id="detailimage" alt="Buzo estampado">
   <details class="detail-gift">
     <summary aria-label="Abrir promoción de regalo">
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -502,7 +503,7 @@ header.ref-header{align-items:center!important}
       </details>
     </div>
   </details>
-</div><div class="sizes" id="detail-angles"><button class="outline" onclick="switchImage('assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12')">Vista frontal</button><button class="outline" onclick="switchImage('assets/file_000000004e0c81f7886b1030db71e95b.jpg')">Vista trasera</button></div></div><div><h1 id="detailname">Chaqueta blanca de flores</h1><div class="price" id="detailprice">$50.000 COP</div><p id="detail-description" class="message">Buzo blanco con capucha, estampados negros y bolsillo delantero. Fotografías del producto.</p><p id="detail-size-label"><strong>Talla</strong></p><div class="sizes" id="sizeoptions"></div><div id="detail-location" class="frame" style="margin:12px 0;padding:14px"><strong>📍 Ubicación del vendedor: Ibagué, Tolima, Colombia</strong></div><div class="sadoc-seller-label"><strong>SADOCSTYLE</strong></div><button class="redbutton" type="button" onclick="addCart(true)">🛒 Agregar al carrito</button><button class="blackbutton sadoc-buy-now" type="button" onclick="buyNow()">🛍️ Comprar ahora</button><button class="outline" type="button" onclick="addCart(false);alert('Producto agregado al carrito 🛒')">+ Añadir y seguir mirando</button><div id="sadoc-seller-rating"></div><p class="notice">💜 Compra con Nequi o consulta tu pedido por WhatsApp. El pago y la entrega se confirman directamente con SADOCSTYLE.</p></div></div></section>
+</div><div class="sizes" id="detail-angles"><button class="outline" onclick="switchImage('assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12')">Vista frontal</button><button class="outline" onclick="switchImage('assets/file_000000004e0c81f7886b1030db71e95b.jpg')">Vista trasera</button></div></div><div><h1 id="detailname">Chaqueta blanca de flores</h1><div class="price" id="detailprice">$50.000 COP</div><p id="detail-description" class="message">Buzo blanco con capucha, estampados negros y bolsillo delantero. Fotografías del producto.</p><p id="detail-size-label"><strong>Talla</strong></p><div class="sizes" id="sizeoptions"></div><div id="detail-location" class="frame" style="margin:12px 0;padding:14px"><strong>📍 Ubicación del vendedor: Ibagué, Tolima, Colombia</strong></div><div class="sadoc-seller-label"></div><button class="redbutton" type="button" onclick="addCart(true)">🛒 Agregar al carrito</button><button class="blackbutton sadoc-buy-now" type="button" onclick="buyNow()">🛍️ Comprar ahora</button><button class="outline" type="button" onclick="addCart(false);alert('Producto agregado al carrito 🛒')">+ Añadir y seguir mirando</button><div id="sadoc-seller-rating"></div><p class="notice">💜 Compra con Nequi o consulta tu pedido por WhatsApp. El pago y la entrega se confirman directamente con SADOCSTYLE.</p></div></div></section>
 <section id="carrito" class="screen"><h2>Mi carrito 🛒</h2><div id="cartlist"></div><div id="cart-gift" data-purchase-gift hidden></div><div class="summary" id="carttotal"></div><button class="redbutton" type="button" onclick="view('checkout')">🛍️ Comprar</button></section>
 <template id="purchase-gift-template">
   <details class="seller-welcome purchase-gift">
@@ -565,7 +566,7 @@ header.ref-header{align-items:center!important}
       </article>
     </div>
     <form id="seller-edit" method="post" class="form frame">
-      <h3>Tu perfil</h3>
+      <h3>Tu perfil</h3><label>Descripción pública <textarea name="public_bio" maxlength="240" rows="3"></textarea></label>
       <label>Nombre de usuario <input name="username" minlength="3" maxlength="24" required></label>
       <h4>Recogida de pedidos</h4>
       <p class="message">Indica dónde podrá recoger tus paquetes la transportadora. Esta dirección solo aparece en tu cuenta.</p>
@@ -645,10 +646,99 @@ menu(false);document.querySelectorAll('section.page,section.screen').forEach(el=
   if (s === "mis-publicaciones") window.dispatchEvent(new Event("abrir-mis-publicaciones"));
   window.scrollTo(0, 0);
 }
-function card(p){const div=document.createElement('article');div.className='product';const wrap=document.createElement('div');wrap.className='imgwrap';const img=document.createElement('img');img.src=p.id==='main'?'assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12':p.image;img.alt=p.name;wrap.appendChild(img);if(p.type==='oferta'||p.id==='main'){const pill=document.createElement('span');pill.className='pill';pill.textContent='Oferta';wrap.appendChild(pill)}div.appendChild(wrap);const pc=document.createElement('div');pc.className='pc';const title=document.createElement('h3');title.textContent=p.name;pc.appendChild(title);if(p.id==='main'){const old=document.createElement('p');old.className='oldprice';old.textContent=money(83000);pc.appendChild(old)}const price=document.createElement('div');price.className='price';price.textContent=money(p.price);pc.appendChild(price);if(p.id==='main'){const seller=document.createElement('div');seller.className='sadoc-seller-label';seller.innerHTML='<strong>SADOCSTYLE</strong>';pc.appendChild(seller)}if(p.id==='main'&&p.price<83000){const saving=document.createElement('span');saving.className='save';saving.textContent='♧ Ahorras '+Math.round((1-p.price/83000)*100)+'%';pc.appendChild(saving)}const small=document.createElement('p');small.className='info';small.textContent=p.id==='main'?'Diseño exclusivo · Estilo urbano':p.desc;const btn=document.createElement('button');btn.className='blackbutton';btn.textContent='VER 🛒';btn.onclick=()=>openProduct(p.id);if(p.id!=='main')pc.appendChild(small);pc.appendChild(btn);if(p.id!=='main'&&!p.publicListing){const manage=document.createElement('button');manage.type='button';manage.className='outline';manage.textContent='Editar o eliminar';manage.onclick=()=>{view('administrar');document.getElementById('editproduct').value=p.id;loadEdit()};pc.appendChild(manage)}div.appendChild(pc);return div}
-let approvedProducts=[{"id": "ff937264-ee34-4855-9593-3dc24d286a77", "name": "Mono colgantes+ caja de velas", "price": 24000, "desc": "Un combo para un regalo en navidad", "image": "assets/combo-mono-velas.jpg", "publicListing": true}];
+
+const houseSeller = {sellerId:'6b0e789c-4407-435c-8f89-1bd585d1818f',sellerName:'sadox777',verified:true};
+const houseBio = 'Tienda SADOCSTYLE de Ibagué, Tolima.';
+const profileProducts = new Map();
+let profileRequest = 0;
+function sellerLink(product) {
+  const identity = product.id==='main' ? houseSeller : product;
+  const node = document.createElement(identity.sellerId ? 'a' : 'span');
+  node.className = 'seller-link';
+  node.textContent = identity.sellerName || 'Borrador local';
+  if (identity.sellerId) node.href = '#perfil/' + identity.sellerId;
+  if (identity.verified) {
+    const badge = document.createElement('span');
+    badge.className = 'owner-badge';
+    badge.setAttribute('aria-label','Cuenta verificada');
+    badge.setAttribute('role','img');
+    badge.textContent = '✓';
+    node.append(badge);
+  }
+  return node;
+}
+function fromCatalog(row) {
+  return {id:row.id,name:row.name,price:row.price,desc:row.description,image:row.image,
+    publicListing:true,sellerId:row.seller_id,sellerName:row.seller_name,bio:row.seller_bio,verified:row.verified};
+}
+async function showSeller(id) {
+  const request = ++profileRequest;
+  const active = () => request===profileRequest && location.hash==='#perfil/'+id;
+  view('perfil',false);
+  const title = document.getElementById('perfil-nombre');
+  const bio = document.getElementById('perfil-bio');
+  const grid = document.getElementById('perfil-productos');
+  const follow = document.getElementById('perfil-seguir');
+  const status = document.getElementById('perfil-estado');
+  function paint(products) {
+    const identity = products.find(p=>p.sellerId===id) || (id===houseSeller.sellerId ? houseSeller : null);
+    title.replaceChildren();
+    if(identity) title.append(...sellerLink(identity).childNodes);
+    else title.textContent = 'Perfil de vendedor';
+    bio.textContent = identity?.bio || (id===houseSeller.sellerId ? houseBio : 'Sin descripción por ahora.');
+    grid.replaceChildren(...products.map(card));
+  }
+  const ownItems = id===houseSeller.sellerId ? [base] : [];
+  paint([...ownItems,...approvedProducts.filter(p=>p.sellerId===id)]);
+  follow.hidden=true;
+  status.textContent='Cargando catálogo…';
+  try {
+    const {client} = await import('./shop-client.js');
+    const products = [...ownItems];
+    for(let offset=0;;offset+=20) {
+      const {data,error}=await client.rpc('sadoc_catalogo',{vendedor:id,desde:offset});
+      if(!active()) return;
+      if(error) throw error;
+      for(const row of data) {
+        const p=fromCatalog(row);
+        profileProducts.set(p.id,p);
+        products.push(p);
+      }
+      if(data.length<20) break;
+    }
+    paint(products);
+    status.textContent=products.length?'':'Este vendedor aún no tiene productos publicados.';
+    if(!products.length) return;
+    const {data:{session}}=await client.auth.getSession();
+    if(!active() || session?.user.id===id) return;
+    let following=false;
+    if(session){
+      const {data,error}=await client.from('sadoc_follows').select('seller_id').eq('follower_id',session.user.id).eq('seller_id',id).maybeSingle();
+      if(!active()) return;
+      if(error) throw error;
+      following=Boolean(data);
+    }
+    function update(){follow.textContent=following?'Dejar de seguir':'Seguir';follow.setAttribute('aria-pressed',String(following));}
+    update(); follow.hidden=false; follow.disabled=false;
+    follow.onclick=async()=>{
+      if(!session){view('registro');return;}
+      follow.disabled=true;
+      try {
+        const ids={follower_id:session.user.id,seller_id:id};
+        const q=client.from('sadoc_follows');
+        const {error}=following?await q.delete().match(ids):await q.insert(ids);
+        if(error) throw error;
+        if(active()){following=!following;update();status.textContent='';}
+      }catch{if(active()) status.textContent='No se pudo guardar. Intenta de nuevo.';}
+      finally{if(active()) follow.disabled=false;}
+    };
+  } catch { if(active()) status.textContent='No se pudo actualizar el perfil. Recarga para volver a intentar.'; }
+}
+
+function card(p){const div=document.createElement('article');div.className='product';const wrap=document.createElement('div');wrap.className='imgwrap';const img=document.createElement('img');img.src=p.id==='main'?'assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12':p.image;img.alt=p.name;wrap.appendChild(img);if(p.type==='oferta'||p.id==='main'){const pill=document.createElement('span');pill.className='pill';pill.textContent='Oferta';wrap.appendChild(pill)}div.appendChild(wrap);const pc=document.createElement('div');pc.className='pc';const title=document.createElement('h3');title.textContent=p.name;pc.appendChild(title);if(p.id==='main'){const old=document.createElement('p');old.className='oldprice';old.textContent=money(83000);pc.appendChild(old)}const price=document.createElement('div');price.className='price';price.textContent=money(p.price);pc.appendChild(price);pc.appendChild(sellerLink(p));if(p.id==='main'&&p.price<83000){const saving=document.createElement('span');saving.className='save';saving.textContent='♧ Ahorras '+Math.round((1-p.price/83000)*100)+'%';pc.appendChild(saving)}const small=document.createElement('p');small.className='info';small.textContent=p.id==='main'?'Diseño exclusivo · Estilo urbano':p.desc;const btn=document.createElement('button');btn.className='blackbutton';btn.textContent='VER 🛒';btn.onclick=()=>openProduct(p.id);if(p.id!=='main')pc.appendChild(small);pc.appendChild(btn);if(p.id!=='main'&&!p.publicListing){const manage=document.createElement('button');manage.type='button';manage.className='outline';manage.textContent='Editar o eliminar';manage.onclick=()=>{view('administrar');document.getElementById('editproduct').value=p.id;loadEdit()};pc.appendChild(manage)}div.appendChild(pc);return div}
+let approvedProducts=[{"id": "ff937264-ee34-4855-9593-3dc24d286a77", "name": "Mono colgantes+ caja de velas", "price": 24000, "desc": "Un combo para un regalo en navidad", "image": "assets/combo-mono-velas.jpg", ...houseSeller, "publicListing": true}];
 function setApprovedProducts(rows){
-  approvedProducts=rows.map(row=>({id:row.id,name:row.name,price:row.price,desc:row.description,image:row.image,publicListing:true}));
+  approvedProducts=rows.map(fromCatalog);
   renderProducts();
 }
 let detailOrigin='inicio';
@@ -659,8 +749,8 @@ function reportCurrent(){
 }
 function all(){return [base,...listings]}function comingCard(){const el=document.createElement('article');el.className='sadoc-coming-card';el.innerHTML='<span class="coming-icon" aria-hidden="true">👕</span><h3>PRÓXIMAMENTE</h3><p>Nuevas prendas en camino</p>';return el}function renderProducts(){for(const id of ['homeproducts','allproducts']){const el=document.getElementById(id);const products=(id==='homeproducts'?[base]:all()).map(card);products.push(...approvedProducts.map(card));if(products.length===1)products.push(comingCard());el.replaceChildren(...products)}}
 function openProduct(id){
-if(location.hash!=='#detalle') detailOrigin=location.hash==='#productos'?'productos':'inicio';
-current=approvedProducts.find(p=>p.id===id)||all().find(p=>p.id===id)||base;
+if(location.hash!=='#detalle') detailOrigin=location.hash.startsWith('#perfil/')?location.hash.slice(1):location.hash==='#productos'?'productos':'inicio';
+current=approvedProducts.find(p=>p.id===id)||profileProducts.get(id)||all().find(p=>p.id===id)||base;
 const options=document.getElementById('detail-options');
 options.hidden=!current.publicListing;
 options.open=false;
@@ -674,7 +764,7 @@ document.getElementById('detailname').textContent=current.name;document.getEleme
 
 function renderSellerRating(){
 const root=document.getElementById('sadoc-seller-rating');if(!root)return;root.replaceChildren();
-const owner=document.querySelector('#detalle .sadoc-seller-label');if(owner)owner.style.display=current.id==='main'?'flex':'none';
+const owner=document.querySelector('#detalle .sadoc-seller-label');if(owner)owner.replaceChildren(sellerLink(current));
 if(current.id==='main')return;
 const wrap=document.createElement('div');wrap.className='sadoc-rating-panel';
 const title=document.createElement('h3');title.textContent='⭐ Calificación del vendedor';
@@ -789,6 +879,7 @@ function publish(event) {
   view('productos');
 }
 function showLocation() {
+  if(/^#perfil\/[0-9a-f-]{36}$/i.test(location.hash)){showSeller(location.hash.slice(7));return;}
   const target = document.getElementById(location.hash.slice(1));
   view(target?.matches('section.page, section.screen') ? target.id : 'inicio', false);
 }
