@@ -486,7 +486,23 @@ header.ref-header{align-items:center!important}
 </nav>
 <section id="inicio" class="page"><div class="hero" role="img" aria-label="Banner navideño original SADOCSTYLE: ninja con espada, árbol de Navidad y regalos"></div><a class="promo" href="#productos" onclick="return navigate(event, 'productos')"><span class="promo-mobile">🎄 COLECCIÓN NAVIDEÑA · VER COLECCIÓN 🎁</span><span class="promo-desktop">Ver colección navideña →</span></a><div class="wave"></div><main><div class="products" id="homeproducts"></div><p style="text-align:center"><a class="blackbutton" href="#publicar" onclick="return navigate(event, 'publicar')">Publicar mi ropa</a></p></main></section>
 <section id="productos" class="screen"><h2 class="section-title">TODOS LOS PRODUCTOS</h2><div class="products-mini" id="allproducts"></div></section>
-<section id="perfil" class="screen"><a href="#productos">← Productos</a><small>Perfil de vendedor</small><h1 id="perfil-nombre"></h1><p id="perfil-seguidores" aria-live="polite"></p><p id="perfil-bio"></p><button type="button" class="outline" id="perfil-seguir" hidden>Seguir</button><h2>Catálogo</h2><p id="perfil-estado" role="status"></p><div class="products-mini" id="perfil-productos"></div></section>
+<style>
+#perfil .perfil-comunidad{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:12px 0 22px}
+#perfil-seguidores{margin:0;font-weight:bold}
+#perfil #perfil-seguir{width:auto;min-height:44px;padding:8px 20px;border:1px solid #182038;border-radius:24px;background:#182038;color:white}
+#perfil #perfil-seguir[aria-pressed="true"]{background:white;color:#182038}
+#perfil-productos{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,165px),178px));gap:12px;align-items:start}
+#perfil-productos .product{width:100%;min-width:0;margin:0;border-radius:14px}
+#perfil-productos .imgwrap{height:auto;aspect-ratio:1}
+#perfil-productos .imgwrap img{width:100%;height:100%;object-fit:contain}
+#perfil-productos .pc{padding:9px}
+#perfil-productos .pc h3,#perfil-productos .pc .price{font-size:16px;line-height:1.2;margin:4px 0}
+#perfil-productos .pc .oldprice{font-size:12px;margin:2px 0}
+#perfil-productos .pc .seller-link,#perfil-productos .pc .info,#perfil-productos .pc .save{display:none}
+#perfil-productos .pc .blackbutton{font-size:14px;min-height:44px;padding:6px 10px;margin-top:7px}
+@media(max-width:480px){#perfil-productos{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}}
+</style>
+<section id="perfil" class="screen"><a href="#productos">← Productos</a><small>Perfil de vendedor</small><h1 id="perfil-nombre"></h1><p id="perfil-bio"></p><div class="perfil-comunidad" role="group" aria-label="Seguidores del vendedor"><p id="perfil-seguidores" aria-live="polite"></p><button type="button" class="outline" id="perfil-seguir" hidden>Seguir</button></div><h2>Catálogo</h2><p id="perfil-estado" role="status"></p><div class="products-mini" id="perfil-productos"></div></section>
 <section id="detalle" class="screen"><div class="detail-toolbar"><button class="outline" onclick="if(detailOrigin.startsWith(\'perfil/\'))location.hash=detailOrigin;else view(detailOrigin)">← Volver</button><details id="detail-options" hidden><summary aria-label="Opciones de la publicación">⋯</summary><button class="outline" onclick="reportCurrent()">Reportar publicación</button></details></div><div class="columns" style="margin-top:20px"><div><div class="detail-product-photo"><img src="assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12" class="detail-pic" id="detailimage" alt="Buzo estampado">
   <details class="detail-gift">
     <summary aria-label="Abrir promoción de regalo">
