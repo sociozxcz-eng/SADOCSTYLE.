@@ -486,7 +486,7 @@ header.ref-header{align-items:center!important}
 </nav>
 <section id="inicio" class="page"><div class="hero" role="img" aria-label="Banner navideño original SADOCSTYLE: ninja con espada, árbol de Navidad y regalos"></div><a class="promo" href="#productos" onclick="return navigate(event, 'productos')"><span class="promo-mobile">🎄 COLECCIÓN NAVIDEÑA · VER COLECCIÓN 🎁</span><span class="promo-desktop">Ver colección navideña →</span></a><div class="wave"></div><main><div class="products" id="homeproducts"></div><p style="text-align:center"><a class="blackbutton" href="#publicar" onclick="return navigate(event, 'publicar')">Publicar mi ropa</a></p></main></section>
 <section id="productos" class="screen"><h2 class="section-title">TODOS LOS PRODUCTOS</h2><div class="products-mini" id="allproducts"></div></section>
-<section id="perfil" class="screen"><a href="#productos">← Productos</a><h1 id="perfil-nombre"></h1><p id="perfil-bio"></p><button type="button" class="outline" id="perfil-seguir" hidden>Seguir</button><h2>Catálogo</h2><p id="perfil-estado" role="status"></p><div class="products-mini" id="perfil-productos"></div></section>
+<section id="perfil" class="screen"><a href="#productos">← Productos</a><small>Perfil de vendedor</small><h1 id="perfil-nombre"></h1><p id="perfil-seguidores" aria-live="polite"></p><p id="perfil-bio"></p><button type="button" class="outline" id="perfil-seguir" hidden>Seguir</button><h2>Catálogo</h2><p id="perfil-estado" role="status"></p><div class="products-mini" id="perfil-productos"></div></section>
 <section id="detalle" class="screen"><div class="detail-toolbar"><button class="outline" onclick="if(detailOrigin.startsWith(\'perfil/\'))location.hash=detailOrigin;else view(detailOrigin)">← Volver</button><details id="detail-options" hidden><summary aria-label="Opciones de la publicación">⋯</summary><button class="outline" onclick="reportCurrent()">Reportar publicación</button></details></div><div class="columns" style="margin-top:20px"><div><div class="detail-product-photo"><img src="assets/file_00000000b9588212a9d442af3152e67d.jpg?front=12" class="detail-pic" id="detailimage" alt="Buzo estampado">
   <details class="detail-gift">
     <summary aria-label="Abrir promoción de regalo">
@@ -671,6 +671,14 @@ function fromCatalog(row) {
   return {id:row.id,name:row.name,price:row.price,desc:row.description,image:row.image,
     publicListing:true,sellerId:row.seller_id,sellerName:row.seller_name,bio:row.seller_bio,verified:row.verified};
 }
+async function publicProfileQuery(method, params) {
+  const response = await fetch('https://ozgpmnmmaxwuyedioetw.supabase.co/rest/v1/rpc/' + method, {
+    method:'POST', headers:{apikey:'sb_publishable_hEIsnV1e2CYehJ11flIawQ_HD_EnYEL','Content-Type':'application/json'},
+    body:JSON.stringify(params), signal:AbortSignal.timeout(12000)
+  });
+  if (!response.ok) throw new Error('Perfil no disponible');
+  return response.json();
+}
 async function showSeller(id) {
   const request = ++profileRequest;
   const active = () => request===profileRequest && location.hash==='#perfil/'+id;
@@ -690,15 +698,26 @@ async function showSeller(id) {
   }
   const ownItems = id===houseSeller.sellerId ? [base] : [];
   paint([...ownItems,...approvedProducts.filter(p=>p.sellerId===id)]);
-  follow.hidden=true;
-  status.textContent='Cargando catálogo…';
+  const count = document.getElementById('perfil-seguidores');
+  count.textContent='Seguidores · consultando…';
+  async function refreshCount() {
+    try {
+      const n = await publicProfileQuery('sadoc_seguidores',{vendedor:id});
+      if(active()) count.textContent=n+' '+(n===1?'seguidor':'seguidores');
+    } catch { if(active()) count.textContent='Seguidores · sin conexión'; }
+  }
+  refreshCount();
+  follow.hidden=false;
+  follow.disabled=false;
+  follow.textContent='Seguir';
+  follow.removeAttribute('aria-pressed');
+  follow.onclick=()=>view('registro');
+  status.textContent='';
   try {
-    const {client} = await import('./shop-client.js');
     const products = [...ownItems];
     for(let offset=0;;offset+=20) {
-      const {data,error}=await client.rpc('sadoc_catalogo',{vendedor:id,desde:offset});
+      const data=await publicProfileQuery('sadoc_catalogo',{vendedor:id,desde:offset});
       if(!active()) return;
-      if(error) throw error;
       for(const row of data) {
         const p=fromCatalog(row);
         profileProducts.set(p.id,p);
@@ -709,8 +728,10 @@ async function showSeller(id) {
     paint(products);
     status.textContent=products.length?'':'Este vendedor aún no tiene productos publicados.';
     if(!products.length) return;
+    const {client}=await import("./shop-client.js");
     const {data:{session}}=await client.auth.getSession();
-    if(!active() || session?.user.id===id) return;
+    if(!active()) return;
+    if(session?.user.id===id){follow.hidden=true;return;}
     let following=false;
     if(session){
       const {data,error}=await client.from('sadoc_follows').select('seller_id').eq('follower_id',session.user.id).eq('seller_id',id).maybeSingle();
@@ -728,7 +749,7 @@ async function showSeller(id) {
         const q=client.from('sadoc_follows');
         const {error}=following?await q.delete().match(ids):await q.insert(ids);
         if(error) throw error;
-        if(active()){following=!following;update();status.textContent='';}
+        if(active()){following=!following;update();refreshCount();status.textContent='';}
       }catch{if(active()) status.textContent='No se pudo guardar. Intenta de nuevo.';}
       finally{if(active()) follow.disabled=false;}
     };
